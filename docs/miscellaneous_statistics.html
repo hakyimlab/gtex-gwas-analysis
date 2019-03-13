@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Miscellaneous statistics for the GTEx-GWAS paper</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">gtex-gwas-analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Miscellaneous statistics for the GTEx-GWAS paper</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#report"> Report <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-03-13
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>gtex-gwas-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.2.0). The <em>Report</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="report" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190312code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190312)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190312code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190312)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree452157a4a52d06c81e3768673ff410f1aad0c280targetblank452157aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/452157a4a52d06c81e3768673ff410f1aad0c280" target="_blank">452157a</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree452157a4a52d06c81e3768673ff410f1aad0c280targetblank452157aa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.httr-oauth
+
+Untracked files:
+    Untracked:  data/dapg_variants/
+    Untracked:  data/t_test_primary_vs_secondary.rds
+    Untracked:  docs/figure/
+
+Unstaged changes:
+    Modified:   analysis/miscellaneous_statistics.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/c58009d17011ca48c9d1dd22f9a0a928cb5ad42b/analysis/miscellaneous_statistics.Rmd" target="_blank">c58009d</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-03-13
+</td>
+<td>
+miscellaneous statistics
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="set-paths" class="section level4">
+<h4>Set paths</h4>
+<pre class="r"><code># Change this by the path you cloned the GTEx-V8 repository into
+gtexv8_repo_dir &lt;- &quot;~/Genomica/GTEx/gtex-v8/&quot;
+bigquery_subdir &lt;- &quot;GWAS-subgroup/how-to/BigQuery/&quot;
+
+myrepo_dir &lt;- &quot;~/Genomica/GTEx/gtex-gwas-analysis/&quot;
+work_dir &lt;- file.path(myrepo_dir, &quot;analysis&quot;)
+data_dir &lt;- file.path(myrepo_dir, &quot;data&quot;)</code></pre>
+</div>
+<div id="import-libraries-and-source-scripts" class="section level4">
+<h4>Import libraries and source scripts</h4>
+<pre class="r"><code># install.packages(&quot;bigrquery&quot;)
+suppressPackageStartupMessages(library(bigrquery))
+
+# install.packages(&quot;RCurl&quot;)
+suppressPackageStartupMessages(library(RCurl))
+
+setwd(file.path(gtexv8_repo_dir, bigquery_subdir))
+source(&quot;BigQuery.R&quot;)</code></pre>
+<pre><code>── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>✔ ggplot2 3.1.0       ✔ purrr   0.3.1  
+✔ tibble  2.0.1       ✔ dplyr   0.8.0.1
+✔ tidyr   0.8.3       ✔ stringr 1.4.0  
+✔ readr   1.3.1       ✔ forcats 0.4.0  </code></pre>
+<pre><code>── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+✖ tidyr::complete() masks RCurl::complete()
+✖ dplyr::filter()   masks stats::filter()
+✖ dplyr::lag()      masks stats::lag()</code></pre>
+<pre class="r"><code>source(&quot;Definitions.R&quot;)</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>setwd(work_dir)</code></pre>
+<pre class="r"><code>read_file_from_link &lt;- function(link, sep=&quot;\t&quot;) read.delim(text=getURL(link), sep=sep, header=TRUE, stringsAsFactors=FALSE)</code></pre>
+</div>
+<div id="select-phenotypes-without-deflation-after-imputation" class="section level3">
+<h3>Select phenotypes without deflation after imputation</h3>
+<pre class="r"><code>NO_DEFLATION &lt;- 0
+query &lt;- glue::glue(&quot;SELECT Tag as phenotype, Deflation
+                     FROM {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name}&quot;)
+
+selected_phenotypes = query_exec(query, gwas_metadata_tbl$project) %&gt;% filter(Deflation == NO_DEFLATION) %&gt;% .[,1]</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>query &lt;- &quot;SELECT gene FROM (
+  SELECT px.phenotype as phenotype, 
+         px.gene as gene,
+         px.tissue as tissue,
+         gwas.Deflation as deflation 
+  FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px 
+  JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} as gwas 
+  ON px.phenotype = gwas.Tag 
+  WHERE gwas.Deflation = 0) 
+GROUP BY gene&quot; %&gt;% glue::glue()
+
+n_genes &lt;- query_exec(query, project = gwas_metadata_tbl$project, max_pages = Inf) %&gt;% nrow</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>query &lt;- &quot;SELECT gene_type, COUNT(DISTINCT(gene)) as count 
+FROM GTEx_V8_ElasticNet_EUR_2018_07_05.extra
+GROUP BY gene_type&quot;
+
+genes_by_type &lt;- query_exec(query, gwas_metadata_tbl$project)</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>rownames(genes_by_type) &lt;- genes_by_type$gene_type</code></pre>
+<ul>
+<li>21627 genes are being tested by MultiXcan.</li>
+</ul>
+<pre class="r"><code>query &lt;- &quot;SELECT gene, tissue FROM (
+  SELECT px.phenotype as phenotype,
+         px.gene as gene,
+         px.tissue as tissue,
+         gwas.Deflation as deflation 
+  FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px 
+  JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} as gwas 
+  ON px.phenotype = gwas.Tag 
+  WHERE gwas.Deflation = 0) 
+GROUP BY gene, tissue&quot; %&gt;% glue::glue()
+
+n_gene_tissue_pairs &lt;- query_exec(query, project = gwas_metadata_tbl$project, max_pages = Inf) %&gt;% nrow</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>pvalue_threshold &lt;- pval_threshold_px &lt;- 0.05 / n_gene_tissue_pairs</code></pre>
+<ul>
+<li>281749 (gene, tissue) pairs are being tested by PrediXcan.</li>
+</ul>
+<pre class="r"><code>query &lt;- glue::glue(&quot;SELECT gene_id, gene_type from annotations.gencode_v26&quot;)
+gene_annot &lt;- query_exec(query, project=&quot;gtex-awg-im&quot;, max_pages = Inf) %&gt;% suppressWarnings()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+</div>
+<div id="how-many-among-predixcan-significant-are-coloc-colocalized" class="section level3">
+<h3>How many among PrediXcan-significant are COLOC-colocalized?</h3>
+<pre class="r"><code>query &lt;- glue::glue(
+&quot;SELECT px.phenotype as phenotype, px.tissue as tissue, px.gene as gene, px.pvalue as pvalue, coloc.PP_H4_abf as P4
+FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
+JOIN {coloc_tbl$dataset_name}.{coloc_tbl$table_name} as coloc
+ON px.phenotype = coloc.phenotype AND px.tissue = coloc.tissue AND px.gene = coloc.gene_id
+WHERE pvalue &lt; {pvalue_threshold}&quot;)
+
+df &lt;- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %&gt;% suppressWarnings()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>df &lt;- df %&gt;% filter(phenotype %in% selected_phenotypes)
+
+str(df)</code></pre>
+<pre><code>&#39;data.frame&#39;:   117978 obs. of  5 variables:
+ $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
+ $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Spleen&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Skin_Not_Sun_Exposed_Suprapubic&quot; ...
+ $ gene     : chr  &quot;ENSG00000064726.9&quot; &quot;ENSG00000100410.7&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101442.9&quot; ...
+ $ pvalue   : num  5.27e-08 1.98e-09 1.08e-08 3.22e-08 1.60e-08 ...
+ $ P4       : num  0.00643 0.0651 0.27675 0.00418 0.00561 ...</code></pre>
+<pre class="r"><code>n_predixcan_signif &lt;- df %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow
+n_coloc &lt;- df %&gt;% filter(P4 &gt; 0.5) %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow</code></pre>
+<ul>
+<li>1379 out of 6854 (20.12%)</li>
+</ul>
+<div id="what-if-restricting-to-protein-coding-genes" class="section level4">
+<h4>What if restricting to protein-coding genes?</h4>
+<pre class="r"><code>df &lt;- df %&gt;% mutate(gene = substr(gene, 1, 15))
+df_protein_coding &lt;- inner_join(df, gene_annot, by = c(&quot;gene&quot;=&quot;gene_id&quot;)) %&gt;% 
+                     filter(gene_type == &quot;protein_coding&quot;)
+str(df_protein_coding)</code></pre>
+<pre><code>&#39;data.frame&#39;:   107704 obs. of  6 variables:
+ $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
+ $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Spleen&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Skin_Not_Sun_Exposed_Suprapubic&quot; ...
+ $ gene     : chr  &quot;ENSG00000064726&quot; &quot;ENSG00000100410&quot; &quot;ENSG00000101213&quot; &quot;ENSG00000101442&quot; ...
+ $ pvalue   : num  5.27e-08 1.98e-09 1.08e-08 3.22e-08 1.60e-08 ...
+ $ P4       : num  0.00643 0.0651 0.27675 0.00418 0.00561 ...
+ $ gene_type: chr  &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; ...</code></pre>
+<pre class="r"><code>n_predixcan_signif_pc &lt;- df_protein_coding %&gt;% group_by(gene) %&gt;% count %&gt;% nrow()
+n_coloc_among_px_pc &lt;- df_protein_coding %&gt;% filter(P4 &gt; 0.5) %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow()</code></pre>
+<ul>
+<li>1253 out of 6119 (20.48%)</li>
+</ul>
+</div>
+</div>
+<div id="how-many-among-predixcan-significant-are-enloc-colocalized" class="section level3">
+<h3>How many among PrediXcan-significant are ENLOC-colocalized?</h3>
+<pre class="r"><code>query &lt;- glue::glue(
+&quot;SELECT 
+  px.phenotype as phenotype, 
+  px.tissue as tissue, 
+  px.gene as gene, 
+  px.pvalue as pvalue, 
+  enloc.rcp as rcp
+FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
+JOIN {enloc_tbl$dataset_name}.{enloc_tbl$table_name} as enloc
+ON px.phenotype = enloc.phenotype AND px.tissue = enloc.tissue AND px.gene = enloc.gene_id
+WHERE pvalue &lt; {pvalue_threshold}&quot;)
+
+df &lt;- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %&gt;% suppressWarnings()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>df &lt;- df %&gt;% filter(phenotype %in% selected_phenotypes)
+str(df)</code></pre>
+<pre><code>&#39;data.frame&#39;:   201488 obs. of  5 variables:
+ $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
+ $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; ...
+ $ gene     : chr  &quot;ENSG00000064726.9&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; ...
+ $ pvalue   : num  5.27e-08 1.08e-08 1.08e-08 1.08e-08 5.79e-09 ...
+ $ rcp      : num  0 0.593 0 0.114 0.006 0 0.008 0 0.008 0.001 ...</code></pre>
+<pre class="r"><code>n_enloc &lt;- df %&gt;% filter(rcp &gt; 0.5) %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow</code></pre>
+<ul>
+<li>1300 out of 6854 (18.97%)</li>
+</ul>
+<div id="what-if-restricting-to-protein-coding-genes-1" class="section level4">
+<h4>What if restricting to protein-coding genes?</h4>
+<pre class="r"><code>df &lt;- df %&gt;% mutate(gene = substr(gene, 1, 15))
+df_protein_coding &lt;- inner_join(df, gene_annot, by = c(&quot;gene&quot;=&quot;gene_id&quot;)) %&gt;% 
+                     filter(gene_type == &quot;protein_coding&quot;)
+str(df_protein_coding)</code></pre>
+<pre><code>&#39;data.frame&#39;:   182188 obs. of  6 variables:
+ $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
+ $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; ...
+ $ gene     : chr  &quot;ENSG00000064726&quot; &quot;ENSG00000101213&quot; &quot;ENSG00000101213&quot; &quot;ENSG00000101213&quot; ...
+ $ pvalue   : num  5.27e-08 1.08e-08 1.08e-08 1.08e-08 5.79e-09 ...
+ $ rcp      : num  0 0.593 0 0.114 0.006 0 0.008 0 0.008 0.001 ...
+ $ gene_type: chr  &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; ...</code></pre>
+<pre class="r"><code>n_enloc_among_px_pc &lt;- df_protein_coding %&gt;% filter(rcp &gt; 0.5) %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow()
+
+message(glue::glue(&quot;ENLOC: {n_enloc_among_px_pc} out of {n_predixcan_signif_pc} ({100*(n_enloc_among_px_pc / n_predixcan_signif_pc)}%)&quot;))</code></pre>
+<pre><code>ENLOC: 1173 out of 6119 (19.1697989867625%)</code></pre>
+</div>
+</div>
+<div id="how-many-among-coloc-colocalized-genes-are-predixcan-significant" class="section level3">
+<h3>How many among COLOC-colocalized genes are PrediXcan-significant?</h3>
+<pre class="r"><code>query &lt;- glue::glue(
+&quot;SELECT 
+  px.phenotype as phenotype, 
+  px.tissue as tissue, 
+  px.gene as gene, 
+  px.pvalue as pvalue, 
+  coloc.PP_H4_abf as P4
+FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
+JOIN {coloc_tbl$dataset_name}.{coloc_tbl$table_name} as coloc
+ON px.phenotype = coloc.phenotype AND px.tissue = coloc.tissue AND px.gene = coloc.gene_id
+WHERE PP_H4_abf &gt; 0.5&quot;)
+
+df &lt;- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %&gt;% suppressWarnings()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>df &lt;- df %&gt;% filter(phenotype %in% selected_phenotypes)
+str(df)</code></pre>
+<pre><code>&#39;data.frame&#39;:   19729 obs. of  5 variables:
+ $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
+ $ tissue   : chr  &quot;Artery_Tibial&quot; &quot;Prostate&quot; &quot;Brain_Cerebellum&quot; &quot;Brain_Cerebellar_Hemisphere&quot; ...
+ $ gene     : chr  &quot;ENSG00000121152.9&quot; &quot;ENSG00000130427.2&quot; &quot;ENSG00000143641.9&quot; &quot;ENSG00000143641.9&quot; ...
+ $ pvalue   : num  2.21e-03 7.11e-02 1.83e-04 2.56e-04 8.14e-05 ...
+ $ P4       : num  0.591 0.517 0.914 0.906 0.552 ...</code></pre>
+<pre class="r"><code>n_coloc &lt;- df %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow()
+n_predixcan &lt;- inner_join(df, df %&gt;% group_by(gene) %&gt;% summarise(pthr=0.05/n()), by = &quot;gene&quot;) %&gt;% 
+  filter(pvalue &lt; pthr) %&gt;% 
+  group_by(gene) %&gt;% 
+  count() %&gt;% 
+  nrow()</code></pre>
+<p>2532 out of 2599 (97.42%)</p>
+</div>
+<div id="how-many-among-enloc-colocalized-genes-are-predixcan-significant" class="section level3">
+<h3>How many among ENLOC-colocalized genes are PrediXcan-significant?</h3>
+<pre class="r"><code>query &lt;- glue::glue(
+&quot;SELECT 
+  px.phenotype as phenotype, 
+  px.tissue as tissue, 
+  px.gene as gene, 
+  px.pvalue as pvalue, 
+  enloc.rcp as rcp
+FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
+JOIN {enloc_tbl$dataset_name}.{enloc_tbl$table_name} as enloc
+ON px.phenotype = enloc.phenotype AND px.tissue = enloc.tissue AND px.gene = enloc.gene_id
+WHERE rcp &gt; 0.5&quot;)
+
+df &lt;- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %&gt;% suppressWarnings()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>df &lt;- df %&gt;% filter(phenotype %in% selected_phenotypes)
+str(df)</code></pre>
+<pre><code>&#39;data.frame&#39;:   25281 obs. of  5 variables:
+ $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
+ $ tissue   : chr  &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellum&quot; &quot;Brain_Caudate_basal_ganglia&quot; &quot;Artery_Tibial&quot; ...
+ $ gene     : chr  &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; ...
+ $ pvalue   : num  1.08e-08 5.22e-06 5.60e-06 2.08e-03 7.64e-01 ...
+ $ rcp      : num  0.593 0.922 0.741 0.708 0.698 0.824 0.554 0.94 0.933 0.503 ...</code></pre>
+<pre class="r"><code>n_enloc &lt;- df %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow()
+n_predixcan &lt;- inner_join(df, df %&gt;% group_by(gene) %&gt;% summarise(pthr=0.05/n()), by = &quot;gene&quot;) %&gt;% 
+  filter(pvalue &lt; pthr) %&gt;% 
+  group_by(gene) %&gt;% 
+  count() %&gt;% 
+  nrow()</code></pre>
+<p><em>3014 out of 3401 (88.62%)</em></p>
+</div>
+<div id="how-many-among-enloc-colocalized-genes-are-coloc-colocalized" class="section level3">
+<h3>How many among ENLOC-colocalized genes are COLOC-colocalized?</h3>
+<pre class="r"><code>##### COLOC-colocalized genes among ENLOC-colocalized genes #####
+query &lt;- glue::glue(
+&quot;SELECT coloc.phenotype as phenotype, 
+coloc.tissue as tissue, 
+coloc.gene_id as gene, 
+coloc.PP_H4_abf as P4, 
+enloc.rcp as rcp
+FROM {coloc_tbl$dataset_name}.{coloc_tbl$table_name} as coloc
+JOIN {enloc_tbl$dataset_name}.{enloc_tbl$table_name} as enloc
+ON coloc.phenotype = enloc.phenotype AND coloc.tissue = enloc.tissue AND coloc.gene_id = enloc.gene_id
+WHERE rcp &gt; 0.5&quot;)
+
+df &lt;- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %&gt;% suppressWarnings()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>df &lt;- df %&gt;% filter(phenotype %in% selected_phenotypes)
+str(df)</code></pre>
+<pre><code>&#39;data.frame&#39;:   41127 obs. of  5 variables:
+ $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
+ $ tissue   : chr  &quot;Testis&quot; &quot;Brain_Caudate_basal_ganglia&quot; &quot;Brain_Cerebellum&quot; &quot;Brain_Cerebellar_Hemisphere&quot; ...
+ $ gene     : chr  &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; ...
+ $ P4       : num  0.210991 0.000148 0.047913 0.276745 0.234778 ...
+ $ rcp      : num  0.669 0.741 0.922 0.593 0.816 0.708 0.924 0.698 0.824 0.581 ...</code></pre>
+<pre class="r"><code>n_enloc &lt;- df %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow()
+n_coloc &lt;- df %&gt;% filter(P4 &gt; 0.5) %&gt;% group_by(gene) %&gt;% count() %&gt;% nrow()</code></pre>
+<p><em>2571 out of 5127 (50.15%))</em></p>
+<pre class="r"><code>query &lt;- glue::glue(
+&quot;SELECT best_mx.*, 0.05/best_mx.n_genes as pvalue_thr, metadata.Deflation 
+FROM (
+  SELECT phenotype, min(pvalue) as best_pvalue, count(*) as n_genes
+  FROM {multixcan_tbl$dataset_name}.{multixcan_tbl$table_name}
+  GROUP BY phenotype
+) as best_mx
+JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} metadata ON metadata.Tag = best_mx.phenotype&quot;)
+
+df &lt;- query_exec(query, project = predixcan_tbl$project, max_pages = Inf, use_legacy_sql = F) %&gt;% suppressMessages()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>str(df)</code></pre>
+<pre><code>&#39;data.frame&#39;:   114 obs. of  5 variables:
+ $ phenotype  : chr  &quot;Astle_et_al_2016_Granulocyte_count&quot; &quot;Astle_et_al_2016_Sum_basophil_neutrophil_counts&quot; &quot;UKB_20002_1453_self_reported_psoriasis&quot; &quot;tag.evrsmk.tbl&quot; ...
+ $ best_pvalue: num  3.50e-268 2.45e-270 0.00 5.70e-05 1.76e-114 ...
+ $ n_genes    : int  21627 21627 21627 21627 21627 21627 21627 21627 21627 21623 ...
+ $ pvalue_thr : num  2.31e-06 2.31e-06 2.31e-06 2.31e-06 2.31e-06 ...
+ $ Deflation  : int  0 0 0 1 0 0 1 0 0 0 ...</code></pre>
+<p><em>78 traits have at least one gene significantly associated (according to MultiXcan).</em></p>
+<pre class="r"><code>query &lt;- glue::glue(
+&quot;SELECT best_px.*, 0.05/best_px.n_tissues_genes as pvalue_thr, metadata.Deflation
+FROM (
+  SELECT phenotype, min(pvalue) as best_pvalue, count(*) as n_tissues_genes
+  FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name}
+  GROUP BY phenotype
+) as best_px
+JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} metadata ON metadata.Tag = best_px.phenotype&quot;)
+
+df &lt;- query_exec(query, project = predixcan_tbl$project, max_pages = Inf, use_legacy_sql = F) %&gt;% suppressMessages()</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>  str(df)</code></pre>
+<pre><code>&#39;data.frame&#39;:   114 obs. of  5 variables:
+ $ phenotype      : chr  &quot;UKB_20002_1452_self_reported_eczema_or_dermatitis&quot; &quot;UKB_20002_1265_self_reported_migraine&quot; &quot;EGG_BMI_HapMapImputed&quot; &quot;MAGNETIC_HDL.C&quot; ...
+ $ best_pvalue    : num  2.37e-28 1.30e-22 7.04e-18 2.80e-99 1.82e-68 ...
+ $ n_tissues_genes: int  281745 281745 281746 281721 281745 281745 281411 281618 281745 281745 ...
+ $ pvalue_thr     : num  1.77e-07 1.77e-07 1.77e-07 1.77e-07 1.77e-07 ...
+ $ Deflation      : int  0 0 1 0 0 0 0 1 0 0 ...</code></pre>
+<p><em>75 traits have at least one gene significantly associated in some tissue (according to PrediXcan).</em></p>
+<pre class="r"><code># px_signif_ld_blocks &lt;- read_file_from_link(&quot;https://storage.googleapis.com/gtex-exchange/predixcan/summaries/predixcan_signifcant_ld_blocks_best_tissues_per_phenotype.csv&quot;)
+# px_signif_ld_blocks &lt;- read_file_from_link(&quot;https://storage.googleapis.com/gtex-exchange/predixcan/summaries/signifcant_ld_blocks_best_tissues_per_phenotype.csv&quot;)</code></pre>
+</div>
+<div id="section" class="section level3">
+<h3></h3>
+<pre class="r"><code># for the script to generate the file below, see count_gwas_vs_predixcan_hits.R
+counts.per.ldblock &lt;- read_file_from_link(&quot;https://storage.googleapis.com/rbonazzola/counts_per_ld_block.csv&quot;, sep = &quot;,&quot;)
+
+counts.per.ldblock &lt;- counts.per.ldblock %&gt;% filter(Deflation == 0)
+
+ordered_phenotypes &lt;- counts.per.ldblock %&gt;% 
+                      arrange(gwas_counts) %&gt;%
+                      select(phenotype, new_Phenotype, abbreviation)
+
+counts.per.ldblock$phenotype &lt;- factor(as.character(counts.per.ldblock$phenotype), levels = ordered_phenotypes$phenotype)
+counts.per.ldblock$new_Phenotype &lt;- factor(as.character(counts.per.ldblock$new_Phenotype), levels = ordered_phenotypes$new_Phenotype)
+counts.per.ldblock$abbreviation &lt;- factor(as.character(counts.per.ldblock$abbreviation), levels = ordered_phenotypes$abbreviation)
+
+str(counts.per.ldblock)</code></pre>
+<pre><code>&#39;data.frame&#39;:   79 obs. of  7 variables:
+ $ phenotype           : Factor w/ 79 levels &quot;ENIGMA_Intracraneal_Volume&quot;,..: 68 64 66 70 71 67 61 75 72 65 ...
+ $ gwas_counts         : int  244 233 240 263 269 241 226 327 274 239 ...
+ $ gwas_mx_counts      : int  140 122 138 146 154 132 117 193 148 132 ...
+ $ gwas_mx_enloc_counts: int  83 90 87 107 100 99 87 120 100 81 ...
+ $ new_Phenotype       : Factor w/ 79 levels &quot;Intracraneal_Volume&quot;,..: 68 64 66 70 71 67 61 75 72 65 ...
+ $ abbreviation        : Factor w/ 79 levels &quot;INV&quot;,&quot;MFI&quot;,&quot;UN_IBS&quot;,..: 68 64 66 70 71 67 61 75 72 65 ...
+ $ Deflation           : int  0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<pre class="r"><code>shapes &lt;- c(&quot;GWAS&quot;=6, &quot;MultiXcan&quot;=3, &quot;MultiXcan + Enloc&quot;=8)
+cols &lt;- c(&quot;GWAS&quot;=&quot;#0000C0&quot;, &quot;MultiXcan&quot;=&quot;#800080&quot;, &quot;MultiXcan + Enloc&quot;=&quot;#00C000&quot;)
+
+pp &lt;- ggplot() + 
+  geom_point(data = counts.per.ldblock %&gt;% filter(gwas_counts &gt; 10), 
+             mapping = aes(x = abbreviation, y = gwas_counts, col=&quot;GWAS&quot;), size=1.5) +
+  geom_line(data = counts.per.ldblock %&gt;% filter(gwas_counts &gt; 10), mapping = aes(as.numeric(abbreviation)-min(as.numeric(abbreviation))+1, 
+                          gwas_counts, col=&quot;GWAS&quot;), group=1) +
+  geom_bar(data = counts.per.ldblock %&gt;% filter(gwas_counts &gt; 10),
+           mapping = aes(x = abbreviation, y = gwas_mx_counts, fill=&quot;MultiXcan&quot;), stat=&quot;identity&quot;) +
+  geom_bar(data = counts.per.ldblock %&gt;% filter(gwas_counts &gt; 10),
+           mapping = aes(x = abbreviation, y = gwas_mx_enloc_counts, fill=&quot;MultiXcan + Enloc&quot;), stat=&quot;identity&quot;) +  
+  theme_bw() + theme(axis.text.x=element_text(angle=55, hjust = 1)) + 
+  xlab(&quot;Phenotype&quot;) + ylab(&quot;# of LD-independent blocks with a significant association&quot;) + 
+  scale_y_continuous(trans=&quot;log10&quot;) +
+  scale_fill_manual(name=&quot;Method&quot;, values=cols) + # +
+  scale_color_manual(label=&quot;&quot;, values=cols)# +
+
+suppressMessages(pp)</code></pre>
+<pre><code>Warning: Transformation introduced infinite values in continuous y-axis
+
+Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
+<pre><code>Warning: Removed 8 rows containing missing values (geom_bar).</code></pre>
+<pre><code>Warning: Removed 20 rows containing missing values (geom_bar).</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<!---
+query <- glue::glue("SELECT  FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px 
+                     WHERE pvalue < {pval_threshold_px}")
+df <- query_exec(query, project=predixcan_tbl$project, max_pages = Inf)
+df <- df %>% filter(phenotype %in% selected_phenotypes)
+-->
+<pre class="r"><code>t.test_df &lt;- readRDS(file.path(data_dir, &quot;t_test_primary_vs_secondary.rds&quot;))
+tissue_metadata &lt;- get_gtex_tissue_metadata() %&gt;% select(tissue, v8_all, tissue_abbrv) %&gt;% rename(sample_size=v8_all)</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>gwas_metadata &lt;- gtex_gwas_metadata() %&gt;% select(Tag, new_Phenotype) %&gt;% rename(phenotype=&quot;Tag&quot;)</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>df &lt;- inner_join(t.test_df, tissue_metadata, by=&quot;tissue&quot;)</code></pre>
+<pre><code>Warning: Column `tissue` joining factor and character vector, coercing into
+character vector</code></pre>
+<pre class="r"><code>df &lt;- inner_join(df, gwas_metadata, by=&quot;phenotype&quot;)</code></pre>
+<pre><code>Warning: Column `phenotype` joining factor and character vector, coercing
+into character vector</code></pre>
+<pre class="r"><code>df$tissue &lt;- factor(df$tissue, levels = tissue_metadata[order(tissue_metadata$sample_size), &quot;tissue&quot;])
+
+phenotype &lt;- df %&gt;% group_by(phenotype) %&gt;% summarise(median(t.test_pvalue))
+df$phenotype &lt;- factor(df$phenotype, levels = phenotype[order(-phenotype$`median(t.test_pvalue)`), &quot;phenotype&quot;]$phenotype)
+phenotype &lt;- df %&gt;% group_by(new_Phenotype) %&gt;% summarise(median(t.test_pvalue))
+df$new_Phenotype &lt;- factor(df$new_Phenotype, levels = phenotype[order(-phenotype$`median(t.test_pvalue)`), &quot;new_Phenotype&quot;]$new_Phenotype)
+
+ggp1 &lt;- ggplot(df, aes(x=tissue, y=-log10(t.test_pvalue))) + geom_boxplot() + theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
+ggp1</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># ggp2 &lt;- ggplot(df, aes(x=phenotype, y=-log10(t.test_pvalue))) + geom_boxplot() + theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
+ggp2 &lt;- ggplot(df, aes(x=new_Phenotype, y=-log10(t.test_pvalue))) + geom_boxplot() + theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
+ggp2</code></pre>
+<img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-19-2.png" width="672" style="display: block; margin: auto;" /> <br> <br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.4.4 (2018-03-15)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 16.04.6 LTS
+
+Matrix products: default
+BLAS: /usr/lib/libblas/libblas.so.3.6.0
+LAPACK: /usr/lib/lapack/liblapack.so.3.6.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] forcats_0.4.0   stringr_1.4.0   dplyr_0.8.0.1   purrr_0.3.1    
+ [5] readr_1.3.1     tidyr_0.8.3     tibble_2.0.1    ggplot2_3.1.0  
+ [9] tidyverse_1.2.1 RCurl_1.95-4.12 bitops_1.0-6    bigrquery_1.1.0
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_0.2.5 xfun_0.5         haven_2.1.0      lattice_0.20-38 
+ [5] colorspace_1.4-0 generics_0.0.2   htmltools_0.3.6  yaml_2.2.0      
+ [9] rlang_0.3.1      pillar_1.3.1     withr_2.1.2      glue_1.3.0      
+[13] DBI_1.0.0        bit64_0.9-7      modelr_0.1.4     readxl_1.3.0    
+[17] plyr_1.8.4       munsell_0.5.0    gtable_0.2.0     workflowr_1.2.0 
+[21] cellranger_1.1.0 rvest_0.3.2      evaluate_0.13    labeling_0.3    
+[25] knitr_1.21       curl_3.3         broom_0.5.1      Rcpp_1.0.0      
+[29] openssl_1.2.2    backports_1.1.3  scales_1.0.0     jsonlite_1.6    
+[33] fs_1.2.6         bit_1.1-14       askpass_1.1      hms_0.4.2       
+[37] digest_0.6.18    stringi_1.3.1    rprojroot_1.3-2  grid_3.4.4      
+[41] cli_1.0.1        tools_3.4.4      magrittr_1.5     lazyeval_0.2.1  
+[45] crayon_1.3.4     whisker_0.3-2    pkgconfig_2.0.2  xml2_1.2.0      
+[49] lubridate_1.7.4  assertthat_0.2.0 rmarkdown_1.11   httr_1.4.0      
+[53] rstudioapi_0.9.0 R6_2.4.0         nlme_3.1-137     git2r_0.24.0    
+[57] compiler_3.4.4  </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
