@@ -27,7 +27,7 @@ suppressPackageStartupMessages(library(RCurl))
 setwd(file.path(gtexv8_repo_dir, bigquery_subdir))
 
 # Script with ancillary functions to perform queries to BigQuery
-source("BigQuery.R")
+suppressPackageStartupMessages(source("BigQuery.R"))
 
 # Load traits and tissues to analyze
 source("Definitions.R")
@@ -48,8 +48,10 @@ query <- glue::glue("SELECT Tag as phenotype, Deflation
 selected_phenotypes = query_exec(query, gwas_metadata_tbl$project) %>% filter(Deflation == NO_DEFLATION) %>% .[,1]
 ```
 
-```{r}
-query <- "SELECT gene FROM (
+### PrediXcan and MultiXcan
+```{r, echo=FALSE}
+query <- "SELECT 
+  gene FROM (
   SELECT px.phenotype as phenotype, 
          px.gene as gene,
          px.tissue as tissue,
@@ -73,8 +75,11 @@ rownames(genes_by_type) <- genes_by_type$gene_type
 **`r n_genes` genes are being tested by MultiXcan.**
 
 
-```{r}
-query <- "SELECT gene, tissue FROM (
+```{r, echo=FALSE}
+query <- "SELECT 
+  gene, 
+  tissue 
+  FROM (
   SELECT px.phenotype as phenotype,
          px.gene as gene,
          px.tissue as tissue,
@@ -93,21 +98,23 @@ pvalue_threshold <- pval_threshold_px <- 0.05 / n_gene_tissue_pairs
 **`r n_gene_tissue_pairs` (gene, tissue) pairs are being tested by PrediXcan.**
 
 
-```{r}
+```{r, echo=FALSE}
 query <- glue::glue("SELECT gene_id, gene_type from annotations.gencode_v26")
 gene_annot <- query_exec(query, project="gtex-awg-im", max_pages = Inf) %>% suppressWarnings()
 ```
 
-### PrediXcan and MultiXcan
-```{r}
-query <- glue::glue(
-"SELECT best_mx.*, 0.05/best_mx.n_genes as pvalue_thr, metadata.Deflation 
+```{r, echo=FALSE}
+query <- "SELECT 
+  best_mx.*, 
+  0.05/best_mx.n_genes as pvalue_thr, 
+  metadata.Deflation 
 FROM (
   SELECT phenotype, min(pvalue) as best_pvalue, count(*) as n_genes
   FROM {multixcan_tbl$dataset_name}.{multixcan_tbl$table_name}
   GROUP BY phenotype
 ) as best_mx
-JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} metadata ON metadata.Tag = best_mx.phenotype")
+JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} metadata 
+ON metadata.Tag = best_mx.phenotype" %>% glue::glue()
 
 df <- query_exec(query, project = predixcan_tbl$project, max_pages = Inf, use_legacy_sql = F) %>% suppressMessages()
 str(df)
@@ -115,15 +122,18 @@ str(df)
 **`r sum(df$best_pvalue < df$pvalue_thr & df$Deflation == 0)` traits have at least one gene significantly associated (according to MultiXcan).**
 
 
-```{r}
-query <- glue::glue(
-"SELECT best_px.*, 0.05/best_px.n_tissues_genes as pvalue_thr, metadata.Deflation
+```{r, echo=FALSE}
+query <- "SELECT 
+  best_px.*, 
+  0.05/best_px.n_tissues_genes as pvalue_thr, 
+  metadata.Deflation
 FROM (
   SELECT phenotype, min(pvalue) as best_pvalue, count(*) as n_tissues_genes
   FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name}
   GROUP BY phenotype
 ) as best_px
-JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} metadata ON metadata.Tag = best_px.phenotype")
+JOIN {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} metadata 
+ON metadata.Tag = best_px.phenotype" %>% glue::glue()
 
 df <- query_exec(query, project = predixcan_tbl$project, max_pages = Inf, use_legacy_sql = F) %>% suppressMessages()
 str(df)
@@ -134,13 +144,17 @@ str(df)
 
 ### PrediXcan and colocalization methods
 #### How many among PrediXcan-significant are COLOC-colocalized?
-```{r}
-query <- glue::glue(
-"SELECT px.phenotype as phenotype, px.tissue as tissue, px.gene as gene, px.pvalue as pvalue, coloc.PP_H4_abf as P4
+```{r, echo=FALSE}
+query <- "SELECT 
+  px.phenotype as phenotype, 
+  px.tissue as tissue, 
+  px.gene as gene, 
+  px.pvalue as pvalue, 
+  coloc.PP_H4_abf as P4
 FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
 JOIN {coloc_tbl$dataset_name}.{coloc_tbl$table_name} as coloc
 ON px.phenotype = coloc.phenotype AND px.tissue = coloc.tissue AND px.gene = coloc.gene_id
-WHERE pvalue < {pvalue_threshold}")
+WHERE pvalue < {pvalue_threshold}" %>% glue::glue()
 
 df <- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %>% suppressWarnings()
 df <- df %>% filter(phenotype %in% selected_phenotypes)
@@ -154,7 +168,7 @@ n_coloc <- df %>% filter(P4 > 0.5) %>% group_by(gene) %>% count() %>% nrow
 **`r n_coloc` out of `r n_predixcan_signif` (`r round(100*(n_coloc/n_predixcan_signif), 2)`%)**
 
 What if restricting to protein-coding genes?
-```{r}
+```{r, echo=FALSE}
 df <- df %>% mutate(gene = substr(gene, 1, 15))
 df_protein_coding <- inner_join(df, gene_annot, by = c("gene"="gene_id")) %>% 
                      filter(gene_type == "protein_coding")
@@ -168,9 +182,8 @@ n_coloc_among_px_pc <- df_protein_coding %>% filter(P4 > 0.5) %>% group_by(gene)
 
 
 #### How many among PrediXcan-significant are ENLOC-colocalized?
-```{r}
-query <- glue::glue(
-"SELECT 
+```{r, echo=FALSE}
+query <- "SELECT 
   px.phenotype as phenotype, 
   px.tissue as tissue, 
   px.gene as gene, 
@@ -179,7 +192,7 @@ query <- glue::glue(
 FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
 JOIN {enloc_tbl$dataset_name}.{enloc_tbl$table_name} as enloc
 ON px.phenotype = enloc.phenotype AND px.tissue = enloc.tissue AND px.gene = enloc.gene_id
-WHERE pvalue < {pvalue_threshold}")
+WHERE pvalue < {pvalue_threshold}" %>% glue::glue()
 
 df <- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %>% suppressWarnings()
 df <- df %>% filter(phenotype %in% selected_phenotypes)
@@ -202,8 +215,7 @@ n_enloc_among_px_pc <- df_protein_coding %>% filter(rcp > 0.5) %>% group_by(gene
 
 #### How many among COLOC-colocalized genes are PrediXcan-significant?
 ```{r}
-query <- glue::glue(
-"SELECT 
+query <- "SELECT 
   px.phenotype as phenotype, 
   px.tissue as tissue, 
   px.gene as gene, 
@@ -212,7 +224,7 @@ query <- glue::glue(
 FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
 JOIN {coloc_tbl$dataset_name}.{coloc_tbl$table_name} as coloc
 ON px.phenotype = coloc.phenotype AND px.tissue = coloc.tissue AND px.gene = coloc.gene_id
-WHERE PP_H4_abf > 0.5")
+WHERE PP_H4_abf > 0.5" %>% glue::glue()
 
 df <- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %>% suppressWarnings()
 df <- df %>% filter(phenotype %in% selected_phenotypes)
@@ -231,8 +243,7 @@ n_predixcan <- inner_join(df, df %>% group_by(gene) %>% summarise(pthr=0.05/n())
 
 #### How many among ENLOC-colocalized genes are PrediXcan-significant?
 ```{r}
-query <- glue::glue(
-"SELECT 
+query <- "SELECT 
   px.phenotype as phenotype, 
   px.tissue as tissue, 
   px.gene as gene, 
@@ -241,7 +252,7 @@ query <- glue::glue(
 FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px
 JOIN {enloc_tbl$dataset_name}.{enloc_tbl$table_name} as enloc
 ON px.phenotype = enloc.phenotype AND px.tissue = enloc.tissue AND px.gene = enloc.gene_id
-WHERE rcp > 0.5")
+WHERE rcp > 0.5" %>% glue::glue()
 
 df <- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %>% suppressWarnings()
 df <- df %>% filter(phenotype %in% selected_phenotypes)
@@ -259,16 +270,16 @@ n_predixcan <- inner_join(df, df %>% group_by(gene) %>% summarise(pthr=0.05/n())
 #### How many among ENLOC-colocalized genes are COLOC-colocalized?
 ```{r}
 ##### COLOC-colocalized genes among ENLOC-colocalized genes #####
-query <- glue::glue(
-"SELECT coloc.phenotype as phenotype, 
-coloc.tissue as tissue, 
-coloc.gene_id as gene, 
-coloc.PP_H4_abf as P4, 
-enloc.rcp as rcp
+query <- "SELECT 
+  coloc.phenotype as phenotype, 
+  coloc.tissue as tissue, 
+  coloc.gene_id as gene, 
+  coloc.PP_H4_abf as P4, 
+  enloc.rcp as rcp
 FROM {coloc_tbl$dataset_name}.{coloc_tbl$table_name} as coloc
 JOIN {enloc_tbl$dataset_name}.{enloc_tbl$table_name} as enloc
 ON coloc.phenotype = enloc.phenotype AND coloc.tissue = enloc.tissue AND coloc.gene_id = enloc.gene_id
-WHERE rcp > 0.5")
+WHERE rcp > 0.5" %>% glue::glue()
 
 df <- query_exec(query, project = predixcan_tbl$project, max_pages = Inf) %>% suppressWarnings()
 df <- df %>% filter(phenotype %in% selected_phenotypes)
@@ -276,13 +287,7 @@ str(df)
 n_enloc <- df %>% group_by(gene) %>% count() %>% nrow()
 n_coloc <- df %>% filter(P4 > 0.5) %>% group_by(gene) %>% count() %>% nrow()
 ```
-**`r n_coloc` out of `r n_enloc` (`r round(100*n_coloc/n_enloc, 2)`%))**
-
-
-```{r}
-# px_signif_ld_blocks <- read_file_from_link("https://storage.googleapis.com/gtex-exchange/predixcan/summaries/predixcan_signifcant_ld_blocks_best_tissues_per_phenotype.csv")
-# px_signif_ld_blocks <- read_file_from_link("https://storage.googleapis.com/gtex-exchange/predixcan/summaries/signifcant_ld_blocks_best_tissues_per_phenotype.csv")
-```
+**`r n_coloc` out of `r n_enloc` (`r round(100*n_coloc/n_enloc, 2)`%)**
 
 
 ### How many loci with GWAS hits also contain a significant gene-level association?
@@ -293,9 +298,7 @@ counts.per.ldblock <- read_file_from_link("https://storage.googleapis.com/rbonaz
 
 counts.per.ldblock <- counts.per.ldblock %>% filter(Deflation == 0)
 
-ordered_phenotypes <- counts.per.ldblock %>% 
-                      arrange(gwas_counts) %>%
-                      select(phenotype, new_Phenotype, abbreviation)
+ordered_phenotypes <- counts.per.ldblock %>% arrange(gwas_counts) %>% select(phenotype, new_Phenotype, abbreviation)
 
 gwas_metadata <- gtex_gwas_metadata() %>% select(Tag, new_Phenotype, Category) %>% rename(phenotype="Tag")
 counts.per.ldblock <- counts.per.ldblock %>% inner_join(gwas_metadata %>% select(phenotype, Category))
@@ -306,44 +309,38 @@ counts.per.ldblock$abbreviation <- factor(as.character(counts.per.ldblock$abbrev
 
 str(counts.per.ldblock)
 
-shapes <- c("GWAS"=6, "MultiXcan"=3, "MultiXcan + Enloc"=8)
+# shapes <- c("GWAS"=6, "MultiXcan"=3, "MultiXcan + Enloc"=8)
 cols <- c("GWAS"="#0000C0", "MultiXcan"="#800080", "MultiXcan + Enloc"="#00C000")
 ```
 
-```{r fig1, fig.width=10, fig.asp=0.8}
-GWAS_COUNT_THR <- 10
+```{r fig1, fig.width=10, fig.asp=0.8, echo=FALSE}
+GWAS_COUNT_THR <- 10 # discard traits with less than this number of GWAS hits
 pp <- ggplot() + 
-  geom_point(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), 
-             mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) +
-  geom_line(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(as.numeric(abbreviation)-min(as.numeric(abbreviation))+1, 
-                          gwas_counts, col="GWAS"), group=1) +
-  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR),
-           mapping = aes(x = new_Phenotype, y = gwas_mx_counts, fill="MultiXcan"), stat="identity") +
-  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR),
-           mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts, fill="MultiXcan + Enloc"), stat="identity") +  
+  geom_point(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) +
+  geom_line(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(as.numeric(abbreviation)-min(as.numeric(abbreviation))+1, gwas_counts, col="GWAS"), group=1) +
+  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(x = new_Phenotype, y = gwas_mx_counts, fill="MultiXcan"), stat="identity") +
+  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts, fill="MultiXcan + Enloc"), stat="identity") +  
   theme_bw() + theme(axis.text.x=element_text(angle=55, hjust = 1)) + 
   xlab("Phenotype") + ylab("# of LD-independent blocks with a significant association") + 
   scale_y_continuous(trans="log10") +
-  scale_fill_manual(name="Method", values=cols) + # +
-  scale_color_manual(label="", values=cols)# +
+  scale_fill_manual(name="Method", values=cols) +
+  scale_color_manual(label="", values=cols)
 
 pp
 ```
 
-```{r fig2, fig.width=10, fig.asp=1.5}
+```{r fig2, fig.width=10, fig.asp=1.5, echo=FALSE}
 pp <- ggplot() + 
-  geom_point(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), 
-             mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) +
-  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR),
-           mapping = aes(x = new_Phenotype, y = gwas_mx_counts, fill="MultiXcan"), stat="identity") +
-  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR),
-           mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts, fill="MultiXcan + Enloc"), stat="identity") +  
+  geom_point(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) +
+  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(x = new_Phenotype, y = gwas_mx_counts, fill="MultiXcan"), stat="identity") +
+  geom_bar(data = counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR), mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts, fill="MultiXcan + Enloc"), stat="identity") +  
   theme_bw() + theme(axis.text.x=element_text(angle=55, hjust = 1)) + 
   xlab("Phenotype") + ylab("# of LD-independent blocks with a significant association") + 
   scale_y_continuous(trans="log10") +
-  scale_fill_manual(name="Method", values=cols) + # +
-  scale_color_manual(label="", values=cols)# +
-pp <- pp + facet_wrap(Category ~ ., drop = T, scales="free_x", nrow = 3)
+  scale_fill_manual(name="Method", values=cols) +
+  scale_color_manual(label="", values=cols) +
+  facet_wrap(Category ~ ., drop = T, scales="free_x", nrow = 3)
+
 pp
 ```
 
@@ -372,9 +369,10 @@ phenotype <- df %>% group_by(new_Phenotype) %>% summarise(median(t.test_pvalue))
 df$new_Phenotype <- factor(df$new_Phenotype, levels = phenotype[order(-phenotype$`median(t.test_pvalue)`), "new_Phenotype"]$new_Phenotype)
 ```
 
-```{r fig3, fig.width = 10, fig.asp = 1}
+```{r fig3, fig.width = 10, fig.asp = 0.7}
 ggp1 <- ggplot(df, aes(x=tissue, y=-log10(t.test_pvalue))) + 
-        geom_boxplot() + theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
+        geom_boxplot() + 
+        theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ggp1
 ```
 
@@ -383,10 +381,11 @@ ggp1 <- ggp1 + facet_grid(Category ~ .)
 ggp1
 ```
 
-```{r fig5, fig.width = 10, fig.asp = 1}
+```{r fig5, fig.width = 10, fig.asp = 0.7}
 # ggp2 <- ggplot(df, aes(x=phenotype, y=-log10(t.test_pvalue))) + geom_boxplot() + theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ggp2 <- ggplot(df, aes(x=new_Phenotype, y=-log10(t.test_pvalue))) + 
-        geom_boxplot() + theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
+        geom_boxplot() + 
+        theme_bw() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ggp2
 ```
 
