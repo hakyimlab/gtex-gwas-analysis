@@ -31,7 +31,7 @@ gtex_tissue_metadata_df <- get_gtex_tissue_metadata() %>%
   mutate(tissue_color=as.character(tissue_color))
 
 gtex_gwas_metadata_df <- gtex_gwas_metadata() %>%
-  select(Tag, new_Phenotype, abbreviation, Deflation) %>%
+  select(Tag, new_Phenotype, abbreviation, Category, Deflation) %>%
   rename("phenotype"="Tag")
 
 # gwas_ld_blocks_counts_link <- "https://storage.googleapis.com/gtex-exchange/miscellanea/gwas_pred_1e-6_ldblock_count.txt"
@@ -225,9 +225,9 @@ enloc_genes_df <- get_enloc_genes(rcp_threshold = 0.5)
 #                      inner_join(enloc_genes_df %>% rename("gene_rcp"="best_rcp"), by = c("gene"="gene_id", "phenotype")) %>%
 #                      inner_join(enloc_df %>% rename("best_rcp_in_region"="best_rcp"), by = c("region_name", "phenotype"))
 
-# GWAS_PVAL_THR <- 0.05/8e+6
+GWAS_PVAL_THR <- 0.05/8e+6
 
-GWAS_PVAL_THR <- 1e-6
+# GWAS_PVAL_THR <- 1e-6
 RCP_THR <- 0.5
 # best_per_block_df <- gwas_best_hit_per_region %>%
 #                      left_join(mx_signif_df, by=c("phenotype", "region_name")) %>%
@@ -266,13 +266,19 @@ gwas_mx_enloc_counts_by_gene <- best_per_ldblock %>%
 
 
 all_counts <- gwas_hits_counts %>%
-  full_join(gwas_mx_counts, by="phenotype") %>%
-  # full_join(gwas_mx_enloc_counts_by_region, by="phenotype") %>%
-  full_join(gwas_mx_enloc_counts_by_gene, by="phenotype") %>%
-  inner_join(gtex_gwas_metadata_df, by="phenotype") # to incorporate Deflation flag
+              full_join(gwas_mx_counts, by="phenotype") %>%
+              # full_join(gwas_mx_enloc_counts_by_region, by="phenotype") %>%
+              full_join(gwas_mx_enloc_counts_by_gene, by="phenotype") %>%
+              inner_join(gtex_gwas_metadata_df, by="phenotype") # to incorporate Deflation flag
 
 all_counts[is.na(all_counts)] <- 0
+attr(all_counts, "gwas_pval_thr") <- GWAS_PVAL_THR
+attr(all_counts, "mx_pval_thr") <- mx_pvalue_threshold
+attr(all_counts, "rcp_thr") <- RCP_THR
+
+
 saveRDS(all_counts, "../output/counts_per_ldblock_gwas_mx_and_enloc.rds")
+
 
 # 
 # gwas_mx_counts <- best_per_block_df %>% group_by(phenotype) %>%

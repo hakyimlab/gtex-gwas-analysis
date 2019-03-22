@@ -51,10 +51,14 @@ query <- glue::glue("SELECT Tag as phenotype, Deflation
 gwas_deflation_status <- query_exec(query, gwas_metadata_tbl$project)
 
 selected_phenotypes <- gwas_deflation_status %>% filter(Deflation == NO_DEFLATION) %>% .[,1]
-strong_deflation_count <- gwas_deflation_status %>% filter(Deflation == STRONG_DEFLATION) %>% .[,1] %>% length()
-mild_deflation_count <- gwas_deflation_status %>% filter(Deflation == MILD_DEFLATION) %>% .[,1] %>% length()
+strong_deflation_phenotypes <- gwas_deflation_status %>% filter(Deflation == STRONG_DEFLATION) %>% .[,1]
+mild_deflation_phenotypes <- gwas_deflation_status %>% filter(Deflation == MILD_DEFLATION) %>% .[,1]
+
+gwas_metadata <- gtex_gwas_metadata() %>% 
+                 rename(phenotype="Tag") %>% 
+                 select(phenotype, new_Phenotype, Category, Deflation)
 ```
-**`{r length(selected_phenotypes))} phenotypes were selected for analysis. From the rest, `{r strong_deflation_count} GWAS showed strong deflation after imputation, whereas `{r mild_deflation_count} presented mild deflation.**
+**`r length(selected_phenotypes)` phenotypes were selected for analysis. From the rest, `r length(strong_deflation_phenotypes)` GWAS showed strong deflation after imputation, whereas `r length(mild_deflation_phenotypes)` presented mild deflation.**
 
 
 ### PrediXcan and MultiXcan
@@ -151,7 +155,7 @@ str(df)
 
 
 ### PrediXcan and colocalization methods
-#### How many among PrediXcan-significant are COLOC-colocalized?
+#### How many among PrediXcan-significant are Coloc-colocalized?
 ```{r predixcan_coloc, echo=FALSE}
 query <- "SELECT 
   px.phenotype as phenotype, 
@@ -189,7 +193,7 @@ n_coloc_among_px_pc <- df_protein_coding %>% filter(P4 > 0.5) %>% group_by(gene)
 **`r n_coloc_among_px_pc` out of `r n_predixcan_signif_pc` (`r round(100*n_coloc_among_px_pc / n_predixcan_signif_pc, 2)`%)**
 
 
-#### How many among PrediXcan-significant are ENLOC-colocalized?
+#### How many among PrediXcan-significant are Enloc-colocalized?
 ```{r predixcan_enloc, echo=FALSE}
 query <- "SELECT 
   px.phenotype as phenotype, 
@@ -221,7 +225,7 @@ n_enloc_among_px_pc <- df_protein_coding %>% filter(rcp > 0.5) %>% group_by(gene
 **`r n_enloc_among_px_pc` out of `r n_predixcan_signif_pc` (`r 100*(n_enloc_among_px_pc / n_predixcan_signif_pc)`%)**
 
 
-#### How many among COLOC-colocalized genes are PrediXcan-significant?
+#### How many among Coloc-colocalized genes are PrediXcan-significant?
 ```{r coloc_predixcan, echo=FALSE}
 query <- "SELECT 
   px.phenotype as phenotype, 
@@ -249,7 +253,7 @@ n_predixcan <- inner_join(df, df %>% group_by(gene) %>% summarise(pthr=0.05/n())
 **`r n_predixcan` out of `r n_coloc` (`r round(100*n_predixcan/n_coloc, 2)`%)**
 
 
-#### How many among ENLOC-colocalized genes are PrediXcan-significant?
+#### How many among Enloc-colocalized genes are PrediXcan-significant?
 ```{r enloc_predixcan, echo=FALSE}
 query <- "SELECT 
   px.phenotype as phenotype, 
@@ -275,9 +279,8 @@ n_predixcan <- inner_join(df, df %>% group_by(gene) %>% summarise(pthr=0.05/n())
 **`r n_predixcan` out of `r n_enloc` (`r round(100*n_predixcan/n_enloc, 2)`%)**
 
 
-#### How many among ENLOC-colocalized genes are COLOC-colocalized?
+#### How many among Enloc-colocalized genes are Coloc-colocalized?
 ```{r enloc_coloc, echo=FALSE}
-##### COLOC-colocalized genes among ENLOC-colocalized genes #####
 query <- "SELECT 
   coloc.phenotype as phenotype, 
   coloc.tissue as tissue, 
@@ -305,15 +308,14 @@ n_coloc <- df %>% filter(P4 > 0.5) %>% group_by(gene) %>% count() %>% nrow()
 # counts.per.ldblock <- read_file_from_link("https://storage.googleapis.com/rbonazzola/counts_per_ld_block.csv", sep = ",")
 # counts.per.ldblock <- readRDS("../output/counts_per_ldblock_mx_and_enloc.rds")
 counts.per.ldblock <- readRDS("output/counts_per_ldblock_gwas_mx_and_enloc.rds")
+# attributes(counts.per.ldblock)
+# attr(counts.per.ldblock, "gwas_pval_thr")
+# attr(counts.per.ldblock, "mx_pval_thr")
+# attr(counts.per.ldblock, "rcp_thr")
 
-gwas_metadata <- gtex_gwas_metadata() %>% 
-                 rename(phenotype="Tag") %>% 
-                 select(phenotype, new_Phenotype, Category, Deflation)
-
-counts.per.ldblock <- counts.per.ldblock %>% inner_join(gwas_metadata)
-counts.per.ldblock <- counts.per.ldblock %>% filter(Deflation == 0)
+# counts.per.ldblock <- counts.per.ldblock %>% inner_join(gwas_metadata)
+# counts.per.ldblock <- counts.per.ldblock %>% filter(Deflation == 0)
 ordered_phenotypes <- counts.per.ldblock %>% arrange(gwas_counts) %>% select(phenotype, new_Phenotype, abbreviation)
-
 counts.per.ldblock$phenotype <- factor(as.character(counts.per.ldblock$phenotype), levels = ordered_phenotypes$phenotype)
 counts.per.ldblock$new_Phenotype <- factor(as.character(counts.per.ldblock$new_Phenotype), levels = ordered_phenotypes$new_Phenotype)
 counts.per.ldblock$abbreviation <- factor(as.character(counts.per.ldblock$abbreviation), levels = ordered_phenotypes$abbreviation)
@@ -324,16 +326,16 @@ str(counts.per.ldblock)
 cols <- c("GWAS"="#0000C0", "MultiXcan"="#800080", "MultiXcan + Enloc"="#00C000")
 ```
 
+
 The following plots represent:
-- The number of Pickrell regions with a GWAS hit (a proxy for the number of independent GWAS signals).
-- Among those, the ones with a MultiXcan-significant gene.
-- Among those, the regions with an ENLOC-colocalized gene.
-- Among the regions with a MultiXcan-significant gene, the ones where this gene is ENLOC-colocalized.
+
+* The number of Pickrell regions with a GWAS hit (a proxy for the number of independent GWAS signals). The p-value threshold used was 0.05/`r as.integer(0.05/attr(counts.per.ldblock, "gwas_pval_thr"))`.
+* Among those, the ones with a MultiXcan-significant gene. The p-value threshold used was 0.05/`r as.integer(0.05/attr(counts.per.ldblock, "mx_pval_thr"))`.
+* The number of regions with a gene that is both MultiXcan-significant and Enloc-colocalized. The threshold for Enloc's RCP was `r attr(counts.per.ldblock, "rcp_thr")`
 
 ```{r counts_by_ldblock_fig1, fig.width=10, fig.asp=0.8, echo=FALSE}
 GWAS_COUNT_THR <- 10 # discard traits with less than this number of GWAS hits
 counts.per.ldblock_ <- counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR)
-str(counts.per.ldblock_)
 pp <- ggplot() + 
   geom_point(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) +
   geom_line(data = counts.per.ldblock_, mapping = aes(as.numeric(abbreviation)-min(as.numeric(abbreviation))+1, gwas_counts, col="GWAS"), group=1) +

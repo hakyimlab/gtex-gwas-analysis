@@ -508,10 +508,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreee23b054a7db864855c04e294d18b76a3b9a41a67targetblanke23b054a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/e23b054a7db864855c04e294d18b76a3b9a41a67" target="_blank">e23b054</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree20eaab542e7c90c8ac1d61a5ac3af323b2cb9e7ftargetblank20eaab5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/20eaab542e7c90c8ac1d61a5ac3af323b2cb9e7f" target="_blank">20eaab5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreee23b054a7db864855c04e294d18b76a3b9a41a67targetblanke23b054a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree20eaab542e7c90c8ac1d61a5ac3af323b2cb9e7ftargetblank20eaab5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -528,13 +528,12 @@ Ignored files:
 Untracked files:
     Untracked:  data/dapg_variants/
     Untracked:  output/counts_per_ld_block.csv
-    Untracked:  output/counts_per_ldblock_gwas_mx_and_enloc.rds
     Untracked:  output/gwas_counts_per_ldblock.rds
 
 Unstaged changes:
     Modified:   analysis/miscellaneous_statistics.Rmd
     Modified:   code/count_gwas_vs_predixcan_hits.R
-    Deleted:    output/counts_per_ldblock_mx_and_enloc.rds
+    Modified:   output/counts_per_ldblock_gwas_mx_and_enloc.rds
 
 </code></pre>
 <p>
@@ -573,6 +572,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/20eaab542e7c90c8ac1d61a5ac3af323b2cb9e7f/analysis/miscellaneous_statistics.Rmd" target="_blank">20eaab5</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-03-22
+</td>
+<td>
+changes to plot of # of associated loci
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/20eaab542e7c90c8ac1d61a5ac3af323b2cb9e7f/docs/miscellaneous_statistics.html" target="_blank">20eaab5</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-03-22
+</td>
+<td>
+changes to plot of # of associated loci
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -758,9 +791,14 @@ query &lt;- glue::glue(&quot;SELECT Tag as phenotype, Deflation
 gwas_deflation_status &lt;- query_exec(query, gwas_metadata_tbl$project)</code></pre>
 <pre><code>0 bytes processed</code></pre>
 <pre class="r"><code>selected_phenotypes &lt;- gwas_deflation_status %&gt;% filter(Deflation == NO_DEFLATION) %&gt;% .[,1]
-strong_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == STRONG_DEFLATION) %&gt;% .[,1] %&gt;% length()
-mild_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD_DEFLATION) %&gt;% .[,1] %&gt;% length()</code></pre>
-<p><strong><code>{r length(selected_phenotypes))} phenotypes were selected for analysis. From the rest,</code>{r strong_deflation_count} GWAS showed strong deflation after imputation, whereas `{r mild_deflation_count} presented mild deflation.</strong></p>
+strong_deflation_phenotypes &lt;- gwas_deflation_status %&gt;% filter(Deflation == STRONG_DEFLATION) %&gt;% .[,1]
+mild_deflation_phenotypes &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD_DEFLATION) %&gt;% .[,1]
+
+gwas_metadata &lt;- gtex_gwas_metadata() %&gt;% 
+                 rename(phenotype=&quot;Tag&quot;) %&gt;% 
+                 select(phenotype, new_Phenotype, Category, Deflation)</code></pre>
+<pre><code>0 bytes processed</code></pre>
+<p><strong>87 phenotypes were selected for analysis. From the rest, 23 GWAS showed strong deflation after imputation, whereas 4 presented mild deflation.</strong></p>
 </div>
 <div id="predixcan-and-multixcan" class="section level3">
 <h3>PrediXcan and MultiXcan</h3>
@@ -794,7 +832,7 @@ mild_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD
 <div id="predixcan-and-colocalization-methods" class="section level3">
 <h3>PrediXcan and colocalization methods</h3>
 <div id="how-many-among-predixcan-significant-are-coloc-colocalized" class="section level4">
-<h4>How many among PrediXcan-significant are COLOC-colocalized?</h4>
+<h4>How many among PrediXcan-significant are Coloc-colocalized?</h4>
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   117978 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
@@ -814,7 +852,7 @@ mild_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD
 <p><strong>1253 out of 6119 (20.48%)</strong></p>
 </div>
 <div id="how-many-among-predixcan-significant-are-enloc-colocalized" class="section level4">
-<h4>How many among PrediXcan-significant are ENLOC-colocalized?</h4>
+<h4>How many among PrediXcan-significant are Enloc-colocalized?</h4>
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   201488 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
@@ -834,7 +872,7 @@ mild_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD
 <p><strong>1173 out of 6119 (19.169799%)</strong></p>
 </div>
 <div id="how-many-among-coloc-colocalized-genes-are-predixcan-significant" class="section level4">
-<h4>How many among COLOC-colocalized genes are PrediXcan-significant?</h4>
+<h4>How many among Coloc-colocalized genes are PrediXcan-significant?</h4>
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   19729 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
@@ -845,7 +883,7 @@ mild_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD
 <p><strong>2532 out of 2599 (97.42%)</strong></p>
 </div>
 <div id="how-many-among-enloc-colocalized-genes-are-predixcan-significant" class="section level4">
-<h4>How many among ENLOC-colocalized genes are PrediXcan-significant?</h4>
+<h4>How many among Enloc-colocalized genes are PrediXcan-significant?</h4>
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   25281 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
@@ -856,7 +894,7 @@ mild_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD
 <p><strong>3014 out of 3401 (88.62%)</strong></p>
 </div>
 <div id="how-many-among-enloc-colocalized-genes-are-coloc-colocalized" class="section level4">
-<h4>How many among ENLOC-colocalized genes are COLOC-colocalized?</h4>
+<h4>How many among Enloc-colocalized genes are Coloc-colocalized?</h4>
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   41127 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
@@ -873,47 +911,41 @@ mild_deflation_count &lt;- gwas_deflation_status %&gt;% filter(Deflation == MILD
 # counts.per.ldblock &lt;- read_file_from_link(&quot;https://storage.googleapis.com/rbonazzola/counts_per_ld_block.csv&quot;, sep = &quot;,&quot;)
 # counts.per.ldblock &lt;- readRDS(&quot;../output/counts_per_ldblock_mx_and_enloc.rds&quot;)
 counts.per.ldblock &lt;- readRDS(&quot;output/counts_per_ldblock_gwas_mx_and_enloc.rds&quot;)
+# attributes(counts.per.ldblock)
+# attr(counts.per.ldblock, &quot;gwas_pval_thr&quot;)
+# attr(counts.per.ldblock, &quot;mx_pval_thr&quot;)
+# attr(counts.per.ldblock, &quot;rcp_thr&quot;)
 
-gwas_metadata &lt;- gtex_gwas_metadata() %&gt;% 
-                 rename(phenotype=&quot;Tag&quot;) %&gt;% 
-                 select(phenotype, new_Phenotype, Category, Deflation)</code></pre>
-<pre><code>0 bytes processed</code></pre>
-<pre class="r"><code>counts.per.ldblock &lt;- counts.per.ldblock %&gt;% inner_join(gwas_metadata)</code></pre>
-<pre><code>Joining, by = c(&quot;phenotype&quot;, &quot;new_Phenotype&quot;, &quot;Deflation&quot;)</code></pre>
-<pre class="r"><code>counts.per.ldblock &lt;- counts.per.ldblock %&gt;% filter(Deflation == 0)
+# counts.per.ldblock &lt;- counts.per.ldblock %&gt;% inner_join(gwas_metadata)
+# counts.per.ldblock &lt;- counts.per.ldblock %&gt;% filter(Deflation == 0)
 ordered_phenotypes &lt;- counts.per.ldblock %&gt;% arrange(gwas_counts) %&gt;% select(phenotype, new_Phenotype, abbreviation)
-
 counts.per.ldblock$phenotype &lt;- factor(as.character(counts.per.ldblock$phenotype), levels = ordered_phenotypes$phenotype)
 counts.per.ldblock$new_Phenotype &lt;- factor(as.character(counts.per.ldblock$new_Phenotype), levels = ordered_phenotypes$new_Phenotype)
 counts.per.ldblock$abbreviation &lt;- factor(as.character(counts.per.ldblock$abbreviation), levels = ordered_phenotypes$abbreviation)
 
 str(counts.per.ldblock)</code></pre>
-<pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   87 obs. of  8 variables:
- $ phenotype                : Factor w/ 87 levels &quot;ENIGMA_Intracraneal_Volume&quot;,..: 76 72 74 78 79 75 69 83 80 73 ...
- $ gwas_counts              : int  245 233 240 263 269 241 226 328 274 239 ...
- $ gwas_mx_counts           : num  140 122 138 146 154 131 117 192 148 132 ...
- $ gwas_mx_enloc_counts_gene: num  65 79 66 78 77 78 71 97 79 66 ...
- $ new_Phenotype            : Factor w/ 87 levels &quot;Intracraneal_Volume&quot;,..: 76 72 74 78 79 75 69 83 80 73 ...
- $ abbreviation             : Factor w/ 87 levels &quot;INV&quot;,&quot;MFI&quot;,&quot;UN_IBS&quot;,..: 76 72 74 78 79 75 69 83 80 73 ...
+<pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   82 obs. of  8 variables:
+ $ phenotype                : Factor w/ 82 levels &quot;CNCR_Insomnia_all&quot;,..: 72 67 75 71 77 68 64 78 76 70 ...
+ $ gwas_counts              : int  152 134 158 150 176 134 131 213 171 146 ...
+ $ gwas_mx_counts           : num  119 92 121 116 133 101 89 159 125 114 ...
+ $ gwas_mx_enloc_counts_gene: num  63 64 61 65 65 66 61 84 70 59 ...
+ $ new_Phenotype            : Factor w/ 82 levels &quot;Insomnia_In_Both_Sexes&quot;,..: 72 67 75 71 77 68 64 78 76 70 ...
+ $ abbreviation             : Factor w/ 82 levels &quot;NSL&quot;,&quot;INV&quot;,&quot;GFA&quot;,..: 72 67 75 71 77 68 64 78 76 70 ...
+ $ Category                 : chr  &quot;Blood&quot; &quot;Blood&quot; &quot;Blood&quot; &quot;Blood&quot; ...
  $ Deflation                : int  0 0 0 0 0 0 0 0 0 0 ...
- $ Category                 : chr  &quot;Blood&quot; &quot;Blood&quot; &quot;Blood&quot; &quot;Blood&quot; ...</code></pre>
+ - attr(*, &quot;gwas_pval_thr&quot;)= num 6.25e-09
+ - attr(*, &quot;mx_pval_thr&quot;)= num 2.31e-06
+ - attr(*, &quot;rcp_thr&quot;)= num 0.5</code></pre>
 <pre class="r"><code># shapes &lt;- c(&quot;GWAS&quot;=6, &quot;MultiXcan&quot;=3, &quot;MultiXcan + Enloc&quot;=8)
 cols &lt;- c(&quot;GWAS&quot;=&quot;#0000C0&quot;, &quot;MultiXcan&quot;=&quot;#800080&quot;, &quot;MultiXcan + Enloc&quot;=&quot;#00C000&quot;)</code></pre>
-<p>The following plots represent: - The number of Pickrell regions with a GWAS hit (a proxy for the number of independent GWAS signals). - Among those, the ones with a MultiXcan-significant gene. - Among those, the regions with an ENLOC-colocalized gene. - Among the regions with a MultiXcan-significant gene, the ones where this gene is ENLOC-colocalized.</p>
-<pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   78 obs. of  8 variables:
- $ phenotype                : Factor w/ 87 levels &quot;ENIGMA_Intracraneal_Volume&quot;,..: 76 72 74 78 79 75 69 83 80 73 ...
- $ gwas_counts              : int  245 233 240 263 269 241 226 328 274 239 ...
- $ gwas_mx_counts           : num  140 122 138 146 154 131 117 192 148 132 ...
- $ gwas_mx_enloc_counts_gene: num  65 79 66 78 77 78 71 97 79 66 ...
- $ new_Phenotype            : Factor w/ 87 levels &quot;Intracraneal_Volume&quot;,..: 76 72 74 78 79 75 69 83 80 73 ...
- $ abbreviation             : Factor w/ 87 levels &quot;INV&quot;,&quot;MFI&quot;,&quot;UN_IBS&quot;,..: 76 72 74 78 79 75 69 83 80 73 ...
- $ Deflation                : int  0 0 0 0 0 0 0 0 0 0 ...
- $ Category                 : chr  &quot;Blood&quot; &quot;Blood&quot; &quot;Blood&quot; &quot;Blood&quot; ...</code></pre>
-<pre><code>Warning: Transformation introduced infinite values in continuous y-axis
-
-Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
-<pre><code>Warning: Removed 8 rows containing missing values (geom_bar).</code></pre>
-<pre><code>Warning: Removed 22 rows containing missing values (geom_bar).</code></pre>
+<p>The following plots represent:</p>
+<ul>
+<li>The number of Pickrell regions with a GWAS hit (a proxy for the number of independent GWAS signals). The p-value threshold used was 0.05/8000000.</li>
+<li>Among those, the ones with a MultiXcan-significant gene. The p-value threshold used was 0.05/21631.</li>
+<li>The number of regions with a gene that is both MultiXcan-significant and Enloc-colocalized. The threshold for Enloc’s RCP was 0.5</li>
+</ul>
+<pre><code>Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/counts_by_ldblock_fig1-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-counts_by_ldblock_fig1-1">
@@ -939,6 +971,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/20eaab542e7c90c8ac1d61a5ac3af323b2cb9e7f/docs/figure/miscellaneous_statistics.Rmd/counts_by_ldblock_fig1-1.png" target="_blank">20eaab5</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-03-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/e23b054a7db864855c04e294d18b76a3b9a41a67/docs/figure/miscellaneous_statistics.Rmd/counts_by_ldblock_fig1-1.png" target="_blank">e23b054</a>
 </td>
 <td>
@@ -953,11 +996,8 @@ rbonazzola
 </div>
 </div>
 <p>The same, but by trait category:</p>
-<pre><code>Warning: Transformation introduced infinite values in continuous y-axis
-
-Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
-<pre><code>Warning: Removed 8 rows containing missing values (geom_bar).</code></pre>
-<pre><code>Warning: Removed 22 rows containing missing values (geom_bar).</code></pre>
+<pre><code>Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/counts_by_ldblock_fig2-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-counts_by_ldblock_fig2-1">
@@ -981,6 +1021,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/20eaab542e7c90c8ac1d61a5ac3af323b2cb9e7f/docs/figure/miscellaneous_statistics.Rmd/counts_by_ldblock_fig2-1.png" target="_blank">20eaab5</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-03-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/e23b054a7db864855c04e294d18b76a3b9a41a67/docs/figure/miscellaneous_statistics.Rmd/counts_by_ldblock_fig2-1.png" target="_blank">e23b054</a>
