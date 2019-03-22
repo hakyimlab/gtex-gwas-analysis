@@ -304,7 +304,7 @@ n_coloc <- df %>% filter(P4 > 0.5) %>% group_by(gene) %>% count() %>% nrow()
 # for the script to generate the file below, see count_gwas_vs_predixcan_hits.R
 # counts.per.ldblock <- read_file_from_link("https://storage.googleapis.com/rbonazzola/counts_per_ld_block.csv", sep = ",")
 # counts.per.ldblock <- readRDS("../output/counts_per_ldblock_mx_and_enloc.rds")
-counts.per.ldblock <- readRDS("output/counts_per_ldblock_mx_and_enloc.rds")
+counts.per.ldblock <- readRDS("output/counts_per_ldblock_gwas_mx_and_enloc.rds")
 
 gwas_metadata <- gtex_gwas_metadata() %>% 
                  rename(phenotype="Tag") %>% 
@@ -321,7 +321,7 @@ counts.per.ldblock$abbreviation <- factor(as.character(counts.per.ldblock$abbrev
 str(counts.per.ldblock)
 
 # shapes <- c("GWAS"=6, "MultiXcan"=3, "MultiXcan + Enloc"=8)
-cols <- c("GWAS"="#0000C0", "MultiXcan"="#800080", "MultiXcan + Enloc (matched by region)"="#00C000", "MultiXcan + Enloc (matched by gene)"="#000000")
+cols <- c("GWAS"="#0000C0", "MultiXcan"="#800080", "MultiXcan + Enloc"="#00C000")
 ```
 
 The following plots represent:
@@ -338,8 +338,8 @@ pp <- ggplot() +
   geom_point(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) +
   geom_line(data = counts.per.ldblock_, mapping = aes(as.numeric(abbreviation)-min(as.numeric(abbreviation))+1, gwas_counts, col="GWAS"), group=1) +
   geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_counts, fill="MultiXcan"), stat="identity") +
-  geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_region, fill="MultiXcan + Enloc (matched by region)"), stat="identity") +
-  geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_gene, fill="MultiXcan + Enloc (matched by gene)"), stat="identity") +
+  # geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_region, fill="MultiXcan + Enloc (matched by region)"), stat="identity") +
+  geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_gene, fill="MultiXcan + Enloc"), stat="identity") +
   theme_bw() + theme(axis.text.x=element_text(angle=55, hjust = 1)) +
   xlab("Phenotype") + ylab("# of LD-independent blocks with a significant association") + 
   scale_y_continuous(trans="log10") +
@@ -355,8 +355,8 @@ The same, but by trait category:
 pp <- ggplot() + 
   geom_point(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) + 
   geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_counts, fill="MultiXcan"), stat="identity") + 
-  geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_region, fill="MultiXcan + Enloc (matched by region)"), stat="identity") + 
-  geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_gene, fill="MultiXcan + Enloc (matched by gene)"), stat="identity") + 
+  # geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_region, fill="MultiXcan + Enloc (matched by region)"), stat="identity") + 
+  geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_enloc_counts_gene, fill="MultiXcan + Enloc"), stat="identity") + 
   theme_bw() + theme(axis.text.x=element_text(angle=55, hjust = 1)) + 
   xlab("Phenotype") + ylab("# of LD-independent blocks with a significant association") + 
   scale_y_continuous(trans="log10") + 
