@@ -1,0 +1,85 @@
+---
+title: "count_detections"
+author: "Alvaro"
+date: "2019-03-26"
+output: workflowr::wflow_html
+---
+
+## Introduction
+
+The purpose of this document is to analyze th number of significant associations arising from GWAS, PrediXcan and MultiXcan methods
+on several complex traits, on application of GTEx v8 data.
+
+```{r preliminaries}
+suppressWarnings(library(dplyr))
+suppressWarnings(library(tidyr))
+suppressWarnings(library(readr))
+suppressWarnings(library(ggplot2))
+suppressWarnings(library(cowplot))
+suppressWarnings(library(ggrepel))
+suppressWarnings(library(RSQLite))
+suppressWarnings(source("code/ab/_helpers.R"))
+```
+
+```{r trait_data, echo=FALSE, cache=TRUE}
+gwas_metadata <- "data/gwas_metadata.txt" %>% r_tsv_ %>% filter(Deflation == 0)
+trait_key <- gwas_metadata %>% select(trait=Tag, abbreviation=new_abbreviation, color=color, category=Category)
+
+palette_ <- trait_key %>% select(category, color) %>% unique %>% .$color
+categories_ <- trait_key %>% select(category, color) %>% unique %>% .$category
+names(palette_) <- categories_
+```
+
+```{r association_data, echo=FALSE, cache=TRUE}
+counts <- "data/gwas_hits/count.txt" %>% r_tsv_
+counts <- counts %>% mutate(method = factor(method, levels = 
+    c("gwas", "predixcan_sqtl", "predixcan_eqtl", "predixcan_sqtl_enloc", "predixcan_eqtl_enloc",
+        "predixcan_sqtl_all_pairs", "predixcan_eqtl_all_pairs",  "predixcan_sqtl_enloc_all_pairs", "predixcan_eqtl_enloc_all_pairs",
+        "predixcan_sqtl_mrcp", "predixcan_eqtl_mrcp",
+        "multixcan_sqtl", "multixcan_eqtl", "multixcan_sqtl_enloc", "multixcan_eqtl_enloc")))
+order_ <- counts %>% filter(method == "gwas") %>% arrange(n) %>% .$abbreviation
+counts <- counts %>% mutate(abbreviation = factor(abbreviation, levels=order_))
+
+predixcan_by_tissue_counts <- "data/gwas_hits/pred_by_tissue_count.txt" %>% r_tsv_
+predixcan_by_tissue_counts <- predixcan_by_tissue_counts %>% mutate(abbreviation = factor(abbreviation, levels = order_))
+```
+
+
+```{r misc_functions}
+theme_ <-function() {
+  theme_bw() +
+    theme(plot.title = element_text(hjust=0.5, face="bold", size=27),
+          plot.subtitle = element_text(hjust=0.5, face="italic", size=25),
+          axis.title = element_text(size=25),
+          axis.text = element_text(size=20),
+          axis.text.x = element_text(size=15, angle=90, hjust=1),
+          legend.text = element_text(size = 15),
+          legend.position="bottom")
+}
+```
+
+The following figures compare the number of GWAS detections to predixcan and multixcan detections.
+
+```{r predixcan_multixcan_hits, echo=FALSE, cache =TRUE}
+(function(){
+  d_ <- counts %>% filter(method == "gwas") %>% select(trait=trait, gwas=n) %>%
+    inner_join(counts %>% filter(method !="gwas"), by="trait")
+  
+  p_ <- d_ %>% filter(method %in% c("predixcan_eqtl_all_pairs", "predixcan_eqtl_enloc_all_pairs", "predixcan_eqtl_mrcp")) %>% ggplot() + theme_() +
+    geom_point(aes(x=gwas, y=n, color=category), size=4) + facet_wrap(~method, ncol=3, scales = "free_y") +
+    scale_color_manual(values = palette_) + xlab("gwas detections") + ylab("predixcan detections") +
+    ggtitle("Predixcan associations", subtitle = "All (gene,tissue) pairs")
+  print(p_)
+  
+  p_ <- d_ %>% filter(method %in% c("predixcan_eqtl", "predixcan_eqtl_enloc")) %>% ggplot() + theme_() +
+    geom_point(aes(x=gwas, y=n, color=category), size=4) + facet_wrap(~method, ncol=2, scales = "free_y") +
+    scale_color_manual(values = palette_) + xlab("gwas detections") + ylab("predixcan detections") +
+    ggtitle("Predixcan associations", subtitle="unique genes")
+  print(p_)
+  
+  p_ <- d_ %>% filter(grepl("multixcan", method) & grepl("eqtl", method)) %>% ggplot() + theme_() +
+    geom_point(aes(x=gwas, y=n, color=category), size=4) + facet_wrap(~method, ncol=2, scales = "free_y") +
+    scale_color_manual(values = palette_) + xlab("gwas detections") + ylab("multixcan detections")
+  print(p_)
+})()
+```

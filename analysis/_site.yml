@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  - text: Statistics
+    href: miscellaneous_statistics.html
+  - text: Detections
+    href: count_detections.html
 output:
   workflowr::wflow_html:
     toc: yes
