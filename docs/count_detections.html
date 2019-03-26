@@ -464,12 +464,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -512,37 +512,22 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
 </p>
 </div>
-<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div id="strongCachestrongnone" class="panel-collapse collapse">
 <div class="panel-body">
-The following chunks had caches available:
-<ul>
-<li>
-association_data
-</li>
-<li>
-data
-</li>
-<li>
-predixcan_multixcan_hits
-</li>
-<li>
-trait_data
-</li>
-</ul>
-<p>To ensure reproducibility of the results, delete the cache directory <code>count_detections_cache</code> and re-run the analysis. To have workflowr automatically delete the cache directory prior to building the file, set <code>delete_cache = TRUE</code> when running <code>wflow_build()</code> or <code>wflow_publish()</code>.</p>
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree121dd26344d759dc31345d75c43f849c722ce3dftargetblank121dd26a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/121dd26344d759dc31345d75c43f849c722ce3df" target="_blank">121dd26</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree0fc0a8f1ea6191e44c39417728b3885ba0d8fa0atargetblank0fc0a8fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/0fc0a8f1ea6191e44c39417728b3885ba0d8fa0a" target="_blank">0fc0a8f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree121dd26344d759dc31345d75c43f849c722ce3dftargetblank121dd26a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree0fc0a8f1ea6191e44c39417728b3885ba0d8fa0atargetblank0fc0a8fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -552,7 +537,12 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    .idea/
-    Ignored:    analysis/count_detections_cache/
+
+Untracked files:
+    Untracked:  docs/figure/count_detections.Rmd/
+
+Unstaged changes:
+    Modified:   analysis/count_detections.Rmd
 
 </code></pre>
 <p>
@@ -591,6 +581,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/0fc0a8f1ea6191e44c39417728b3885ba0d8fa0a/docs/count_detections.html" target="_blank">0fc0a8f</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -635,58 +642,15 @@ wflow_publish(all = TRUE)
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>The purpose of this document is to analyze th number of significant associations arising from GWAS, PrediXcan and MultiXcan methods on several complex traits, on application of GTEx v8 data.</p>
-<pre class="r"><code>suppressWarnings(library(dplyr))</code></pre>
-<pre><code>
-Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:stats&#39;:
-
-    filter, lag</code></pre>
-<pre><code>The following objects are masked from &#39;package:base&#39;:
-
-    intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>suppressWarnings(library(tidyr))
-suppressWarnings(library(readr))
-suppressWarnings(library(ggplot2))
-suppressWarnings(library(cowplot))</code></pre>
-<pre><code>
-Attaching package: &#39;cowplot&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:ggplot2&#39;:
-
-    ggsave</code></pre>
-<pre class="r"><code>suppressWarnings(library(ggrepel))
-suppressWarnings(library(RSQLite))
-suppressWarnings(source(&quot;code/ab/_helpers.R&quot;))</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
-<pre class="r"><code>theme_ &lt;-function() {
-  theme_bw() +
-    theme(plot.title = element_text(hjust=0.5, face=&quot;bold&quot;, size=27),
-          plot.subtitle = element_text(hjust=0.5, face=&quot;italic&quot;, size=25),
-          axis.title = element_text(size=25),
-          axis.text = element_text(size=20),
-          axis.text.x = element_text(size=15, angle=90, hjust=1),
-          legend.text = element_text(size = 15),
-          legend.position=&quot;bottom&quot;)
-}</code></pre>
 <p>The following figures compare the number of GWAS detections to predixcan and multixcan detections.</p>
-<img src="figure/count_detections.Rmd/predixcan_multixcan_hits-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/count_detections.Rmd/predixcan_multixcan_hits-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/count_detections.Rmd/predixcan_multixcan_hits-3.png" width="672" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
-<br> <br>
+<p>For every trait, the number of significant predixcan (gene,tissue) associations from expression models is proportional to the number of significant GWAS associations.</p>
+<p><img src="figure/count_detections.Rmd/predixcan_all_pairs-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>This behavior is also observed when counting unique gene associations across all tissues:</p>
+<p><img src="figure/count_detections.Rmd/predixcan_genes-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>And also with MultiXcan associations, able to detect more genes than single-tissue PrediXcan:</p>
+<p><img src="figure/count_detections.Rmd/multixcan_genes-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Examining associations within each tissue, we also observe a trend of increasing number of predixcan associations with number of GWAS associations.</p>
+<img src="figure/count_detections.Rmd/predixcan_single_tissue-1.png" width="672" style="display: block; margin: auto;" /> <br> <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
 <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
@@ -731,8 +695,8 @@ loaded via a namespace (and not attached):
 [31] rmarkdown_1.12     blob_1.1.0         purrr_0.2.5       
 [34] magrittr_1.5       whisker_0.3-2      backports_1.1.3   
 [37] scales_0.5.0.9000  htmltools_0.3.6    assertthat_0.2.0  
-[40] colorspace_1.3-2   stringi_1.4.4      lazyeval_0.2.0    
-[43] munsell_0.4.3      crayon_1.3.4      </code></pre>
+[40] colorspace_1.3-2   labeling_0.3       stringi_1.4.4     
+[43] lazyeval_0.2.0     munsell_0.4.3      crayon_1.3.4      </code></pre>
 </div>
 </div>
 
