@@ -12,7 +12,7 @@ library(dplyr)
   
 #### Load data.frame
 ```{r paths}
-df = readRDS('../data/table_sub.rds')
+df = readRDS('../data/gwas_catalog_tables.rds')
 df_gwas_gtex_table = df$df_gwas_gtex_table
 df_gwas_table = df$df_gwas_table
 df_signif_eqtl_table = df$df_signif_eqtl_table
