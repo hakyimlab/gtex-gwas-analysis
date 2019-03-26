@@ -1,0 +1,37 @@
+---
+title: "GWAS catalog"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup}
+library(pander)
+library(dplyr)
+```
+  
+#### Load data.frame
+```{r paths}
+df = readRDS('../data/gwas_catalog_tables.rds')
+df_gwas_gtex_table = df$df_gwas_gtex_table
+df_gwas_table = df$df_gwas_table
+df_signif_eqtl_table = df$df_signif_eqtl_table
+```
+
+#### GWAS catalog in GTEx V8
+
+```{r}
+# Start with GWAS variant
+summary_gwas_variant <- data.frame(gwas_table_idx = 1 : nrow(df_gwas_table), gwas_id = df_gwas_table$rsID)
+
+# Annotate with gtex ID
+summary_gwas_variant$gtex_id <- rep(NA, nrow(df_gwas_table))
+summary_gwas_variant$gtex_id[match(df_gwas_gtex_table$rsID, df_gwas_table$rsID)] <- df_gwas_gtex_table$GTExID
+
+# Annotate with whether it is significant eqtl in at least on tissue
+summary_gwas_variant$signif_eqtl <- rep(FALSE, nrow(df_gwas_table))
+summary_gwas_variant$signif_eqtl[summary_gwas_variant$gtex_id %in% df_signif_eqtl_table$GTExID] <- TRUE
+
+# Summarize
+pander(summary_gwas_variant %>% filter(!duplicated(gwas_id)) %>% mutate(gtex_variant = !is.na(gtex_id), gwas_variant = T) %>% group_by(gwas_variant, gtex_variant, signif_eqtl) %>% summarise(count = n()) %>% ungroup() %>% mutate(gwas_total = sum(count[gwas_variant]), gtex_total = sum(count[gtex_variant]), signif_eqtl_total = sum(count[signif_eqtl])) %>% mutate(tag_rate = gtex_total / gwas_total, signif_eqtl_rate = signif_eqtl_total / gtex_total))
+```
