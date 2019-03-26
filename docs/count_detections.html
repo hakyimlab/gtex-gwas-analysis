@@ -393,6 +393,12 @@ div.tocify {
 <li>
   <a href="license.html">License</a>
 </li>
+<li>
+  <a href="miscellaneous_statistics.html">Statistics</a>
+</li>
+<li>
+  <a href="count_detections.html">Detections</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -442,7 +448,7 @@ div.section {
 <strong>Last updated:</strong> 2019-03-26
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 4 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>gtex-gwas-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -458,12 +464,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -533,10 +539,10 @@ trait_data
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb6df4adadf92b59fd908275073a1872830f4c859targetblankb6df4ada"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/b6df4adadf92b59fd908275073a1872830f4c859" target="_blank">b6df4ad</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree121dd26344d759dc31345d75c43f849c722ce3dftargetblank121dd26a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/121dd26344d759dc31345d75c43f849c722ce3df" target="_blank">121dd26</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb6df4adadf92b59fd908275073a1872830f4c859targetblankb6df4ada" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree121dd26344d759dc31345d75c43f849c722ce3dftargetblank121dd26a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -545,18 +551,8 @@ Great! You are using Git for version control. Tracking code development and conn
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    .idea/
     Ignored:    analysis/count_detections_cache/
-
-Untracked files:
-    Untracked:  .idea/
-    Untracked:  analysis/count_detections.Rmd
-    Untracked:  code/ab/
-    Untracked:  data/gwas_hits/
-    Untracked:  data/gwas_metadata.txt
-    Untracked:  docs/figure/count_detections.Rmd/
-
-Unstaged changes:
-    Modified:   analysis/gwas_catalog.Rmd
 
 </code></pre>
 <p>
@@ -569,9 +565,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/121dd26344d759dc31345d75c43f849c722ce3df/analysis/count_detections.Rmd" target="_blank">121dd26</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+wflow_publish(all = TRUE)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/121dd26344d759dc31345d75c43f849c722ce3df/docs/count_detections.html" target="_blank">121dd26</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+wflow_publish(all = TRUE)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -673,10 +729,10 @@ loaded via a namespace (and not attached):
 [25] bit64_0.9-7        rprojroot_1.3-2    grid_3.4.4        
 [28] tidyselect_0.2.5   glue_1.3.1         R6_2.4.0          
 [31] rmarkdown_1.12     blob_1.1.0         purrr_0.2.5       
-[34] magrittr_1.5       backports_1.1.3    scales_0.5.0.9000 
-[37] htmltools_0.3.6    assertthat_0.2.0   colorspace_1.3-2  
-[40] stringi_1.4.4      lazyeval_0.2.0     munsell_0.4.3     
-[43] crayon_1.3.4      </code></pre>
+[34] magrittr_1.5       whisker_0.3-2      backports_1.1.3   
+[37] scales_0.5.0.9000  htmltools_0.3.6    assertthat_0.2.0  
+[40] colorspace_1.3-2   stringi_1.4.4      lazyeval_0.2.0    
+[43] munsell_0.4.3      crayon_1.3.4      </code></pre>
 </div>
 </div>
 
