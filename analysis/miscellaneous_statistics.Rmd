@@ -5,38 +5,13 @@ output:
   pdf_document: default
 ---
 
-#### Set paths
-```{r paths}
-# Change this by the path you cloned the GTEx-V8 repository into
-gtexv8_repo_dir <- "~/Genomica/GTEx/gtex-v8/"
-bigquery_subdir <- "GWAS-subgroup/how-to/BigQuery/"
-
-myrepo_dir <- "~/Genomica/GTEx/gtex-gwas-analysis/"
-work_dir <- file.path(myrepo_dir, "analysis")
-data_dir <- file.path(myrepo_dir, "data")
-```
-
 #### Import libraries and source scripts
 ```{r import}
 # install.packages("bigrquery")
 suppressPackageStartupMessages(library(bigrquery))
 
-# install.packages("RCurl")
-suppressPackageStartupMessages(library(RCurl))
-
-setwd(file.path(gtexv8_repo_dir, bigquery_subdir))
-
 # Script with ancillary functions to perform queries to BigQuery
-suppressPackageStartupMessages(source("BigQuery.R"))
-
-# Load traits and tissues to analyze
-source("Definitions.R")
-setwd(work_dir)
-```
-
-
-```{r auxiliary}
-read_file_from_link <- function(link, sep="\t") read.delim(text=getURL(link), sep=sep, header=TRUE, stringsAsFactors=FALSE)
+suppressPackageStartupMessages(source("code/BigQuery.R", chdir = TRUE))
 ```
 
 ### Select phenotypes without deflation after imputation
@@ -302,19 +277,12 @@ n_coloc <- df %>% filter(P4 > 0.5) %>% group_by(gene) %>% count() %>% nrow()
 
 
 ### How many loci with GWAS hits also contain a significant gene-level association?
-```{r counts_by_ldblock}
+```{r ldblock_counts}
 
-# for the script to generate the file below, see count_gwas_vs_predixcan_hits.R
-# counts.per.ldblock <- read_file_from_link("https://storage.googleapis.com/rbonazzola/counts_per_ld_block.csv", sep = ",")
-# counts.per.ldblock <- readRDS("../output/counts_per_ldblock_mx_and_enloc.rds")
+# for the script to generate the file below, see ../code/count_gwas_vs_predixcan_hits.R
 counts.per.ldblock <- readRDS("output/counts_per_ldblock_gwas_mx_and_enloc.rds")
-# attributes(counts.per.ldblock)
-# attr(counts.per.ldblock, "gwas_pval_thr")
-# attr(counts.per.ldblock, "mx_pval_thr")
-# attr(counts.per.ldblock, "rcp_thr")
 
-# counts.per.ldblock <- counts.per.ldblock %>% inner_join(gwas_metadata)
-# counts.per.ldblock <- counts.per.ldblock %>% filter(Deflation == 0)
+# set levels so that phenotypes are displayed ordered according to the number of GWAS loci.
 ordered_phenotypes <- counts.per.ldblock %>% arrange(gwas_counts) %>% select(phenotype, new_Phenotype, abbreviation)
 counts.per.ldblock$phenotype <- factor(as.character(counts.per.ldblock$phenotype), levels = ordered_phenotypes$phenotype)
 counts.per.ldblock$new_Phenotype <- factor(as.character(counts.per.ldblock$new_Phenotype), levels = ordered_phenotypes$new_Phenotype)
@@ -322,7 +290,6 @@ counts.per.ldblock$abbreviation <- factor(as.character(counts.per.ldblock$abbrev
 
 str(counts.per.ldblock)
 
-# shapes <- c("GWAS"=6, "MultiXcan"=3, "MultiXcan + Enloc"=8)
 cols <- c("GWAS"="#0000C0", "MultiXcan"="#800080", "MultiXcan + Enloc"="#00C000")
 ```
 
@@ -333,7 +300,7 @@ The following plots represent:
 * Among those, the ones with a MultiXcan-significant gene. The p-value threshold used was 0.05/`r as.integer(0.05/attr(counts.per.ldblock, "mx_pval_thr"))`.
 * The number of regions with a gene that is both MultiXcan-significant and Enloc-colocalized. The threshold for Enloc's RCP was `r attr(counts.per.ldblock, "rcp_thr")`
 
-```{r counts_by_ldblock_fig1, fig.width=10, fig.asp=0.8, echo=FALSE}
+```{r ldblock_counts_fig1, fig.width=10, fig.asp=0.8, echo=FALSE}
 GWAS_COUNT_THR <- 10 # discard traits with less than this number of GWAS hits
 counts.per.ldblock_ <- counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR)
 pp <- ggplot() + 
@@ -353,7 +320,7 @@ pp
 
 
 The same, but by trait category:
-```{r counts_by_ldblock_fig2, fig.width=10, fig.asp=1.5, echo=FALSE}
+```{r ldblock_counts_fig2, fig.width=10, fig.asp=1.5, echo=FALSE}
 pp <- ggplot() + 
   geom_point(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_counts, col="GWAS"), size=1.5) + 
   geom_bar(data = counts.per.ldblock_, mapping = aes(x = new_Phenotype, y = gwas_mx_counts, fill="MultiXcan"), stat="identity") + 
@@ -374,7 +341,7 @@ pp
 *t*-tests were performed for each (tissue, trait) pair:
 ```{r ttest_prim_vs_sec_, echo=FALSE}
 # for the script to generate the file below, see t_test_primary_vs_secondary.R
-t.test_df <- readRDS(file.path(data_dir, "t_test_primary_vs_secondary.rds"))
+t.test_df <- readRDS("output/t_test_primary_vs_secondary.rds")
 tissue_metadata <- get_gtex_tissue_metadata() %>%
                    select(tissue, v8_all, tissue_abbrv) %>%
                    rename(sample_size=v8_all)

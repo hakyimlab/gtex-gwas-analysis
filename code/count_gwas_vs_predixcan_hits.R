@@ -4,9 +4,6 @@ library(ggplot2)
 #install.packages("dplyr")
 library(dplyr)
 
-#install.packages("RCurl")
-library(RCurl)
-
 #install.packages("bigrquery")
 library(bigrquery)
 
