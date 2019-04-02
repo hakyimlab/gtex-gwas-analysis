@@ -11,7 +11,7 @@
 
 
 
-<title>Miscellaneous statistics for the GTEx-GWAS paper</title>
+<title>miscellaneous_statistics.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -404,7 +404,6 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Miscellaneous statistics for the GTEx-GWAS paper</h1>
 
 </div>
 
@@ -429,7 +428,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-03-26
+<strong>Last updated:</strong> 2019-04-02
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -508,10 +507,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree4581a3af81914e32c514e6e63d59696f79bd3b33targetblank4581a3aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/4581a3af81914e32c514e6e63d59696f79bd3b33" target="_blank">4581a3a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb6df4adadf92b59fd908275073a1872830f4c859targetblankb6df4ada"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/b6df4adadf92b59fd908275073a1872830f4c859" target="_blank">b6df4ad</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree4581a3af81914e32c514e6e63d59696f79bd3b33targetblank4581a3aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb6df4adadf92b59fd908275073a1872830f4c859targetblankb6df4ada" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -521,24 +520,22 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    .httr-oauth
     Ignored:    code/.httr-oauth
-    Ignored:    output/.Rhistory
-    Ignored:    output/.httr-oauth
 
 Untracked files:
-    Untracked:  code/BigQuery.R
-    Untracked:  code/TableInfo.R
+    Untracked:  code/lmm.R
     Untracked:  data/dapg_variants/
+    Untracked:  docs.zip
+    Untracked:  docs/docs.zip
+    Untracked:  docs/miscellaneous_statistics.pdf
+    Untracked:  output/beta_gene_variance.rds
     Untracked:  output/counts_per_ld_block.csv
     Untracked:  output/gwas_counts_per_ldblock.rds
     Untracked:  output/lmm/
+    Untracked:  var_gamma.R
 
 Unstaged changes:
-    Modified:   README.md
+    Modified:   analysis/gwas_catalog.Rmd
     Modified:   analysis/miscellaneous_statistics.Rmd
-    Modified:   code/count_gwas_vs_predixcan_hits.R
-
-Staged changes:
-    New:        output/t_test_primary_vs_secondary.rds
 
 </code></pre>
 <p>
@@ -577,6 +574,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/0c141d5d283e04936aea3e650dcabd483e36fe71/analysis/miscellaneous_statistics.Rmd" target="_blank">0c141d5</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+removed references to other repositories
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/0c141d5d283e04936aea3e650dcabd483e36fe71/docs/miscellaneous_statistics.html" target="_blank">0c141d5</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+removed references to other repositories
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -788,6 +819,22 @@ miscellaneous statistics
 </div>
 </div>
 </div>
+<table>
+<tbody>
+<tr class="odd">
+<td>tle: “Miscellaneous statistics for the GTEx-GWAS paper”</td>
+</tr>
+<tr class="even">
+<td>tput:</td>
+</tr>
+<tr class="odd">
+<td>html_document: default</td>
+</tr>
+<tr class="even">
+<td>pdf_document: default</td>
+</tr>
+</tbody>
+</table>
 <div id="import-libraries-and-source-scripts" class="section level4">
 <h4>Import libraries and source scripts</h4>
 <pre class="r"><code># install.packages(&quot;bigrquery&quot;)
@@ -815,6 +862,10 @@ gwas_metadata &lt;- gtex_gwas_metadata() %&gt;%
                  rename(phenotype=&quot;Tag&quot;) %&gt;% 
                  select(phenotype, new_Phenotype, Category, Deflation)</code></pre>
 <pre><code>0 bytes processed</code></pre>
+<pre class="r"><code>gtex_tissue_metadata &lt;- basicQuery(gtex_tissue_metadata_tbl) %&gt;% 
+                        select(tissue, v8_all, tissue_abbrv) %&gt;% 
+                        rename(sample_size=v8_all)</code></pre>
+<pre><code>0 bytes processed</code></pre>
 <p><strong>87 phenotypes were selected for analysis. From the rest, 23 GWAS showed strong deflation after imputation, whereas 4 presented mild deflation.</strong></p>
 </div>
 <div id="predixcan-and-multixcan" class="section level3">
@@ -831,19 +882,19 @@ gwas_metadata &lt;- gtex_gwas_metadata() %&gt;%
 <pre><code>0 bytes processed</code></pre>
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   114 obs. of  5 variables:
- $ phenotype  : chr  &quot;Astle_et_al_2016_Granulocyte_count&quot; &quot;Astle_et_al_2016_Sum_basophil_neutrophil_counts&quot; &quot;UKB_20002_1453_self_reported_psoriasis&quot; &quot;tag.evrsmk.tbl&quot; ...
- $ best_pvalue: num  3.50e-268 2.45e-270 0.00 5.70e-05 1.76e-114 ...
- $ n_genes    : int  21627 21627 21627 21627 21627 21627 21627 21627 21627 21623 ...
+ $ phenotype  : chr  &quot;UKB_20002_1464_self_reported_rheumatoid_arthritis&quot; &quot;GLGC_Mc_TG&quot; &quot;Astle_et_al_2016_Sum_basophil_neutrophil_counts&quot; &quot;UKB_2395_4_Hair_or_balding_pattern_Pattern_4&quot; ...
+ $ best_pvalue: num  3.63e-115 1.95e-218 2.45e-270 1.76e-114 2.39e-118 ...
+ $ n_genes    : int  21627 21627 21627 21627 21618 21627 21627 21627 21623 21627 ...
  $ pvalue_thr : num  2.31e-06 2.31e-06 2.31e-06 2.31e-06 2.31e-06 ...
- $ Deflation  : int  0 0 0 1 0 0 1 0 0 0 ...</code></pre>
+ $ Deflation  : int  0 1 0 0 0 1 0 0 0 1 ...</code></pre>
 <p><strong>78 traits have at least one gene significantly associated (according to MultiXcan).</strong></p>
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   114 obs. of  5 variables:
- $ phenotype      : chr  &quot;UKB_20002_1265_self_reported_migraine&quot; &quot;EGG_BMI_HapMapImputed&quot; &quot;UKB_20002_1452_self_reported_eczema_or_dermatitis&quot; &quot;GLGC_Mc_HDL&quot; ...
- $ best_pvalue    : num  1.30e-22 7.04e-18 2.37e-28 0.00 1.82e-68 ...
- $ n_tissues_genes: int  281745 281746 281745 281723 281745 281745 281745 281745 281411 281618 ...
+ $ phenotype      : chr  &quot;UKB_20002_1452_self_reported_eczema_or_dermatitis&quot; &quot;UKB_20002_1265_self_reported_migraine&quot; &quot;EGG_BMI_HapMapImputed&quot; &quot;MAGNETIC_HDL.C&quot; ...
+ $ best_pvalue    : num  2.37e-28 1.30e-22 7.04e-18 2.80e-99 1.82e-68 ...
+ $ n_tissues_genes: int  281745 281745 281746 281721 281745 281745 281411 281618 281745 281745 ...
  $ pvalue_thr     : num  1.77e-07 1.77e-07 1.77e-07 1.77e-07 1.77e-07 ...
- $ Deflation      : int  0 1 0 1 0 0 0 0 0 1 ...</code></pre>
+ $ Deflation      : int  0 0 1 0 0 0 0 1 0 0 ...</code></pre>
 <p><strong>75 traits have at least one gene significantly associated in some tissue (according to PrediXcan).</strong></p>
 </div>
 <div id="predixcan-and-colocalization-methods" class="section level3">
@@ -855,16 +906,16 @@ gwas_metadata &lt;- gtex_gwas_metadata() %&gt;%
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
  $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Spleen&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Skin_Sun_Exposed_Lower_leg&quot; ...
  $ gene     : chr  &quot;ENSG00000064726.9&quot; &quot;ENSG00000100410.7&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101442.9&quot; ...
- $ pvalue   : num  5.27e-08 1.98e-09 1.08e-08 5.79e-09 3.22e-08 ...
- $ P4       : num  6.43e-03 6.51e-02 2.77e-01 2.23e-05 4.18e-03 ...</code></pre>
+ $ pvalue   : num  5.27e-08 1.98e-09 1.08e-08 5.79e-09 1.60e-08 ...
+ $ P4       : num  6.43e-03 6.51e-02 2.77e-01 2.23e-05 5.61e-03 ...</code></pre>
 <p><strong>1379 out of 6854 (20.12%)</strong></p>
 <p>What if restricting to protein-coding genes?</p>
 <pre><code>&#39;data.frame&#39;:   107704 obs. of  6 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
  $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Spleen&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Skin_Sun_Exposed_Lower_leg&quot; ...
  $ gene     : chr  &quot;ENSG00000064726&quot; &quot;ENSG00000100410&quot; &quot;ENSG00000101213&quot; &quot;ENSG00000101442&quot; ...
- $ pvalue   : num  5.27e-08 1.98e-09 1.08e-08 5.79e-09 3.22e-08 ...
- $ P4       : num  6.43e-03 6.51e-02 2.77e-01 2.23e-05 4.18e-03 ...
+ $ pvalue   : num  5.27e-08 1.98e-09 1.08e-08 5.79e-09 1.60e-08 ...
+ $ P4       : num  6.43e-03 6.51e-02 2.77e-01 2.23e-05 5.61e-03 ...
  $ gene_type: chr  &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; ...</code></pre>
 <p><strong>1253 out of 6119 (20.48%)</strong></p>
 </div>
@@ -875,16 +926,16 @@ gwas_metadata &lt;- gtex_gwas_metadata() %&gt;%
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
  $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; ...
  $ gene     : chr  &quot;ENSG00000064726.9&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; ...
- $ pvalue   : num  5.27e-08 1.08e-08 1.08e-08 1.08e-08 3.22e-08 ...
- $ rcp      : num  0 0.593 0 0.114 0.008 0 0.006 0 0.008 0.001 ...</code></pre>
+ $ pvalue   : num  5.27e-08 1.08e-08 1.08e-08 1.08e-08 1.60e-08 ...
+ $ rcp      : num  0 0.593 0 0.114 0.008 0.008 0 0.006 0 0.001 ...</code></pre>
 <p><strong>1300 out of 6854 (18.97%)</strong></p>
 <p>What if restricting to protein-coding genes?</p>
 <pre><code>&#39;data.frame&#39;:   182188 obs. of  6 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
  $ tissue   : chr  &quot;Brain_Spinal_cord_cervical_c-1&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellar_Hemisphere&quot; ...
  $ gene     : chr  &quot;ENSG00000064726&quot; &quot;ENSG00000101213&quot; &quot;ENSG00000101213&quot; &quot;ENSG00000101213&quot; ...
- $ pvalue   : num  5.27e-08 1.08e-08 1.08e-08 1.08e-08 3.22e-08 ...
- $ rcp      : num  0 0.593 0 0.114 0.008 0 0.006 0 0.008 0.001 ...
+ $ pvalue   : num  5.27e-08 1.08e-08 1.08e-08 1.08e-08 1.60e-08 ...
+ $ rcp      : num  0 0.593 0 0.114 0.008 0.008 0 0.006 0 0.001 ...
  $ gene_type: chr  &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; &quot;protein_coding&quot; ...</code></pre>
 <p><strong>1173 out of 6119 (19.169799%)</strong></p>
 </div>
@@ -893,10 +944,10 @@ gwas_metadata &lt;- gtex_gwas_metadata() %&gt;%
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   19729 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
- $ tissue   : chr  &quot;Artery_Tibial&quot; &quot;Prostate&quot; &quot;Brain_Cerebellum&quot; &quot;Brain_Cerebellar_Hemisphere&quot; ...
+ $ tissue   : chr  &quot;Artery_Tibial&quot; &quot;Prostate&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Cerebellum&quot; ...
  $ gene     : chr  &quot;ENSG00000121152.9&quot; &quot;ENSG00000130427.2&quot; &quot;ENSG00000143641.9&quot; &quot;ENSG00000143641.9&quot; ...
- $ pvalue   : num  2.21e-03 7.11e-02 1.83e-04 2.56e-04 8.14e-05 ...
- $ P4       : num  0.591 0.517 0.914 0.906 0.552 ...</code></pre>
+ $ pvalue   : num  2.21e-03 7.11e-02 2.56e-04 1.83e-04 8.14e-05 ...
+ $ P4       : num  0.591 0.517 0.906 0.914 0.552 ...</code></pre>
 <p><strong>2532 out of 2599 (97.42%)</strong></p>
 </div>
 <div id="how-many-among-enloc-colocalized-genes-are-predixcan-significant" class="section level4">
@@ -904,10 +955,10 @@ gwas_metadata &lt;- gtex_gwas_metadata() %&gt;%
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   25281 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
- $ tissue   : chr  &quot;Brain_Caudate_basal_ganglia&quot; &quot;Brain_Cerebellum&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Artery_Tibial&quot; ...
+ $ tissue   : chr  &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Caudate_basal_ganglia&quot; &quot;Brain_Cerebellum&quot; &quot;Artery_Tibial&quot; ...
  $ gene     : chr  &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; ...
- $ pvalue   : num  5.60e-06 5.22e-06 1.08e-08 2.08e-03 7.65e-01 ...
- $ rcp      : num  0.741 0.922 0.593 0.708 0.824 0.698 0.554 0.933 0.94 0.503 ...</code></pre>
+ $ pvalue   : num  1.08e-08 5.60e-06 5.22e-06 2.08e-03 7.65e-01 ...
+ $ rcp      : num  0.593 0.741 0.922 0.708 0.824 0.698 0.554 0.933 0.94 0.503 ...</code></pre>
 <p><strong>3014 out of 3401 (88.62%)</strong></p>
 </div>
 <div id="how-many-among-enloc-colocalized-genes-are-coloc-colocalized" class="section level4">
@@ -915,10 +966,10 @@ gwas_metadata &lt;- gtex_gwas_metadata() %&gt;%
 <pre><code>0 bytes processed</code></pre>
 <pre><code>&#39;data.frame&#39;:   41127 obs. of  5 variables:
  $ phenotype: chr  &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; &quot;pgc.scz2&quot; ...
- $ tissue   : chr  &quot;Brain_Anterior_cingulate_cortex_BA24&quot; &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Caudate_basal_ganglia&quot; &quot;Brain_Cerebellum&quot; ...
+ $ tissue   : chr  &quot;Brain_Cerebellar_Hemisphere&quot; &quot;Brain_Anterior_cingulate_cortex_BA24&quot; &quot;Artery_Tibial&quot; &quot;Brain_Caudate_basal_ganglia&quot; ...
  $ gene     : chr  &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; &quot;ENSG00000101213.6&quot; ...
- $ P4       : num  2.35e-01 2.77e-01 1.48e-04 4.79e-02 3.55e-05 ...
- $ rcp      : num  0.816 0.593 0.741 0.922 0.708 0.669 0.924 0.824 0.698 0.581 ...</code></pre>
+ $ P4       : num  2.77e-01 2.35e-01 3.55e-05 1.48e-04 2.11e-01 ...
+ $ rcp      : num  0.593 0.816 0.708 0.741 0.669 0.922 0.924 0.824 0.698 0.581 ...</code></pre>
 <p><strong>2571 out of 5127 (50.15%)</strong></p>
 </div>
 </div>
@@ -964,7 +1015,6 @@ str(counts.per.ldblock)</code></pre>
 <div id="do-primary-eqtls-have-larger-effect-on-complex-traits-than-secondary-eqtls" class="section level3">
 <h3>Do primary eQTLs have larger effect on complex traits than secondary eQTLs?</h3>
 <p><em>t</em>-tests were performed for each (tissue, trait) pair:</p>
-<pre><code>0 bytes processed</code></pre>
 <pre><code>Warning: Column `tissue` joining factor and character vector, coercing into
 character vector</code></pre>
 <pre><code>Warning: Column `phenotype` joining factor and character vector, coercing
@@ -1137,6 +1187,2166 @@ rbonazzola
 </div>
 <div id="how-does-variance-of-gene-effects-vary-across-traits" class="section level3">
 <h3>How does variance of gene effects vary across traits?</h3>
+<pre class="r"><code>beta_gene_variance_df &lt;- readRDS(&quot;output/beta_gene_variance.rds&quot;)
+beta_gene_variance_df &lt;- beta_gene_variance_df %&gt;% mutate(beta_gene_var_norm=var_beta_gene/var_delta)
+phenotype &lt;- beta_gene_variance_df %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+beta_gene_variance_df &lt;- beta_gene_variance_df %&gt;% inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;% inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;% rename(n_samples_gtex=sample_size)
+beta_gene_variance_df$phenotype &lt;- factor(beta_gene_variance_df$phenotype, levels = phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;phenotype&quot;]$phenotype)
+beta_gene_variance_df$new_Phenotype &lt;- factor(beta_gene_variance_df$new_Phenotype, levels = phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;new_Phenotype&quot;]$new_Phenotype)
+
+ggp &lt;- ggplot(beta_gene_variance_df, aes(x=new_Phenotype, y=var_beta_gene))
+ggp &lt;- ggp + geom_boxplot() + theme_bw()
+ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))</code></pre>
+<pre class="r"><code>ggp</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/variance_beta_gene_fig1-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggp &lt;- ggp + facet_wrap(Category ~ ., drop = T, scales=&quot;free_x&quot;, nrow = 3)
+ggp</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/variance_beta_gene_fig2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>knitr::kable(beta_gene_variance_df %&gt;% select(phenotype, tissue, var_beta_gene) %&gt;% group_by(phenotype) %&gt;% top_n(3, wt=var_beta_gene) %&gt;% dplyr::arrange(phenotype, -var_beta_gene))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">phenotype</th>
+<th align="left">tissue</th>
+<th align="right">var_beta_gene</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">UKB_50_Standing_height</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">27.447399</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_50_Standing_height</td>
+<td align="left">Whole_Blood</td>
+<td align="right">25.515106</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_50_Standing_height</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">21.489340</td>
+</tr>
+<tr class="even">
+<td align="left">RA_OKADA_TRANS_ETHNIC</td>
+<td align="left">Liver</td>
+<td align="right">33.094686</td>
+</tr>
+<tr class="odd">
+<td align="left">RA_OKADA_TRANS_ETHNIC</td>
+<td align="left">Lung</td>
+<td align="right">24.229426</td>
+</tr>
+<tr class="even">
+<td align="left">RA_OKADA_TRANS_ETHNIC</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">23.844513</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1453_self_reported_psoriasis</td>
+<td align="left">Whole_Blood</td>
+<td align="right">53.467290</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1453_self_reported_psoriasis</td>
+<td align="left">Brain_Cerebellar_Hemisphere</td>
+<td align="right">42.082596</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1453_self_reported_psoriasis</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">37.522483</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_White_blood_cell_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">24.689878</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_White_blood_cell_count</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">21.377191</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_White_blood_cell_count</td>
+<td align="left">Stomach</td>
+<td align="right">20.930853</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Lymphocyte_counts</td>
+<td align="left">Whole_Blood</td>
+<td align="right">21.340934</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Lymphocyte_counts</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">19.818309</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Lymphocyte_counts</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">18.402442</td>
+</tr>
+<tr class="even">
+<td align="left">IMMUNOBASE_Systemic_lupus_erythematosus_hg19</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">19.615621</td>
+</tr>
+<tr class="odd">
+<td align="left">IMMUNOBASE_Systemic_lupus_erythematosus_hg19</td>
+<td align="left">Whole_Blood</td>
+<td align="right">16.785599</td>
+</tr>
+<tr class="even">
+<td align="left">IMMUNOBASE_Systemic_lupus_erythematosus_hg19</td>
+<td align="left">Prostate</td>
+<td align="right">14.857546</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1225_self_reported_hyperthyroidism_or_thyrotoxicosis</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">18.407968</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1225_self_reported_hyperthyroidism_or_thyrotoxicosis</td>
+<td align="left">Whole_Blood</td>
+<td align="right">16.600566</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1225_self_reported_hyperthyroidism_or_thyrotoxicosis</td>
+<td align="left">Stomach</td>
+<td align="right">15.919495</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Myeloid_white_cell_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">20.427383</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Myeloid_white_cell_count</td>
+<td align="left">Stomach</td>
+<td align="right">16.747439</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Myeloid_white_cell_count</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">15.489826</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Sum_neutrophil_eosinophil_counts</td>
+<td align="left">Whole_Blood</td>
+<td align="right">19.569398</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Sum_neutrophil_eosinophil_counts</td>
+<td align="left">Stomach</td>
+<td align="right">16.139897</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Sum_neutrophil_eosinophil_counts</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">13.831451</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Granulocyte_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">19.617413</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Granulocyte_count</td>
+<td align="left">Stomach</td>
+<td align="right">16.156012</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Granulocyte_count</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">13.975817</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_2395_4_Hair_or_balding_pattern_Pattern_4</td>
+<td align="left">Whole_Blood</td>
+<td align="right">11.907135</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_2395_4_Hair_or_balding_pattern_Pattern_4</td>
+<td align="left">Liver</td>
+<td align="right">10.811622</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_2395_4_Hair_or_balding_pattern_Pattern_4</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">10.594109</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1226_self_reported_hypothyroidism_or_myxoedema</td>
+<td align="left">Whole_Blood</td>
+<td align="right">13.248966</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1226_self_reported_hypothyroidism_or_myxoedema</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">11.579163</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1226_self_reported_hypothyroidism_or_myxoedema</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">10.554512</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Sum_eosinophil_basophil_counts</td>
+<td align="left">Whole_Blood</td>
+<td align="right">16.311589</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Sum_eosinophil_basophil_counts</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">14.449964</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Sum_eosinophil_basophil_counts</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">13.966365</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_8_diagnosed_by_doctor_Asthma</td>
+<td align="left">Whole_Blood</td>
+<td align="right">14.792569</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_8_diagnosed_by_doctor_Asthma</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">13.619661</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_8_diagnosed_by_doctor_Asthma</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">10.904941</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1111_self_reported_asthma</td>
+<td align="left">Whole_Blood</td>
+<td align="right">15.050839</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1111_self_reported_asthma</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">14.067499</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1111_self_reported_asthma</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">11.275903</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Eosinophil_counts</td>
+<td align="left">Whole_Blood</td>
+<td align="right">16.293716</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Eosinophil_counts</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">13.522357</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Eosinophil_counts</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">13.052808</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Sum_basophil_neutrophil_counts</td>
+<td align="left">Whole_Blood</td>
+<td align="right">18.816929</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Sum_basophil_neutrophil_counts</td>
+<td align="left">Stomach</td>
+<td align="right">15.258409</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Sum_basophil_neutrophil_counts</td>
+<td align="left">Breast_Mammary_Tissue</td>
+<td align="right">13.798228</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Neutrophil_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">18.725189</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Neutrophil_count</td>
+<td align="left">Stomach</td>
+<td align="right">14.916600</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Neutrophil_count</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">13.488346</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Monocyte_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">20.412186</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Monocyte_count</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">13.483887</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Monocyte_count</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">13.356227</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Red_blood_cell_count</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">11.902580</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Red_blood_cell_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">10.333734</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Red_blood_cell_count</td>
+<td align="left">Cells_Cultured_fibroblasts</td>
+<td align="right">9.212500</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Reticulocyte_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">22.430165</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Reticulocyte_count</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">18.466503</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Reticulocyte_count</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">15.907128</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_21001_Body_mass_index_BMI</td>
+<td align="left">Whole_Blood</td>
+<td align="right">10.044934</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_21001_Body_mass_index_BMI</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">8.828332</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_21001_Body_mass_index_BMI</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">8.434758</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1261_self_reported_multiple_sclerosis</td>
+<td align="left">Vagina</td>
+<td align="right">8.388410</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1261_self_reported_multiple_sclerosis</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">7.706027</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1261_self_reported_multiple_sclerosis</td>
+<td align="left">Thyroid</td>
+<td align="right">7.661526</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_High_light_scatter_reticulocyte_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">38.136807</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_High_light_scatter_reticulocyte_count</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">17.927517</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_High_light_scatter_reticulocyte_count</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">14.862566</td>
+</tr>
+<tr class="odd">
+<td align="left">IBD.EUR.Ulcerative_Colitis</td>
+<td align="left">Whole_Blood</td>
+<td align="right">7.479607</td>
+</tr>
+<tr class="even">
+<td align="left">IBD.EUR.Ulcerative_Colitis</td>
+<td align="left">Breast_Mammary_Tissue</td>
+<td align="right">7.194471</td>
+</tr>
+<tr class="odd">
+<td align="left">IBD.EUR.Ulcerative_Colitis</td>
+<td align="left">Liver</td>
+<td align="right">6.949490</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1065_self_reported_hypertension</td>
+<td align="left">Adrenal_Gland</td>
+<td align="right">8.163386</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1065_self_reported_hypertension</td>
+<td align="left">Stomach</td>
+<td align="right">7.057105</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1065_self_reported_hypertension</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">6.986792</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1313_self_reported_ankylosing_spondylitis</td>
+<td align="left">Artery_Aorta</td>
+<td align="right">18.659336</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1313_self_reported_ankylosing_spondylitis</td>
+<td align="left">Brain_Nucleus_accumbens_basal_ganglia</td>
+<td align="right">14.349106</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1313_self_reported_ankylosing_spondylitis</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">8.901364</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Platelet_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">23.449812</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Platelet_count</td>
+<td align="left">Stomach</td>
+<td align="right">9.587053</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Platelet_count</td>
+<td align="left">Cells_EBV-transformed_lymphocytes</td>
+<td align="right">9.034005</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_23099_Body_fat_percentage</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">8.811913</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_23099_Body_fat_percentage</td>
+<td align="left">Whole_Blood</td>
+<td align="right">8.761309</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_23099_Body_fat_percentage</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">7.477739</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_2395_3_Hair_or_balding_pattern_Pattern_3</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">6.404750</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_2395_3_Hair_or_balding_pattern_Pattern_3</td>
+<td align="left">Lung</td>
+<td align="right">6.131923</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_2395_3_Hair_or_balding_pattern_Pattern_3</td>
+<td align="left">Brain_Hippocampus</td>
+<td align="right">5.901512</td>
+</tr>
+<tr class="odd">
+<td align="left">pgc.scz2</td>
+<td align="left">Whole_Blood</td>
+<td align="right">8.097073</td>
+</tr>
+<tr class="even">
+<td align="left">pgc.scz2</td>
+<td align="left">Prostate</td>
+<td align="right">7.136594</td>
+</tr>
+<tr class="odd">
+<td align="left">pgc.scz2</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">6.872414</td>
+</tr>
+<tr class="even">
+<td align="left">IBD.EUR.Inflammatory_Bowel_Disease</td>
+<td align="left">Liver</td>
+<td align="right">6.671259</td>
+</tr>
+<tr class="odd">
+<td align="left">IBD.EUR.Inflammatory_Bowel_Disease</td>
+<td align="left">Breast_Mammary_Tissue</td>
+<td align="right">6.659473</td>
+</tr>
+<tr class="even">
+<td align="left">IBD.EUR.Inflammatory_Bowel_Disease</td>
+<td align="left">Whole_Blood</td>
+<td align="right">6.164480</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20127_Neuroticism_score</td>
+<td align="left">Liver</td>
+<td align="right">6.568563</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20127_Neuroticism_score</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">6.488819</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20127_Neuroticism_score</td>
+<td align="left">Whole_Blood</td>
+<td align="right">6.314211</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_9_diagnosed_by_doctor_Hayfever_allergic_rhinitis_or_eczema</td>
+<td align="left">Breast_Mammary_Tissue</td>
+<td align="right">6.320831</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_9_diagnosed_by_doctor_Hayfever_allergic_rhinitis_or_eczema</td>
+<td align="left">Whole_Blood</td>
+<td align="right">6.283804</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_9_diagnosed_by_doctor_Hayfever_allergic_rhinitis_or_eczema</td>
+<td align="left">Colon_Sigmoid</td>
+<td align="right">6.085690</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1464_self_reported_rheumatoid_arthritis</td>
+<td align="left">Liver</td>
+<td align="right">6.869270</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1464_self_reported_rheumatoid_arthritis</td>
+<td align="left">Lung</td>
+<td align="right">6.800674</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1464_self_reported_rheumatoid_arthritis</td>
+<td align="left">Artery_Coronary</td>
+<td align="right">6.621934</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1222_self_reported_type_1_diabetes</td>
+<td align="left">Whole_Blood</td>
+<td align="right">7.310570</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1222_self_reported_type_1_diabetes</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">6.275003</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1222_self_reported_type_1_diabetes</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">6.059662</td>
+</tr>
+<tr class="odd">
+<td align="left">GIANT_HEIGHT</td>
+<td align="left">Cells_EBV-transformed_lymphocytes</td>
+<td align="right">8.147819</td>
+</tr>
+<tr class="even">
+<td align="left">GIANT_HEIGHT</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">7.155290</td>
+</tr>
+<tr class="odd">
+<td align="left">GIANT_HEIGHT</td>
+<td align="left">Cells_Cultured_fibroblasts</td>
+<td align="right">6.913823</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_2395_2_Hair_or_balding_pattern_Pattern_2</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">6.261567</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_2395_2_Hair_or_balding_pattern_Pattern_2</td>
+<td align="left">Prostate</td>
+<td align="right">5.381535</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_2395_2_Hair_or_balding_pattern_Pattern_2</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">5.295177</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1180_Morning_or_evening_person_chronotype</td>
+<td align="left">Vagina</td>
+<td align="right">5.513801</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_1180_Morning_or_evening_person_chronotype</td>
+<td align="left">Cells_Cultured_fibroblasts</td>
+<td align="right">5.317370</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1180_Morning_or_evening_person_chronotype</td>
+<td align="left">Artery_Tibial</td>
+<td align="right">4.753328</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20016_Fluid_intelligence_score</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">5.890883</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20016_Fluid_intelligence_score</td>
+<td align="left">Whole_Blood</td>
+<td align="right">5.794202</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20016_Fluid_intelligence_score</td>
+<td align="left">Lung</td>
+<td align="right">5.351187</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1463_self_reported_ulcerative_colitis</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">5.711334</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1463_self_reported_ulcerative_colitis</td>
+<td align="left">Whole_Blood</td>
+<td align="right">5.254983</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1463_self_reported_ulcerative_colitis</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">4.838700</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1094_self_reported_deep_venous_thrombosis_dvt</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">5.835756</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1094_self_reported_deep_venous_thrombosis_dvt</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">5.258580</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1094_self_reported_deep_venous_thrombosis_dvt</td>
+<td align="left">Liver</td>
+<td align="right">4.750547</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1160_Sleep_duration</td>
+<td align="left">Vagina</td>
+<td align="right">5.031064</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_1160_Sleep_duration</td>
+<td align="left">Stomach</td>
+<td align="right">4.831153</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1160_Sleep_duration</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">4.773904</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_5_diagnosed_by_doctor_Blood_clot_in_the_leg_DVT</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">5.903218</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_5_diagnosed_by_doctor_Blood_clot_in_the_leg_DVT</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">5.102122</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_5_diagnosed_by_doctor_Blood_clot_in_the_leg_DVT</td>
+<td align="left">Liver</td>
+<td align="right">4.889572</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20022_Birth_weight</td>
+<td align="left">Liver</td>
+<td align="right">4.618933</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20022_Birth_weight</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">4.602974</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20022_Birth_weight</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">4.573499</td>
+</tr>
+<tr class="even">
+<td align="left">IBD.EUR.Crohns_Disease</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">4.819357</td>
+</tr>
+<tr class="odd">
+<td align="left">IBD.EUR.Crohns_Disease</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">4.694477</td>
+</tr>
+<tr class="even">
+<td align="left">IBD.EUR.Crohns_Disease</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">4.466789</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6150_1_Vascular_or_heart_problems_diagnosed_by_doctor_Heart_attack</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.940254</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6150_1_Vascular_or_heart_problems_diagnosed_by_doctor_Heart_attack</td>
+<td align="left">Heart_Atrial_Appendage</td>
+<td align="right">4.592938</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6150_1_Vascular_or_heart_problems_diagnosed_by_doctor_Heart_attack</td>
+<td align="left">Prostate</td>
+<td align="right">4.390772</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1462_self_reported_crohns_disease</td>
+<td align="left">Liver</td>
+<td align="right">4.845116</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1462_self_reported_crohns_disease</td>
+<td align="left">Stomach</td>
+<td align="right">4.679853</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1462_self_reported_crohns_disease</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">4.161255</td>
+</tr>
+<tr class="odd">
+<td align="left">BCAC_ER_negative_BreastCancer_EUR</td>
+<td align="left">Artery_Coronary</td>
+<td align="right">4.775630</td>
+</tr>
+<tr class="even">
+<td align="left">BCAC_ER_negative_BreastCancer_EUR</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.554648</td>
+</tr>
+<tr class="odd">
+<td align="left">BCAC_ER_negative_BreastCancer_EUR</td>
+<td align="left">Brain_Hippocampus</td>
+<td align="right">4.496577</td>
+</tr>
+<tr class="even">
+<td align="left">BCAC_Overall_BreastCancer_EUR</td>
+<td align="left">Artery_Coronary</td>
+<td align="right">4.809130</td>
+</tr>
+<tr class="odd">
+<td align="left">BCAC_Overall_BreastCancer_EUR</td>
+<td align="left">Stomach</td>
+<td align="right">4.570079</td>
+</tr>
+<tr class="even">
+<td align="left">BCAC_Overall_BreastCancer_EUR</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.486611</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_7_diagnosed_by_doctor_Blood_clot_in_the_lung</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">5.265264</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_7_diagnosed_by_doctor_Blood_clot_in_the_lung</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.440098</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_7_diagnosed_by_doctor_Blood_clot_in_the_lung</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">4.420214</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1262_self_reported_parkinsons_disease</td>
+<td align="left">Breast_Mammary_Tissue</td>
+<td align="right">4.253111</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1262_self_reported_parkinsons_disease</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.152555</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1262_self_reported_parkinsons_disease</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.123666</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_3526_Mothers_age_at_death</td>
+<td align="left">Liver</td>
+<td align="right">4.509228</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_3526_Mothers_age_at_death</td>
+<td align="left">Artery_Coronary</td>
+<td align="right">4.102825</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_3526_Mothers_age_at_death</td>
+<td align="left">Heart_Atrial_Appendage</td>
+<td align="right">3.855538</td>
+</tr>
+<tr class="even">
+<td align="left">EGG_BW3_EUR</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">4.324384</td>
+</tr>
+<tr class="odd">
+<td align="left">EGG_BW3_EUR</td>
+<td align="left">Brain_Nucleus_accumbens_basal_ganglia</td>
+<td align="right">3.922344</td>
+</tr>
+<tr class="even">
+<td align="left">EGG_BW3_EUR</td>
+<td align="left">Lung</td>
+<td align="right">3.843144</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_G43_Diagnoses_main_ICD10_G43_Migraine</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">4.099626</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_G43_Diagnoses_main_ICD10_G43_Migraine</td>
+<td align="left">Liver</td>
+<td align="right">4.054718</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_G43_Diagnoses_main_ICD10_G43_Migraine</td>
+<td align="left">Brain_Hippocampus</td>
+<td align="right">4.044950</td>
+</tr>
+<tr class="even">
+<td align="left">IGAP_Alzheimer</td>
+<td align="left">Vagina</td>
+<td align="right">4.451550</td>
+</tr>
+<tr class="odd">
+<td align="left">IGAP_Alzheimer</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">4.266820</td>
+</tr>
+<tr class="even">
+<td align="left">IGAP_Alzheimer</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">4.215254</td>
+</tr>
+<tr class="odd">
+<td align="left">Jones_et_al_2016_SleepDuration</td>
+<td align="left">Vagina</td>
+<td align="right">4.799285</td>
+</tr>
+<tr class="even">
+<td align="left">Jones_et_al_2016_SleepDuration</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">4.089197</td>
+</tr>
+<tr class="odd">
+<td align="left">Jones_et_al_2016_SleepDuration</td>
+<td align="left">Stomach</td>
+<td align="right">4.081258</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1309_self_reported_osteoporosis</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">5.263788</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1309_self_reported_osteoporosis</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.570564</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1309_self_reported_osteoporosis</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.495018</td>
+</tr>
+<tr class="odd">
+<td align="left">Jones_et_al_2016_Chronotype</td>
+<td align="left">Stomach</td>
+<td align="right">4.209373</td>
+</tr>
+<tr class="even">
+<td align="left">Jones_et_al_2016_Chronotype</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.146870</td>
+</tr>
+<tr class="odd">
+<td align="left">Jones_et_al_2016_Chronotype</td>
+<td align="left">Vagina</td>
+<td align="right">3.941324</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1452_self_reported_eczema_or_dermatitis</td>
+<td align="left">Liver</td>
+<td align="right">4.978694</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1452_self_reported_eczema_or_dermatitis</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.975201</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1452_self_reported_eczema_or_dermatitis</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.965926</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1473_self_reported_high_cholesterol</td>
+<td align="left">Liver</td>
+<td align="right">6.889638</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1473_self_reported_high_cholesterol</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">5.298513</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1473_self_reported_high_cholesterol</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">5.175230</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1154_self_reported_irritable_bowel_syndrome</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.532095</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1154_self_reported_irritable_bowel_syndrome</td>
+<td align="left">Lung</td>
+<td align="right">4.474259</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1154_self_reported_irritable_bowel_syndrome</td>
+<td align="left">Breast_Mammary_Tissue</td>
+<td align="right">4.037176</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1265_self_reported_migraine</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">4.138744</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1265_self_reported_migraine</td>
+<td align="left">Lung</td>
+<td align="right">4.075644</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1265_self_reported_migraine</td>
+<td align="left">Prostate</td>
+<td align="right">3.768304</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_1200_Sleeplessness_or_insomnia</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.267723</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1200_Sleeplessness_or_insomnia</td>
+<td align="left">Prostate</td>
+<td align="right">4.225253</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_1200_Sleeplessness_or_insomnia</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">4.182966</td>
+</tr>
+<tr class="odd">
+<td align="left">ENIGMA_Intracraneal_Volume</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">4.228261</td>
+</tr>
+<tr class="even">
+<td align="left">ENIGMA_Intracraneal_Volume</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.218450</td>
+</tr>
+<tr class="odd">
+<td align="left">ENIGMA_Intracraneal_Volume</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">4.030910</td>
+</tr>
+<tr class="even">
+<td align="left">PGC_ADHD_EUR_2017</td>
+<td align="left">Prostate</td>
+<td align="right">4.451113</td>
+</tr>
+<tr class="odd">
+<td align="left">PGC_ADHD_EUR_2017</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">3.901568</td>
+</tr>
+<tr class="even">
+<td align="left">PGC_ADHD_EUR_2017</td>
+<td align="left">Breast_Mammary_Tissue</td>
+<td align="right">3.686606</td>
+</tr>
+<tr class="odd">
+<td align="left">GEFOS_Forearm</td>
+<td align="left">Liver</td>
+<td align="right">3.862306</td>
+</tr>
+<tr class="even">
+<td align="left">GEFOS_Forearm</td>
+<td align="left">Brain_Nucleus_accumbens_basal_ganglia</td>
+<td align="right">3.858061</td>
+</tr>
+<tr class="odd">
+<td align="left">GEFOS_Forearm</td>
+<td align="left">Vagina</td>
+<td align="right">3.745930</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1223_self_reported_type_2_diabetes</td>
+<td align="left">Brain_Hypothalamus</td>
+<td align="right">3.580333</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1223_self_reported_type_2_diabetes</td>
+<td align="left">Liver</td>
+<td align="right">3.516580</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1223_self_reported_type_2_diabetes</td>
+<td align="left">Lung</td>
+<td align="right">3.453447</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1807_Fathers_age_at_death</td>
+<td align="left">Whole_Blood</td>
+<td align="right">3.931472</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_1807_Fathers_age_at_death</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">3.756964</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1807_Fathers_age_at_death</td>
+<td align="left">Brain_Nucleus_accumbens_basal_ganglia</td>
+<td align="right">3.596306</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1466_self_reported_gout</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">4.348667</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1466_self_reported_gout</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">3.972523</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1466_self_reported_gout</td>
+<td align="left">Whole_Blood</td>
+<td align="right">3.935225</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1616_self_reported_insomnia</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">4.235813</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1616_self_reported_insomnia</td>
+<td align="left">Liver</td>
+<td align="right">3.863648</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1616_self_reported_insomnia</td>
+<td align="left">Stomach</td>
+<td align="right">3.757809</td>
+</tr>
+<tr class="even">
+<td align="left">MAGNETIC_LDL.C</td>
+<td align="left">Liver</td>
+<td align="right">4.204434</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_LDL.C</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">3.813061</td>
+</tr>
+<tr class="even">
+<td align="left">MAGNETIC_LDL.C</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">3.622415</td>
+</tr>
+<tr class="odd">
+<td align="left">CNCR_Insomnia_all</td>
+<td align="left">Brain_Hypothalamus</td>
+<td align="right">3.672409</td>
+</tr>
+<tr class="even">
+<td align="left">CNCR_Insomnia_all</td>
+<td align="left">Brain_Nucleus_accumbens_basal_ganglia</td>
+<td align="right">3.659924</td>
+</tr>
+<tr class="odd">
+<td align="left">CNCR_Insomnia_all</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">3.647782</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1243_self_reported_psychological_or_psychiatric_problem</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.618263</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1243_self_reported_psychological_or_psychiatric_problem</td>
+<td align="left">Stomach</td>
+<td align="right">3.720309</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1243_self_reported_psychological_or_psychiatric_problem</td>
+<td align="left">Brain_Hypothalamus</td>
+<td align="right">3.501328</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_IDL.TG</td>
+<td align="left">Liver</td>
+<td align="right">4.406705</td>
+</tr>
+<tr class="even">
+<td align="left">MAGNETIC_IDL.TG</td>
+<td align="left">Stomach</td>
+<td align="right">3.937357</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_IDL.TG</td>
+<td align="left">Vagina</td>
+<td align="right">3.738897</td>
+</tr>
+<tr class="even">
+<td align="left">BCAC_ER_positive_BreastCancer_EUR</td>
+<td align="left">Liver</td>
+<td align="right">4.094604</td>
+</tr>
+<tr class="odd">
+<td align="left">BCAC_ER_positive_BreastCancer_EUR</td>
+<td align="left">Vagina</td>
+<td align="right">3.724907</td>
+</tr>
+<tr class="even">
+<td align="left">BCAC_ER_positive_BreastCancer_EUR</td>
+<td align="left">Stomach</td>
+<td align="right">3.546594</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_G40_Diagnoses_main_ICD10_G40_Epilepsy</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">3.776515</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_G40_Diagnoses_main_ICD10_G40_Epilepsy</td>
+<td align="left">Whole_Blood</td>
+<td align="right">3.660028</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_G40_Diagnoses_main_ICD10_G40_Epilepsy</td>
+<td align="left">Prostate</td>
+<td align="right">3.625332</td>
+</tr>
+<tr class="even">
+<td align="left">SSGAC_Education_Years_Pooled</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">4.072374</td>
+</tr>
+<tr class="odd">
+<td align="left">SSGAC_Education_Years_Pooled</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">3.848316</td>
+</tr>
+<tr class="even">
+<td align="left">SSGAC_Education_Years_Pooled</td>
+<td align="left">Liver</td>
+<td align="right">3.644341</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_HDL.C</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">4.279315</td>
+</tr>
+<tr class="even">
+<td align="left">MAGNETIC_HDL.C</td>
+<td align="left">Liver</td>
+<td align="right">3.695414</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_HDL.C</td>
+<td align="left">Brain_Hippocampus</td>
+<td align="right">3.526420</td>
+</tr>
+<tr class="even">
+<td align="left">EAGLE_Eczema</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.192058</td>
+</tr>
+<tr class="odd">
+<td align="left">EAGLE_Eczema</td>
+<td align="left">Heart_Left_Ventricle</td>
+<td align="right">3.539289</td>
+</tr>
+<tr class="even">
+<td align="left">EAGLE_Eczema</td>
+<td align="left">Prostate</td>
+<td align="right">3.451089</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1289_self_reported_schizophrenia</td>
+<td align="left">Whole_Blood</td>
+<td align="right">3.644804</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1289_self_reported_schizophrenia</td>
+<td align="left">Brain_Hypothalamus</td>
+<td align="right">3.618472</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1289_self_reported_schizophrenia</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">3.492403</td>
+</tr>
+<tr class="even">
+<td align="left">CARDIoGRAM_C4D_CAD_ADDITIVE</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">4.195514</td>
+</tr>
+<tr class="odd">
+<td align="left">CARDIoGRAM_C4D_CAD_ADDITIVE</td>
+<td align="left">Liver</td>
+<td align="right">4.101775</td>
+</tr>
+<tr class="even">
+<td align="left">CARDIoGRAM_C4D_CAD_ADDITIVE</td>
+<td align="left">Whole_Blood</td>
+<td align="right">3.463331</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1461_self_reported_inflammatory_bowel_disease</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">3.542794</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1461_self_reported_inflammatory_bowel_disease</td>
+<td align="left">Brain_Nucleus_accumbens_basal_ganglia</td>
+<td align="right">3.534541</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1461_self_reported_inflammatory_bowel_disease</td>
+<td align="left">Liver</td>
+<td align="right">3.523303</td>
+</tr>
+<tr class="even">
+<td align="left">MAGNETIC_CH2.DB.ratio</td>
+<td align="left">Minor_Salivary_Gland</td>
+<td align="right">5.692151</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_CH2.DB.ratio</td>
+<td align="left">Colon_Sigmoid</td>
+<td align="right">4.207769</td>
+</tr>
+<tr class="even">
+<td align="left">MAGNETIC_CH2.DB.ratio</td>
+<td align="left">Whole_Blood</td>
+<td align="right">4.154464</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGIC_FastingGlucose</td>
+<td align="left">Whole_Blood</td>
+<td align="right">3.199428</td>
+</tr>
+<tr class="even">
+<td align="left">MAGIC_FastingGlucose</td>
+<td align="left">Stomach</td>
+<td align="right">3.047545</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGIC_FastingGlucose</td>
+<td align="left">Small_Intestine_Terminal_Ileum</td>
+<td align="right">2.951229</td>
+</tr>
+<tr class="even">
+<td align="left">SSGAC_Depressive_Symptoms</td>
+<td align="left">Vagina</td>
+<td align="right">3.235891</td>
+</tr>
+<tr class="odd">
+<td align="left">SSGAC_Depressive_Symptoms</td>
+<td align="left">Brain_Hypothalamus</td>
+<td align="right">3.099512</td>
+</tr>
+<tr class="even">
+<td align="left">SSGAC_Depressive_Symptoms</td>
+<td align="left">Brain_Caudate_basal_ganglia</td>
+<td align="right">2.994898</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGIC_ln_FastingInsulin</td>
+<td align="left">Prostate</td>
+<td align="right">3.238471</td>
+</tr>
+<tr class="even">
+<td align="left">MAGIC_ln_FastingInsulin</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">3.011098</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGIC_ln_FastingInsulin</td>
+<td align="left">Colon_Transverse</td>
+<td align="right">2.856781</td>
+</tr>
+</tbody>
+</table>
+<p>Some observations:</p>
+<ul>
+<li>The tissue with largest <span class="math inline">\(\text{Var}(\beta_{\text{gene}})\)</span> for the blood cell count traits is whole blood (except for red blood cells where it is heart left ventricle).</li>
+<li>The tissue with largest <span class="math inline">\(\text{Var}(\beta_{\text{gene}})\)</span> for rheumatoid arthritis is liver. There is evidence of a <a href="https://www.ncbi.nlm.nih.gov/pubmed/29627896">connection between RA and liver damage</a>.</li>
+<li>The values for height from GIANT are not reproduced in UKB.</li>
+</ul>
+</div>
+<div id="fraction-of-variance-in-gwas-effect-size-explained-by-variance-in-eqtl-effect-size" class="section level3">
+<h3>Fraction of variance in GWAS effect size explained by variance in eQTL effect size</h3>
+<p><span class="math display">\[\delta_{\text{GWAS}}=\delta_0+\alpha\times \text{LDScore} + \beta_{\text{gene}}\times \gamma_{\text{eQTL}}+\epsilon\]</span></p>
+<p><span class="math display">\[\text{Var}(\delta_{\text{GWAS}}-\alpha\times \text{LDScore}-\delta_0)=\text{Var}(\delta&#39;)=\underbrace{\text{Var}(\beta)\text{Var}(\gamma_{\text{eQTL}})}_{=:V}+\text{Var}(\epsilon)\]</span> <span class="math display">\[r:=\frac{V}{\text{Var}(\delta&#39;)}=1-\frac{\text{Var}(\epsilon)}{\text{Var}(\delta&#39;)}\]</span></p>
+<pre class="r"><code>beta_gene_variance_df_ &lt;- readRDS(&quot;output/beta_gene_variance.rds&quot;)
+
+phenotype &lt;- beta_gene_variance_df_ %&gt;% 
+             group_by(phenotype) %&gt;%
+             summarise(median(var_beta_gene)) %&gt;%
+             inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+
+beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
+                          inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;%
+                          inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;%
+                          rename(n_samples_gtex=sample_size)
+
+beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;% filter(n_samples_gtex &gt; 400)
+phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(fraction_explained)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+beta_gene_variance_df_$phenotype &lt;- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(fraction_explained)`), &quot;phenotype&quot;]$phenotype)
+beta_gene_variance_df_$new_Phenotype &lt;- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(fraction_explained)`), &quot;new_Phenotype&quot;]$new_Phenotype)</code></pre>
+<pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=fraction_explained))
+ggp &lt;- ggp + geom_boxplot() + theme_bw()
+ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp</code></pre>
+<pre><code>Warning: Removed 3 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggp &lt;- ggp + facet_wrap(Category ~ ., drop = T, scales=&quot;free_x&quot;, nrow = 3)
+ggp</code></pre>
+<pre><code>Warning: Removed 3 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>We note that comparisons across tissues within a single trait are not meaningful because variance in <span class="math inline">\(\gamma\)</span> is overestimated for tissues with lower sample sizes. Fraction of <span class="math inline">\(\delta&#39;\)</span> explained by expression is thus overestimated as well in these tissues.</p>
+<pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df, aes(x=n_samples_gtex, y=fraction_explained)) + geom_smooth() + theme_bw()
+ggp</code></pre>
+<pre><code>`geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<pre><code>Warning: Removed 9 rows containing non-finite values (stat_smooth).</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df %&gt;%
+              group_by(tissue) %&gt;% 
+              summarise(mean_var_gamma=mean(var_gamma)) %&gt;%
+              inner_join(gtex_tissue_metadata %&gt;% select(&quot;tissue&quot;, &quot;sample_size&quot;) %&gt;% rename(n_samples_gtex=sample_size), by=&quot;tissue&quot;),
+              aes(x=n_samples_gtex, y=mean_var_gamma)) +
+       geom_point() + theme_bw()
+ggp</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>knitr::kable(beta_gene_variance_df_ %&gt;% select(phenotype, tissue, fraction_explained) %&gt;% group_by(phenotype) %&gt;% top_n(1, wt=fraction_explained))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">phenotype</th>
+<th align="left">tissue</th>
+<th align="right">fraction_explained</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">UKB_1180_Morning_or_evening_person_chronotype</td>
+<td align="left">Cells_Cultured_fibroblasts</td>
+<td align="right">0.0978385</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1313_self_reported_ankylosing_spondylitis</td>
+<td align="left">Cells_Cultured_fibroblasts</td>
+<td align="right">0.1580705</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20016_Fluid_intelligence_score</td>
+<td align="left">Lung</td>
+<td align="right">0.1118210</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1154_self_reported_irritable_bowel_syndrome</td>
+<td align="left">Lung</td>
+<td align="right">0.1274944</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1223_self_reported_type_2_diabetes</td>
+<td align="left">Lung</td>
+<td align="right">0.1021096</td>
+</tr>
+<tr class="even">
+<td align="left">IGAP_Alzheimer</td>
+<td align="left">Lung</td>
+<td align="right">0.1146273</td>
+</tr>
+<tr class="odd">
+<td align="left">BCAC_ER_negative_BreastCancer_EUR</td>
+<td align="left">Lung</td>
+<td align="right">0.0999091</td>
+</tr>
+<tr class="even">
+<td align="left">EGG_BW3_EUR</td>
+<td align="left">Lung</td>
+<td align="right">0.0835177</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1226_self_reported_hypothyroidism_or_myxoedema</td>
+<td align="left">Thyroid</td>
+<td align="right">0.1495320</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1261_self_reported_multiple_sclerosis</td>
+<td align="left">Thyroid</td>
+<td align="right">0.2156633</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6150_1_Vascular_or_heart_problems_diagnosed_by_doctor_Heart_attack</td>
+<td align="left">Thyroid</td>
+<td align="right">0.1185950</td>
+</tr>
+<tr class="even">
+<td align="left">SSGAC_Education_Years_Pooled</td>
+<td align="left">Thyroid</td>
+<td align="right">0.0719600</td>
+</tr>
+<tr class="odd">
+<td align="left">pgc.scz2</td>
+<td align="left">Thyroid</td>
+<td align="right">0.1069508</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_1160_Sleep_duration</td>
+<td align="left">Artery_Tibial</td>
+<td align="right">0.0990103</td>
+</tr>
+<tr class="odd">
+<td align="left">IBD.EUR.Inflammatory_Bowel_Disease</td>
+<td align="left">Artery_Tibial</td>
+<td align="right">0.1288236</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1094_self_reported_deep_venous_thrombosis_dvt</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.1323375</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_5_diagnosed_by_doctor_Blood_clot_in_the_leg_DVT</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.1349367</td>
+</tr>
+<tr class="even">
+<td align="left">MAGIC_FastingGlucose</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.1033147</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_LDL.C</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.1085978</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Red_blood_cell_count</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.1148085</td>
+</tr>
+<tr class="odd">
+<td align="left">Jones_et_al_2016_Chronotype</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.0974294</td>
+</tr>
+<tr class="even">
+<td align="left">IBD.EUR.Ulcerative_Colitis</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.1662633</td>
+</tr>
+<tr class="odd">
+<td align="left">GEFOS_Forearm</td>
+<td align="left">Adipose_Subcutaneous</td>
+<td align="right">0.0906331</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1473_self_reported_high_cholesterol</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">0.0968308</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_HDL.C</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">0.0847818</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Monocyte_count</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">0.1376967</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Reticulocyte_count</td>
+<td align="left">Skin_Sun_Exposed_Lower_leg</td>
+<td align="right">0.1679308</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1243_self_reported_psychological_or_psychiatric_problem</td>
+<td align="left">Whole_Blood</td>
+<td align="right">0.1068402</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1453_self_reported_psoriasis</td>
+<td align="left">Whole_Blood</td>
+<td align="right">0.3192909</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_High_light_scatter_reticulocyte_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">0.2180302</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Platelet_count</td>
+<td align="left">Whole_Blood</td>
+<td align="right">0.1488877</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_23099_Body_fat_percentage</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.0877928</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1111_self_reported_asthma</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.2172778</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1222_self_reported_type_1_diabetes</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.1525429</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1225_self_reported_hyperthyroidism_or_thyrotoxicosis</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.2612046</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1309_self_reported_osteoporosis</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.1301432</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1461_self_reported_inflammatory_bowel_disease</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.0992493</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_2395_2_Hair_or_balding_pattern_Pattern_2</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.1505706</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_8_diagnosed_by_doctor_Asthma</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.2125093</td>
+</tr>
+<tr class="even">
+<td align="left">CARDIoGRAM_C4D_CAD_ADDITIVE</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.0902455</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Lymphocyte_counts</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.1742474</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_White_blood_cell_count</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.1823441</td>
+</tr>
+<tr class="odd">
+<td align="left">IMMUNOBASE_Systemic_lupus_erythematosus_hg19</td>
+<td align="left">Muscle_Skeletal</td>
+<td align="right">0.2263501</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_1807_Fathers_age_at_death</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1062371</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1262_self_reported_parkinsons_disease</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1283337</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1265_self_reported_migraine</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1134054</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1289_self_reported_schizophrenia</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.0883977</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1452_self_reported_eczema_or_dermatitis</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1335355</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1463_self_reported_ulcerative_colitis</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1326345</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1616_self_reported_insomnia</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1192026</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_2395_3_Hair_or_balding_pattern_Pattern_3</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1794618</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_6152_7_diagnosed_by_doctor_Blood_clot_in_the_lung</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1373878</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_G40_Diagnoses_main_ICD10_G40_Epilepsy</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1094751</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_G43_Diagnoses_main_ICD10_G43_Migraine</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1216886</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1065_self_reported_hypertension</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1103741</td>
+</tr>
+<tr class="even">
+<td align="left">MAGIC_ln_FastingInsulin</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1016504</td>
+</tr>
+<tr class="odd">
+<td align="left">ENIGMA_Intracraneal_Volume</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1351446</td>
+</tr>
+<tr class="even">
+<td align="left">Jones_et_al_2016_SleepDuration</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1114016</td>
+</tr>
+<tr class="odd">
+<td align="left">EAGLE_Eczema</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.0895018</td>
+</tr>
+<tr class="even">
+<td align="left">PGC_ADHD_EUR_2017</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1053664</td>
+</tr>
+<tr class="odd">
+<td align="left">BCAC_ER_positive_BreastCancer_EUR</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1012013</td>
+</tr>
+<tr class="even">
+<td align="left">BCAC_Overall_BreastCancer_EUR</td>
+<td align="left">Adipose_Visceral_Omentum</td>
+<td align="right">0.1032418</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_1200_Sleeplessness_or_insomnia</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">0.0975200</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_21001_Body_mass_index_BMI</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">0.0957299</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_50_Standing_height</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">0.1025398</td>
+</tr>
+<tr class="even">
+<td align="left">MAGNETIC_IDL.TG</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">0.1019185</td>
+</tr>
+<tr class="odd">
+<td align="left">GIANT_HEIGHT</td>
+<td align="left">Skin_Not_Sun_Exposed_Suprapubic</td>
+<td align="right">0.0663051</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20022_Birth_weight</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.0964928</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_3526_Mothers_age_at_death</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1136886</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20002_1464_self_reported_rheumatoid_arthritis</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1559729</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1466_self_reported_gout</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1088962</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_2395_4_Hair_or_balding_pattern_Pattern_4</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.2330761</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_6152_9_diagnosed_by_doctor_Hayfever_allergic_rhinitis_or_eczema</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1025706</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Eosinophil_counts</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1465306</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Granulocyte_count</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1745771</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Myeloid_white_cell_count</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1737839</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Neutrophil_count</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1678523</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Sum_basophil_neutrophil_counts</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1712341</td>
+</tr>
+<tr class="odd">
+<td align="left">Astle_et_al_2016_Sum_eosinophil_basophil_counts</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1493579</td>
+</tr>
+<tr class="even">
+<td align="left">Astle_et_al_2016_Sum_neutrophil_eosinophil_counts</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1732457</td>
+</tr>
+<tr class="odd">
+<td align="left">RA_OKADA_TRANS_ETHNIC</td>
+<td align="left">Esophagus_Muscularis</td>
+<td align="right">0.1991770</td>
+</tr>
+<tr class="even">
+<td align="left">UKB_20127_Neuroticism_score</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">0.1355608</td>
+</tr>
+<tr class="odd">
+<td align="left">UKB_20002_1462_self_reported_crohns_disease</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">0.1120345</td>
+</tr>
+<tr class="even">
+<td align="left">SSGAC_Depressive_Symptoms</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">0.0747644</td>
+</tr>
+<tr class="odd">
+<td align="left">MAGNETIC_CH2.DB.ratio</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">0.0950765</td>
+</tr>
+<tr class="even">
+<td align="left">CNCR_Insomnia_all</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">0.1108623</td>
+</tr>
+<tr class="odd">
+<td align="left">IBD.EUR.Crohns_Disease</td>
+<td align="left">Esophagus_Mucosa</td>
+<td align="right">0.1084609</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary_dir &lt;- &quot;output/lmm/lme4_model_2&quot;
+beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE))
+beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()</code></pre>
+<pre><code>Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector</code></pre>
+<pre class="r"><code>beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
+                          inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;%
+                          inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;%
+                          rename(n_samples_gtex=sample_size)</code></pre>
+<pre><code>Warning: Column `phenotype` joining factor and character vector, coercing
+into character vector</code></pre>
+<pre class="r"><code>phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+beta_gene_variance_df_$phenotype &lt;- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;phenotype&quot;]$phenotype)
+beta_gene_variance_df_$new_Phenotype &lt;- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;new_Phenotype&quot;]$new_Phenotype)</code></pre>
+<pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp &lt;- ggp + geom_boxplot() + theme_bw()
+ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp &lt;- ggp + xlab(&quot;phenotype&quot;) + ylab(&quot;fraction of beta_gwas variance explained by beta_eqtl variance&quot;)
+ggp</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>summary_dir &lt;- &quot;output/lmm/lme4_model_3&quot;
+beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE))
+beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()</code></pre>
+<pre><code>Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector
+
+Warning in bind_rows_(x, .id): binding character and factor vector,
+coercing into character vector</code></pre>
+<pre class="r"><code>beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
+                          inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;%
+                          inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;%
+                          rename(n_samples_gtex=sample_size)</code></pre>
+<pre><code>Warning: Column `phenotype` joining factor and character vector, coercing
+into character vector</code></pre>
+<pre class="r"><code>phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+beta_gene_variance_df_$phenotype &lt;- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;phenotype&quot;]$phenotype)
+beta_gene_variance_df_$new_Phenotype &lt;- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;new_Phenotype&quot;]$new_Phenotype)</code></pre>
+<pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp &lt;- ggp + geom_boxplot() + theme_bw()
+ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp &lt;- ggp + xlab(&quot;phenotype&quot;) + ylab(&quot;var_beta_gene&quot;)
+ggp</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
 <!---
 query <- glue::glue("SELECT  FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px 
                      WHERE pvalue < {pval_threshold_px}")
@@ -1176,21 +3386,22 @@ other attached packages:
  [9] tidyverse_1.2.1 bigrquery_1.1.0
 
 loaded via a namespace (and not attached):
- [1] tidyselect_0.2.5 xfun_0.5         reshape2_1.4.3   haven_2.1.0     
- [5] lattice_0.20-38  colorspace_1.4-0 generics_0.0.2   htmltools_0.3.6 
- [9] yaml_2.2.0       rlang_0.3.1      pillar_1.3.1     glue_1.3.0      
-[13] withr_2.1.2      DBI_1.0.0        bit64_0.9-7      modelr_0.1.4    
-[17] readxl_1.3.0     plyr_1.8.4       munsell_0.5.0    gtable_0.2.0    
-[21] workflowr_1.2.0  cellranger_1.1.0 rvest_0.3.2      evaluate_0.13   
-[25] labeling_0.3     knitr_1.21       curl_3.3         broom_0.5.1     
-[29] Rcpp_1.0.0       openssl_1.2.2    backports_1.1.3  scales_1.0.0    
-[33] jsonlite_1.6     fs_1.2.6         bit_1.1-14       askpass_1.1     
-[37] hms_0.4.2        digest_0.6.18    stringi_1.3.1    grid_3.4.4      
-[41] rprojroot_1.3-2  cli_1.0.1        tools_3.4.4      magrittr_1.5    
-[45] lazyeval_0.2.1   crayon_1.3.4     whisker_0.3-2    pkgconfig_2.0.2 
-[49] xml2_1.2.0       lubridate_1.7.4  assertthat_0.2.0 rmarkdown_1.11  
-[53] httr_1.4.0       rstudioapi_0.9.0 R6_2.4.0         nlme_3.1-137    
-[57] git2r_0.24.0     compiler_3.4.4  </code></pre>
+ [1] tidyselect_0.2.5 xfun_0.5         reshape2_1.4.3   splines_3.4.4   
+ [5] haven_2.1.0      lattice_0.20-38  colorspace_1.4-0 generics_0.0.2  
+ [9] htmltools_0.3.6  mgcv_1.8-27      yaml_2.2.0       rlang_0.3.1     
+[13] pillar_1.3.1     glue_1.3.0       withr_2.1.2      DBI_1.0.0       
+[17] bit64_0.9-7      modelr_0.1.4     readxl_1.3.0     plyr_1.8.4      
+[21] munsell_0.5.0    gtable_0.2.0     workflowr_1.2.0  cellranger_1.1.0
+[25] rvest_0.3.2      evaluate_0.13    labeling_0.3     knitr_1.21      
+[29] curl_3.3         highr_0.7        broom_0.5.1      Rcpp_1.0.0      
+[33] openssl_1.2.2    backports_1.1.3  scales_1.0.0     jsonlite_1.6    
+[37] fs_1.2.6         bit_1.1-14       askpass_1.1      hms_0.4.2       
+[41] digest_0.6.18    stringi_1.3.1    grid_3.4.4       rprojroot_1.3-2 
+[45] cli_1.0.1        tools_3.4.4      magrittr_1.5     lazyeval_0.2.1  
+[49] crayon_1.3.4     whisker_0.3-2    pkgconfig_2.0.2  Matrix_1.2-14   
+[53] xml2_1.2.0       lubridate_1.7.4  assertthat_0.2.0 rmarkdown_1.11  
+[57] httr_1.4.0       rstudioapi_0.9.0 R6_2.4.0         nlme_3.1-137    
+[61] git2r_0.24.0     compiler_3.4.4  </code></pre>
 </div>
 </div>
 
