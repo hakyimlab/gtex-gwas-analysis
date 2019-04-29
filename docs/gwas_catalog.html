@@ -11,7 +11,7 @@
 
 
 
-<title>About</title>
+<title>GWAS catalog</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -260,6 +263,92 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -267,6 +356,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -317,7 +416,7 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">About</h1>
+<h1 class="title toc-ignore">GWAS catalog</h1>
 
 </div>
 
@@ -345,7 +444,7 @@ div.section {
 <strong>Last updated:</strong> 2019-03-26
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>gtex-gwas-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -367,6 +466,54 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190312code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190312)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190312code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190312)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
 </div>
 </div>
 </div>
@@ -433,16 +580,16 @@ Message
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/31378dcecca5b0f6bfb8f962b453b78a35a1f442/docs/about.html" target="_blank">31378dc</a>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/121dd26344d759dc31345d75c43f849c722ce3df/docs/gwas_catalog.html" target="_blank">121dd26</a>
 </td>
 <td>
-rbonazzola
+Alvaro
 </td>
 <td>
-2019-03-13
+2019-03-26
 </td>
 <td>
-updates
+wflow_publish(all = TRUE)
 </td>
 </tr>
 <tr>
@@ -450,16 +597,50 @@ updates
 Rmd
 </td>
 <td>
-<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/0c967438f0d13c77aa8f109179ddfc1384b60059/analysis/about.Rmd" target="_blank">0c96743</a>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/910a320d165a74fb8b82446988f3dc9dbd3bc93f/analysis/gwas_catalog.Rmd" target="_blank">910a320</a>
 </td>
 <td>
-rbonazzola
+Alvaro
 </td>
 <td>
-2019-03-12
+2019-03-26
 </td>
 <td>
-Start workflowr project.
+wflow_git_commit(all = TRUE)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/066a93fa0ca1f89ac98ab7289f4d13a42ae9eed8/analysis/gwas_catalog.Rmd" target="_blank">066a93f</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+changed gwas catalog table name to make it more clear
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/0bed6901cf06042f95031661ae9940ed680eb7f0/analysis/gwas_catalog.Rmd" target="_blank">0bed690</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+add gwas catalog tables and basic stats
 </td>
 </tr>
 </tbody>
@@ -469,7 +650,159 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Describe your project.</p>
+<pre class="r"><code>library(pander)
+library(dplyr)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<div id="load-data.frame" class="section level4">
+<h4>Load data.frame</h4>
+<pre class="r"><code>df = readRDS(&#39;data/gwas_catalog_tables.rds&#39;)
+df_gwas_gtex_table = df$df_gwas_gtex_table
+df_gwas_table = df$df_gwas_table
+df_signif_eqtl_table = df$df_signif_eqtl_table</code></pre>
+</div>
+<div id="gwas-catalog-in-gtex-v8" class="section level4">
+<h4>GWAS catalog in GTEx V8</h4>
+<pre class="r"><code># Start with GWAS variant
+summary_gwas_variant &lt;- data.frame(gwas_table_idx = 1 : nrow(df_gwas_table), gwas_id = df_gwas_table$rsID)
+
+# Annotate with gtex ID
+summary_gwas_variant$gtex_id &lt;- rep(NA, nrow(df_gwas_table))
+summary_gwas_variant$gtex_id[match(df_gwas_gtex_table$rsID, df_gwas_table$rsID)] &lt;- df_gwas_gtex_table$GTExID
+
+# Annotate with whether it is significant eqtl in at least on tissue
+summary_gwas_variant$signif_eqtl &lt;- rep(FALSE, nrow(df_gwas_table))
+summary_gwas_variant$signif_eqtl[summary_gwas_variant$gtex_id %in% df_signif_eqtl_table$GTExID] &lt;- TRUE
+
+# Summarize
+pander(summary_gwas_variant %&gt;% filter(!duplicated(gwas_id)) %&gt;% mutate(gtex_variant = !is.na(gtex_id), gwas_variant = T) %&gt;% group_by(gwas_variant, gtex_variant, signif_eqtl) %&gt;% summarise(count = n()) %&gt;% ungroup() %&gt;% mutate(gwas_total = sum(count[gwas_variant]), gtex_total = sum(count[gtex_variant]), signif_eqtl_total = sum(count[signif_eqtl])) %&gt;% mutate(tag_rate = gtex_total / gwas_total, signif_eqtl_rate = signif_eqtl_total / gtex_total))</code></pre>
+<table style="width:100%;">
+<caption>Table continues below</caption>
+<colgroup>
+<col width="19%" />
+<col width="19%" />
+<col width="17%" />
+<col width="10%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">gwas_variant</th>
+<th align="center">gtex_variant</th>
+<th align="center">signif_eqtl</th>
+<th align="center">count</th>
+<th align="center">gwas_total</th>
+<th align="center">gtex_total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">TRUE</td>
+<td align="center">FALSE</td>
+<td align="center">FALSE</td>
+<td align="center">10663</td>
+<td align="center">54800</td>
+<td align="center">44137</td>
+</tr>
+<tr class="even">
+<td align="center">TRUE</td>
+<td align="center">TRUE</td>
+<td align="center">FALSE</td>
+<td align="center">16318</td>
+<td align="center">54800</td>
+<td align="center">44137</td>
+</tr>
+<tr class="odd">
+<td align="center">TRUE</td>
+<td align="center">TRUE</td>
+<td align="center">TRUE</td>
+<td align="center">27819</td>
+<td align="center">54800</td>
+<td align="center">44137</td>
+</tr>
+</tbody>
+</table>
+<table style="width:68%;">
+<colgroup>
+<col width="27%" />
+<col width="15%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">signif_eqtl_total</th>
+<th align="center">tag_rate</th>
+<th align="center">signif_eqtl_rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27819</td>
+<td align="center">0.8054</td>
+<td align="center">0.6303</td>
+</tr>
+<tr class="even">
+<td align="center">27819</td>
+<td align="center">0.8054</td>
+<td align="center">0.6303</td>
+</tr>
+<tr class="odd">
+<td align="center">27819</td>
+<td align="center">0.8054</td>
+<td align="center">0.6303</td>
+</tr>
+</tbody>
+</table>
+<br> <br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.4.4 (2018-03-15)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 16.04.5 LTS
+
+Matrix products: default
+BLAS: /usr/lib/libblas/libblas.so.3.6.0
+LAPACK: /usr/lib/lapack/liblapack.so.3.6.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] dplyr_0.8.0.1 pander_0.6.3 
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.1         rstudioapi_0.10    knitr_1.22        
+ [4] whisker_0.3-2      magrittr_1.5       workflowr_1.2.0   
+ [7] tidyselect_0.2.5   R6_2.4.0           rlang_0.3.1       
+[10] stringr_1.4.0.9000 tools_3.4.4        xfun_0.5          
+[13] git2r_0.25.2       htmltools_0.3.6    yaml_2.2.0        
+[16] rprojroot_1.3-2    digest_0.6.18      assertthat_0.2.0  
+[19] tibble_2.0.1       crayon_1.3.4       purrr_0.2.5       
+[22] fs_1.2.7           glue_1.3.1         evaluate_0.13     
+[25] rmarkdown_1.12     stringi_1.4.4      compiler_3.4.4    
+[28] pillar_1.3.1       backports_1.1.3    pkgconfig_2.0.2   </code></pre>
+</div>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -485,6 +818,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+</div>
+</div>
 
 </div>
 

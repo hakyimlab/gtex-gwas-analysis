@@ -1,0 +1,15 @@
+---
+title: "Readme.rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Counting significant associations
+
+The following is included for documentation reasons.
+`count_hits.sh` is a PBS queue array job that will gather summary statistics (one trait per job) of significant results.
+`count_hits.R` is the actual script being run in the above.
+`count_hits_plots.R` picks up the output of the above and performs some plotting. Most of this code was migrated to a markdown under `/analysis` folder in this workflowr repository.

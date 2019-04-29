@@ -11,6 +11,8 @@ analysis/*_cache
 analysis/site_libs
 data/*rds
 
+.idea
+
 # History files
 .Rhistory
 .Rapp.history
