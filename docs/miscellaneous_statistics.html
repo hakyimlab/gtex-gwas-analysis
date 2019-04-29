@@ -428,7 +428,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-04-02
+<strong>Last updated:</strong> 2019-04-03
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -507,10 +507,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb6df4adadf92b59fd908275073a1872830f4c859targetblankb6df4ada"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/b6df4adadf92b59fd908275073a1872830f4c859" target="_blank">b6df4ad</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree85e6e665e79798ad7976e773783980ab0a406e94targetblank85e6e66a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/85e6e665e79798ad7976e773783980ab0a406e94" target="_blank">85e6e66</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb6df4adadf92b59fd908275073a1872830f4c859targetblankb6df4ada" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree85e6e665e79798ad7976e773783980ab0a406e94targetblank85e6e66a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -526,7 +526,6 @@ Untracked files:
     Untracked:  data/dapg_variants/
     Untracked:  docs.zip
     Untracked:  docs/docs.zip
-    Untracked:  docs/miscellaneous_statistics.pdf
     Untracked:  output/beta_gene_variance.rds
     Untracked:  output/counts_per_ld_block.csv
     Untracked:  output/gwas_counts_per_ldblock.rds
@@ -574,6 +573,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/85e6e665e79798ad7976e773783980ab0a406e94/docs/miscellaneous_statistics.html" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+<td>
+updated output html
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -853,6 +869,7 @@ query &lt;- glue::glue(&quot;SELECT Tag as phenotype, Deflation
                      FROM {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name}&quot;)
 
 gwas_deflation_status &lt;- query_exec(query, gwas_metadata_tbl$project)</code></pre>
+<pre><code>Auto-refreshing stale OAuth token.</code></pre>
 <pre><code>0 bytes processed</code></pre>
 <pre class="r"><code>selected_phenotypes &lt;- gwas_deflation_status %&gt;% filter(Deflation == NO_DEFLATION) %&gt;% .[,1]
 strong_deflation_phenotypes &lt;- gwas_deflation_status %&gt;% filter(Deflation == STRONG_DEFLATION) %&gt;% .[,1]
@@ -1007,10 +1024,84 @@ str(counts.per.ldblock)</code></pre>
 <pre><code>Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
 <pre><code>Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/ldblock_counts_fig1-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ldblock_counts_fig1-1">
+Past versions of ldblock_counts_fig1-1.png
+</button>
+</p>
+<div id="fig-ldblock_counts_fig1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/ldblock_counts_fig1-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>The same, but by trait category:</p>
 <pre><code>Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
 <pre><code>Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/ldblock_counts_fig2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ldblock_counts_fig2-1">
+Past versions of ldblock_counts_fig2-1.png
+</button>
+</p>
+<div id="fig-ldblock_counts_fig2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/ldblock_counts_fig2-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="do-primary-eqtls-have-larger-effect-on-complex-traits-than-secondary-eqtls" class="section level3">
 <h3>Do primary eQTLs have larger effect on complex traits than secondary eQTLs?</h3>
@@ -1199,9 +1290,83 @@ ggp &lt;- ggp + geom_boxplot() + theme_bw()
 ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))</code></pre>
 <pre class="r"><code>ggp</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/variance_beta_gene_fig1-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-variance_beta_gene_fig1-1">
+Past versions of variance_beta_gene_fig1-1.png
+</button>
+</p>
+<div id="fig-variance_beta_gene_fig1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/variance_beta_gene_fig1-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ggp &lt;- ggp + facet_wrap(Category ~ ., drop = T, scales=&quot;free_x&quot;, nrow = 3)
 ggp</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/variance_beta_gene_fig2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-variance_beta_gene_fig2-1">
+Past versions of variance_beta_gene_fig2-1.png
+</button>
+</p>
+<div id="fig-variance_beta_gene_fig2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/variance_beta_gene_fig2-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>knitr::kable(beta_gene_variance_df %&gt;% select(phenotype, tissue, var_beta_gene) %&gt;% group_by(phenotype) %&gt;% top_n(3, wt=var_beta_gene) %&gt;% dplyr::arrange(phenotype, -var_beta_gene))</code></pre>
 <table>
 <thead>
@@ -2552,16 +2717,127 @@ ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
 ggp</code></pre>
 <pre><code>Warning: Removed 3 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/unnamed-chunk-5-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ggp &lt;- ggp + facet_wrap(Category ~ ., drop = T, scales=&quot;free_x&quot;, nrow = 3)
 ggp</code></pre>
 <pre><code>Warning: Removed 3 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/unnamed-chunk-6-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>We note that comparisons across tissues within a single trait are not meaningful because variance in <span class="math inline">\(\gamma\)</span> is overestimated for tissues with lower sample sizes. Fraction of <span class="math inline">\(\delta&#39;\)</span> explained by expression is thus overestimated as well in these tissues.</p>
 <pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df, aes(x=n_samples_gtex, y=fraction_explained)) + geom_smooth() + theme_bw()
 ggp</code></pre>
 <pre><code>`geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
 <pre><code>Warning: Removed 9 rows containing non-finite values (stat_smooth).</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/unnamed-chunk-7-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df %&gt;%
               group_by(tissue) %&gt;% 
               summarise(mean_var_gamma=mean(var_gamma)) %&gt;%
@@ -2570,6 +2846,43 @@ ggp</code></pre>
        geom_point() + theme_bw()
 ggp</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/unnamed-chunk-8-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>knitr::kable(beta_gene_variance_df_ %&gt;% select(phenotype, tissue, fraction_explained) %&gt;% group_by(phenotype) %&gt;% top_n(1, wt=fraction_explained))</code></pre>
 <table>
 <thead>
@@ -3018,162 +3331,25 @@ ggp</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>summary_dir &lt;- &quot;output/lmm/lme4_model_2&quot;
-beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE))
-beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()</code></pre>
-<pre><code>Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
-<pre><code>Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
+beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 2
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 3
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 4
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 5
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in scan(file = file, what = what, sep = sep, quote = quote, dec =
+dec, : embedded nul(s) found in input</code></pre>
+<pre class="r"><code>beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()
 
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector</code></pre>
-<pre class="r"><code>beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
+beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
                           inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;%
                           inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;%
-                          rename(n_samples_gtex=sample_size)</code></pre>
-<pre><code>Warning: Column `phenotype` joining factor and character vector, coercing
-into character vector</code></pre>
-<pre class="r"><code>phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+                          rename(n_samples_gtex=sample_size)
+
+phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
 beta_gene_variance_df_$phenotype &lt;- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;phenotype&quot;]$phenotype)
 beta_gene_variance_df_$new_Phenotype &lt;- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;new_Phenotype&quot;]$new_Phenotype)</code></pre>
 <pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
@@ -3182,163 +3358,63 @@ ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
 ggp &lt;- ggp + xlab(&quot;phenotype&quot;) + ylab(&quot;fraction of beta_gwas variance explained by beta_eqtl variance&quot;)
 ggp</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/unnamed-chunk-11-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>summary_dir &lt;- &quot;output/lmm/lme4_model_3&quot;
-beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE))
-beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()</code></pre>
-<pre><code>Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
-<pre><code>Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
+beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 2
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 3
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 4
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in read.table(x, header = TRUE, stringsAsFactors = FALSE): line 5
+appears to contain embedded nulls</code></pre>
+<pre><code>Warning in scan(file = file, what = what, sep = sep, quote = quote, dec =
+dec, : embedded nul(s) found in input</code></pre>
+<pre class="r"><code>beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()
 
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector
-
-Warning in bind_rows_(x, .id): binding character and factor vector,
-coercing into character vector</code></pre>
-<pre class="r"><code>beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
+beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
                           inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;%
                           inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;%
-                          rename(n_samples_gtex=sample_size)</code></pre>
-<pre><code>Warning: Column `phenotype` joining factor and character vector, coercing
-into character vector</code></pre>
-<pre class="r"><code>phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+                          rename(n_samples_gtex=sample_size)
+
+phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
 beta_gene_variance_df_$phenotype &lt;- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;phenotype&quot;]$phenotype)
 beta_gene_variance_df_$new_Phenotype &lt;- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;new_Phenotype&quot;]$new_Phenotype)</code></pre>
 <pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
@@ -3347,13 +3423,86 @@ ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
 ggp &lt;- ggp + xlab(&quot;phenotype&quot;) + ylab(&quot;var_beta_gene&quot;)
 ggp</code></pre>
 <p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
-<!---
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/85e6e665e79798ad7976e773783980ab0a406e94/docs/figure/miscellaneous_statistics.Rmd/unnamed-chunk-13-1.png" target="_blank">85e6e66</a>
+</td>
+<td>
+rbonazzola
+</td>
+<td>
+2019-04-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>MASHR with effect sizes</p>
+<pre class="r"><code>summary_dir &lt;- &quot;output/lmm/lme4_model_4&quot;
+beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))
+beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()
+
+beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
+                          inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;%
+                          inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;%
+                          rename(n_samples_gtex=sample_size)
+
+phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+beta_gene_variance_df_$phenotype &lt;- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;phenotype&quot;]$phenotype)
+beta_gene_variance_df_$new_Phenotype &lt;- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;new_Phenotype&quot;]$new_Phenotype)</code></pre>
+<pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp &lt;- ggp + geom_boxplot() + theme_bw()
+ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp &lt;- ggp + xlab(&quot;phenotype&quot;) + ylab(&quot;var_beta_gene&quot;)
+ggp</code></pre>
+<p><img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>MASHR with zscores</p>
+<pre class="r"><code>summary_dir &lt;- &quot;output/lmm/lme4_model_5&quot;
+beta_gene_variance_df_ &lt;- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))
+beta_gene_variance_df_ &lt;- bind_rows(beta_gene_variance_df_) %&gt;% suppressWarnings()
+
+beta_gene_variance_df_ &lt;- beta_gene_variance_df_ %&gt;%
+                          inner_join(gwas_metadata, by=&quot;phenotype&quot;) %&gt;%
+                          inner_join(gtex_tissue_metadata, by=&quot;tissue&quot;) %&gt;%
+                          rename(n_samples_gtex=sample_size)
+
+phenotype &lt;- beta_gene_variance_df_ %&gt;% group_by(phenotype) %&gt;% summarise(median(var_beta_gene)) %&gt;% inner_join(gwas_metadata %&gt;% select(-Deflation), by=&quot;phenotype&quot;)
+beta_gene_variance_df_$phenotype &lt;- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;phenotype&quot;]$phenotype)
+beta_gene_variance_df_$new_Phenotype &lt;- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), &quot;new_Phenotype&quot;]$new_Phenotype)</code></pre>
+<pre class="r"><code>ggp &lt;- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp &lt;- ggp + geom_boxplot() + theme_bw()
+ggp &lt;- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp &lt;- ggp + xlab(&quot;phenotype&quot;) + ylab(&quot;var_beta_gene&quot;)
+ggp</code></pre>
+<img src="figure/miscellaneous_statistics.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /> <!---
 query <- glue::glue("SELECT  FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px 
                      WHERE pvalue < {pval_threshold_px}")
 df <- query_exec(query, project=predixcan_tbl$project, max_pages = Inf)
 df <- df %>% filter(phenotype %in% selected_phenotypes)
--->
-<br> <br>
+--> <br> <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
 <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information

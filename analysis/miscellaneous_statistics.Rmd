@@ -1,4 +1,11 @@
 ---
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+---
 title: "Miscellaneous statistics for the GTEx-GWAS paper"
 output:
   html_document: default
@@ -32,6 +39,10 @@ mild_deflation_phenotypes <- gwas_deflation_status %>% filter(Deflation == MILD_
 gwas_metadata <- gtex_gwas_metadata() %>% 
                  rename(phenotype="Tag") %>% 
                  select(phenotype, new_Phenotype, Category, Deflation)
+
+gtex_tissue_metadata <- basicQuery(gtex_tissue_metadata_tbl) %>% 
+                        select(tissue, v8_all, tissue_abbrv) %>% 
+                        rename(sample_size=v8_all)
 ```
 **`r length(selected_phenotypes)` phenotypes were selected for analysis. From the rest, `r length(strong_deflation_phenotypes)` GWAS showed strong deflation after imputation, whereas `r length(mild_deflation_phenotypes)` presented mild deflation.**
 
@@ -300,6 +311,7 @@ The following plots represent:
 * Among those, the ones with a MultiXcan-significant gene. The p-value threshold used was 0.05/`r as.integer(0.05/attr(counts.per.ldblock, "mx_pval_thr"))`.
 * The number of regions with a gene that is both MultiXcan-significant and Enloc-colocalized. The threshold for Enloc's RCP was `r attr(counts.per.ldblock, "rcp_thr")`
 
+
 ```{r ldblock_counts_fig1, fig.width=10, fig.asp=0.8, echo=FALSE}
 GWAS_COUNT_THR <- 10 # discard traits with less than this number of GWAS hits
 counts.per.ldblock_ <- counts.per.ldblock %>% filter(gwas_counts > GWAS_COUNT_THR)
@@ -342,14 +354,11 @@ pp
 ```{r ttest_prim_vs_sec_, echo=FALSE}
 # for the script to generate the file below, see t_test_primary_vs_secondary.R
 t.test_df <- readRDS("output/t_test_primary_vs_secondary.rds")
-tissue_metadata <- get_gtex_tissue_metadata() %>%
-                   select(tissue, v8_all, tissue_abbrv) %>%
-                   rename(sample_size=v8_all)
 
-df <- inner_join(t.test_df, tissue_metadata, by="tissue") %>%
+df <- inner_join(t.test_df, gtex_tissue_metadata, by="tissue") %>%
       inner_join(gwas_metadata, by="phenotype") %>% suppressWarnings()
 
-df$tissue <- factor(df$tissue, levels = tissue_metadata[order(tissue_metadata$sample_size), "tissue"])
+df$tissue <- factor(df$tissue, levels = gtex_tissue_metadata[order(gtex_tissue_metadata$sample_size), "tissue"])
 
 phenotype <- df %>% group_by(phenotype) %>% summarise(median(t.test_pvalue))
 df$phenotype <- factor(df$phenotype, levels = phenotype[order(-phenotype$`median(t.test_pvalue)`), "phenotype"]$phenotype)
@@ -388,10 +397,202 @@ ggp4
 
 
 ### How does variance of gene effects vary across traits?
-```{r}
+```{r variance_beta_gene}
+beta_gene_variance_df <- readRDS("output/beta_gene_variance.rds")
+beta_gene_variance_df <- beta_gene_variance_df %>% mutate(beta_gene_var_norm=var_beta_gene/var_delta)
+phenotype <- beta_gene_variance_df %>% group_by(phenotype) %>% summarise(median(var_beta_gene)) %>% inner_join(gwas_metadata %>% select(-Deflation), by="phenotype")
+beta_gene_variance_df <- beta_gene_variance_df %>% inner_join(gwas_metadata, by="phenotype") %>% inner_join(gtex_tissue_metadata, by="tissue") %>% rename(n_samples_gtex=sample_size)
+beta_gene_variance_df$phenotype <- factor(beta_gene_variance_df$phenotype, levels = phenotype[order(-phenotype$`median(var_beta_gene)`), "phenotype"]$phenotype)
+beta_gene_variance_df$new_Phenotype <- factor(beta_gene_variance_df$new_Phenotype, levels = phenotype[order(-phenotype$`median(var_beta_gene)`), "new_Phenotype"]$new_Phenotype)
+
+ggp <- ggplot(beta_gene_variance_df, aes(x=new_Phenotype, y=var_beta_gene))
+ggp <- ggp + geom_boxplot() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
 
 ```
 
+```{r variance_beta_gene_fig1, fig.width = 10, fig.asp = 0.7}
+ggp
+```
+
+```{r variance_beta_gene_fig2, fig.width = 10, fig.asp = 1.8}
+ggp <- ggp + facet_wrap(Category ~ ., drop = T, scales="free_x", nrow = 3)
+ggp
+```
+
+```{r}
+knitr::kable(beta_gene_variance_df %>% select(phenotype, tissue, var_beta_gene) %>% group_by(phenotype) %>% top_n(3, wt=var_beta_gene) %>% dplyr::arrange(phenotype, -var_beta_gene))
+```
+
+Some observations:
+
+* The tissue with largest $\text{Var}(\beta_{\text{gene}})$ for the blood cell count traits is whole blood (except for red blood cells where it is heart left ventricle).
+* The tissue with largest $\text{Var}(\beta_{\text{gene}})$ for rheumatoid arthritis is liver. There is evidence of a [connection between RA and liver damage](https://www.ncbi.nlm.nih.gov/pubmed/29627896).
+* The values for height from GIANT are not reproduced in UKB.
+
+
+### Fraction of variance in GWAS effect size explained by variance in eQTL effect size
+$$\delta_{\text{GWAS}}=\delta_0+\alpha\times \text{LDScore} + \beta_{\text{gene}}\times \gamma_{\text{eQTL}}+\epsilon$$
+
+$$\text{Var}(\delta_{\text{GWAS}}-\alpha\times \text{LDScore}-\delta_0)=\text{Var}(\delta')=\underbrace{\text{Var}(\beta)\text{Var}(\gamma_{\text{eQTL}})}_{=:V}+\text{Var}(\epsilon)$$
+$$r:=\frac{V}{\text{Var}(\delta')}=1-\frac{\text{Var}(\epsilon)}{\text{Var}(\delta')}$$
+
+```{r fraction_explained}
+beta_gene_variance_df_ <- readRDS("output/beta_gene_variance.rds")
+
+phenotype <- beta_gene_variance_df_ %>% 
+             group_by(phenotype) %>%
+             summarise(median(var_beta_gene)) %>%
+             inner_join(gwas_metadata %>% select(-Deflation), by="phenotype")
+
+beta_gene_variance_df_ <- beta_gene_variance_df_ %>%
+                          inner_join(gwas_metadata, by="phenotype") %>%
+                          inner_join(gtex_tissue_metadata, by="tissue") %>%
+                          rename(n_samples_gtex=sample_size)
+
+beta_gene_variance_df_ <- beta_gene_variance_df_ %>% filter(n_samples_gtex > 400)
+phenotype <- beta_gene_variance_df_ %>% group_by(phenotype) %>% summarise(median(fraction_explained)) %>% inner_join(gwas_metadata %>% select(-Deflation), by="phenotype")
+beta_gene_variance_df_$phenotype <- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(fraction_explained)`), "phenotype"]$phenotype)
+beta_gene_variance_df_$new_Phenotype <- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(fraction_explained)`), "new_Phenotype"]$new_Phenotype)
+```
+
+```{r, fig.width = 10, fig.asp = 0.7}
+ggp <- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=fraction_explained))
+ggp <- ggp + geom_boxplot() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp
+```
+
+```{r, fig.width = 10, fig.asp = 1.8}
+ggp <- ggp + facet_wrap(Category ~ ., drop = T, scales="free_x", nrow = 3)
+ggp
+```
+
+
+We note that comparisons across tissues within a single trait are not meaningful because variance in $\gamma$ is overestimated for tissues with lower sample sizes.
+Fraction of $\delta'$ explained by expression is thus overestimated as well in these tissues.
+
+```{r}
+ggp <- ggplot(beta_gene_variance_df, aes(x=n_samples_gtex, y=fraction_explained)) + geom_smooth() + theme_bw()
+ggp
+```
+
+
+```{r}
+ggp <- ggplot(beta_gene_variance_df %>%
+              group_by(tissue) %>% 
+              summarise(mean_var_gamma=mean(var_gamma)) %>%
+              inner_join(gtex_tissue_metadata %>% select("tissue", "sample_size") %>% rename(n_samples_gtex=sample_size), by="tissue"),
+              aes(x=n_samples_gtex, y=mean_var_gamma)) +
+       geom_point() + theme_bw()
+ggp
+```
+
+
+```{r}
+knitr::kable(beta_gene_variance_df_ %>% select(phenotype, tissue, fraction_explained) %>% group_by(phenotype) %>% top_n(1, wt=fraction_explained))
+```
+
+```{r}
+summary_dir <- "output/lmm/lme4_model_2"
+beta_gene_variance_df_ <- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))
+beta_gene_variance_df_ <- bind_rows(beta_gene_variance_df_) %>% suppressWarnings()
+
+beta_gene_variance_df_ <- beta_gene_variance_df_ %>%
+                          inner_join(gwas_metadata, by="phenotype") %>%
+                          inner_join(gtex_tissue_metadata, by="tissue") %>%
+                          rename(n_samples_gtex=sample_size)
+
+phenotype <- beta_gene_variance_df_ %>% group_by(phenotype) %>% summarise(median(var_beta_gene)) %>% inner_join(gwas_metadata %>% select(-Deflation), by="phenotype")
+beta_gene_variance_df_$phenotype <- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "phenotype"]$phenotype)
+beta_gene_variance_df_$new_Phenotype <- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "new_Phenotype"]$new_Phenotype)
+
+```
+
+```{r, fig.width = 10, fig.asp = 0.7}
+ggp <- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp <- ggp + geom_boxplot() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp <- ggp + xlab("phenotype") + ylab("fraction of beta_gwas variance explained by beta_eqtl variance")
+ggp
+```
+
+
+```{r}
+summary_dir <- "output/lmm/lme4_model_3"
+beta_gene_variance_df_ <- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))
+beta_gene_variance_df_ <- bind_rows(beta_gene_variance_df_) %>% suppressWarnings()
+
+beta_gene_variance_df_ <- beta_gene_variance_df_ %>%
+                          inner_join(gwas_metadata, by="phenotype") %>%
+                          inner_join(gtex_tissue_metadata, by="tissue") %>%
+                          rename(n_samples_gtex=sample_size)
+
+phenotype <- beta_gene_variance_df_ %>% group_by(phenotype) %>% summarise(median(var_beta_gene)) %>% inner_join(gwas_metadata %>% select(-Deflation), by="phenotype")
+beta_gene_variance_df_$phenotype <- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "phenotype"]$phenotype)
+beta_gene_variance_df_$new_Phenotype <- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "new_Phenotype"]$new_Phenotype)
+
+```
+
+```{r, fig.width = 10, fig.asp = 0.7}
+ggp <- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp <- ggp + geom_boxplot() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp <- ggp + xlab("phenotype") + ylab("var_beta_gene")
+ggp
+```
+
+
+MASHR with effect sizes
+```{r}
+summary_dir <- "output/lmm/lme4_model_6"
+beta_gene_variance_df_ <- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))
+beta_gene_variance_df_ <- bind_rows(beta_gene_variance_df_) %>% suppressWarnings()
+
+beta_gene_variance_df_ <- beta_gene_variance_df_ %>%
+                          inner_join(gwas_metadata, by="phenotype") %>%
+                          inner_join(gtex_tissue_metadata, by="tissue") %>%
+                          rename(n_samples_gtex=sample_size)
+
+phenotype <- beta_gene_variance_df_ %>% group_by(phenotype) %>% summarise(median(var_beta_gene)) %>% inner_join(gwas_metadata %>% select(-Deflation), by="phenotype")
+beta_gene_variance_df_$phenotype <- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "phenotype"]$phenotype)
+beta_gene_variance_df_$new_Phenotype <- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "new_Phenotype"]$new_Phenotype)
+
+```
+
+```{r, fig.width = 10, fig.asp = 0.7}
+ggp <- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp <- ggp + geom_boxplot() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp <- ggp + xlab("phenotype") + ylab("var_beta_gene")
+ggp
+```
+
+
+MASHR with zscores
+```{r}
+summary_dir <- "output/lmm/lme4_model_5"
+beta_gene_variance_df_ <- lapply(file.path(summary_dir, list.files(summary_dir)), function(x) read.table(x, header=TRUE, stringsAsFactors = FALSE))
+beta_gene_variance_df_ <- bind_rows(beta_gene_variance_df_) %>% suppressWarnings()
+
+beta_gene_variance_df_ <- beta_gene_variance_df_ %>%
+                          inner_join(gwas_metadata, by="phenotype") %>%
+                          inner_join(gtex_tissue_metadata, by="tissue") %>%
+                          rename(n_samples_gtex=sample_size)
+
+phenotype <- beta_gene_variance_df_ %>% group_by(phenotype) %>% summarise(median(var_beta_gene)) %>% inner_join(gwas_metadata %>% select(-Deflation), by="phenotype")
+beta_gene_variance_df_$phenotype <- factor(beta_gene_variance_df_$phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "phenotype"]$phenotype)
+beta_gene_variance_df_$new_Phenotype <- factor(beta_gene_variance_df_$new_Phenotype, levels=phenotype[order(-phenotype$`median(var_beta_gene)`), "new_Phenotype"]$new_Phenotype)
+
+```
+
+```{r, fig.width = 10, fig.asp = 0.7}
+ggp <- ggplot(beta_gene_variance_df_, aes(x=new_Phenotype, y=var_beta_gene))
+ggp <- ggp + geom_boxplot() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp <- ggp + xlab("phenotype") + ylab("var_beta_gene")
+ggp
+```
 <!---
 query <- glue::glue("SELECT  FROM {predixcan_tbl$dataset_name}.{predixcan_tbl$table_name} as px 
                      WHERE pvalue < {pval_threshold_px}")
