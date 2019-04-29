@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#PBS -S /bin/bash
+#PBS -l walltime=1:00:00
+#PBS -l nodes=1:ppn=4
+#PBS -e err/${PBS_JOBNAME}.e${PBS_JOBID}
+#PBS -o log/${PBS_JOBNAME}.o${PBS_JOBID}
+
+if [ ${PBS_O_WORKDIR} ]; then
+  cd ${PBS_O_WORKDIR}
+fi
+
+module load gcc/6.2.0
+module load R/3.4.1
+
+FILE_BASENAME=$(basename ${FILE})
+
+zcat ${DIR}/${FILE_BASENAME} | cut -f8,9 > ${FILE_BASENAME%%.txt.gz}_beta_and_se.txt
+Rscript compute_var_gamma.R --file ${DIR}/$FILE_BASENAME --preprocessed_files_dir ${DIR} --output_dir "var_gamma"

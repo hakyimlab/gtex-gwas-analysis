@@ -1,0 +1,169 @@
+$$
+\DeclareMathOperator*{\var}{\text{Var}}
+\DeclareMathOperator*{\sd}{\text{sd}}
+$$
+```{r import}
+# install.packages("bigrquery")
+suppressPackageStartupMessages(library(bigrquery))
+
+# Script with ancillary functions to perform queries to BigQuery
+suppressPackageStartupMessages(source("code/BigQuery.R", chdir = TRUE))
+```
+
+```{r}
+gwas_metadata <- gtex_gwas_metadata() %>% 
+                 rename(phenotype="Tag") %>% 
+                 select(phenotype, new_Phenotype, Category, Deflation)
+
+gtex_tissue_metadata <- basicQuery(gtex_tissue_metadata_tbl) %>% 
+                        select(tissue, v8_all, tissue_abbrv) %>% 
+                        rename(sample_size=v8_all)
+```
+
+## Procedure to estimate regulability
+
+$$
+\begin{equation}
+\text{se}^2(\tilde{\delta}_l)=\frac{\sigma^2_{\epsilon}}{n\var({X_l})}= \frac{(1-r_l^2)\sigma^2_Y}{n\var(X_l)}\approx\frac{\sigma^2_{Y}}{n\var({X_l})},
+\end{equation}
+$$
+$$
+\begin{equation}
+\hat{\var}(X_l)=2\hat{f}_l(1-\hat{f}_l).
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\tilde{z}_{\delta_l}=
+\frac{\tilde{\delta}_l}{\text{se}(\tilde{\delta}_l)}=
+\tilde{\delta}_l\frac{\sd(X_l)}{\sigma_\epsilon/\sqrt{n}} \approx
+\bigg(\frac{\sd(X_l)}{\sigma_Y/\sqrt{n}}\bigg)\tilde{\delta}_l
+\end{equation}
+$$
+$$
+\begin{equation}
+\delta_l:=\frac{\tilde{z}_{\delta_l}}{\sd(X_l)\sqrt{n}}\approx\frac{\tilde{\delta}_l}{\sigma_Y}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\mathcal{R}:=\frac{\var\Big(\sum_{l,g}\beta_g \gamma_{lg} X_l\Big)}{\var(Y)}
+\end{equation}
+$$
+Assuming that the $\beta$ and the $\gamma$ coefficients are independent and have mean zero leads to:
+
+$$
+\begin{equation}
+\mathcal{R}=\frac{\var(\beta\gamma)\sum_{l,g}\var(X_l)}{\var(Y)}
+\end{equation}
+$$
+Regulability was estimated this way, where:
+$$
+\var(\beta\gamma)=\var(\hat{\beta}\hat{\gamma})-\var(\beta\epsilon_{\gamma})-\var(\epsilon_{\beta}\gamma)-\var({\epsilon_{\gamma}\epsilon_{\beta}})
+$$
+We neglect the last two terms since lme4 does not provides estimates of $\epsilon_\beta$.
+
+## Adjust of $\gamma$ for tissue sample size
+
+We observe that $\var{\hat{\gamma}}$ is inflated for tissues with less sample size. We hypothesize that the origin of this inflation is the larger standard errors of the estimates. Therefore, we adjust for this in the following way:
+
+$$
+\begin{equation}
+\var{\hat{\gamma}}=\var{\gamma}+\var{\epsilon_\gamma}\leadsto\var{\gamma}=\var{\hat{\gamma}}-\var{\epsilon_\gamma}
+\end{equation}
+$$
+
+We expect the thus estimated $\var{\gamma}$ to be approximately the same across tissues.
+
+```{r gamma_adjusting, cache=TRUE}
+rows <- vector(mode="list", length=0)
+minimum_eqtl_number <- 7427 # Number of eQTLs for Kidney_Cortex
+df_all_snps <- read.table("data/kk.txt", header=TRUE) %>% rename(var_gamma_all="var_gamma", var_se_all="var_se")
+
+for (file in list.files("data/dapg_variants/eqtl_data", full.names = TRUE)) {
+  tissue <- str_match(pattern = ".*/DAPG_pip_gt_0.01-(.*)-independent_eQTL.txt", file)[2]
+  sample_size <- gtex_tissue_metadata[gtex_tissue_metadata$tissue == tissue, "sample_size"]
+  df <- read.table(file, header=TRUE, stringsAsFactors=FALSE)
+
+  df_ <- df %>% top_n(minimum_eqtl_number, wt = abs(slope/slope_se))
+  
+  print(c(df_all_snps[df_all_snps$tissue==tissue, "var_gamma_all"], df_all_snps[df_all_snps$tissue==tissue, "var_gamma_all"] - df_all_snps[df_all_snps$tissue==tissue, "var_se_all"])        )
+  
+  # add one row for var(gamma), one for var(gamma_hat)
+  new_row <- data.frame("tissue" = rep(tissue, 2), 
+                        "sample_size" = rep(sample_size, 2), 
+                        "var_gamma" = c(var(df$slope), var(df$slope)-sum(df$slope_se**2)/nrow(df)),
+                        "var_gamma_top_n" = c(var(df_$slope), var(df_$slope)-sum(df_$slope_se**2)/nrow(df_)),
+                        "n_snps"=nrow(df),
+                        "var_gamma_all"=c(df_all_snps[df_all_snps$tissue==tissue, "var_gamma_all"], df_all_snps[df_all_snps$tissue==tissue, "var_gamma_all"] - df_all_snps[df_all_snps$tissue==tissue, "var_se_all"]),
+                        "which" = c("var(gamma_hat)", "var(gamma)"))
+  rows <- c(rows, list(new_row))
+}
+
+var_gamma <- bind_rows(rows)
+
+# var_gamma <- var_gamma %>% inner_join(df, by="tissue")
+```
+
+```{r}
+ggp <- ggplot(var_gamma, aes(x=sample_size, y=var_gamma, color=which))
+ggp <- ggp + geom_point()
+ggp <- ggp + theme_bw()
+ggp <- ggp + xlab("Sample size") + ylab("var(gamma)")
+ggp <- ggtitle("")
+```
+
+```{r}
+ggp <- ggplot(var_gamma %>% filter(abs(var_gamma_all) < 1), aes(x=sample_size, y=var_gamma_all, color=which))
+ggp <- ggp + geom_point()
+ggp <- ggp + theme_bw()
+ggp <- ggp + xlab("Sample size") + ylab("var(gamma)")
+ggp
+```
+
+```{r}
+ggp <- ggplot(var_gamma %>% filter(abs(var_gamma_all) < 1 & which == "var(gamma)"), aes(x=sample_size, y=var_gamma_all, color=which))
+ggp <- ggp + geom_point()
+ggp <- ggp + theme_bw()
+ggp <- ggp + xlab("Sample size") + ylab("var(gamma)")
+ggp
+```
+
+Actually, DAP-G selects less SNPs for the tissues with smaller sample sizes. For these, the effect sizes tend to be larger.
+
+```{r}
+ggp <- ggplot(var_gamma, aes(x=sample_size, y=n_snps))
+ggp <- ggp + geom_point()
+ggp <- ggp + theme_bw()
+ggp <- ggp + xlab("Sample size") + ylab("# of SNPs selected")
+ggp
+```
+
+
+```{r}
+ggp <- ggplot(var_gamma, aes(x=sample_size, y=n_snps))
+ggp <- ggp + geom_point()
+ggp <- ggp + theme_bw()
+ggp <- ggp + xlab("Sample size") + ylab("# of SNPs selected")
+ggp
+```
+
+
+```{r}
+regulability_df <- readRDS("output/estimated_regulability.rds") %>% filter(tissue == "Whole_Blood") 
+regulability_df <- regulability_df %>% inner_join(gwas_metadata %>% select(phenotype, new_Phenotype), by="phenotype")
+regulability_df$phenotype <- factor(regulability_df$phenotype, levels=regulability_df[order(-regulability_df$var_gamma), "phenotype"])
+regulability_df$new_Phenotype <- factor(regulability_df$new_Phenotype, levels=regulability_df[order(-regulability_df$var_gamma), "new_Phenotype"])
+
+ggp <- ggplot(regulability_df, aes(x=new_Phenotype, y=var_gamma))
+ggp <- ggp + geom_point() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1)) + ylab("regulability (=var(T)/var(Y))")
+
+ggp <- ggp + scale_y_log10()
+```
+
+```{r, fig.width = 10, fig.asp = 0.7}
+ggp
+```
