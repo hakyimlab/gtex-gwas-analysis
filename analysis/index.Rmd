@@ -7,3 +7,5 @@ output:
 ---
 
 Welcome to my research website.
+
+[GWAS catalog](gwas_catalog.html)
