@@ -12,6 +12,14 @@ library(reshape2)
 library(ggplot2)
 ```
 
+
+# Analysis pipeline
+
+First of all, we extracted all GWAS catalog variants which were identified as GTEx v8 variant (by matching rsID in lookup table). These variants were defined as **GWAS catalog variants** in this analysis. Next, we defined a variant to be **cis-eVariant** if it was identified as cis-eQTL in at least one gene and one tissue (at FDR < 0.05). Similarly, we defined a variant to be **cis-sVariant** if it was identified as cis-sQTL in at least one cluster (only one cluster was used for each gene) and one tissue (at FDR < 0.05). In the same manner, we defined a variant to be **trans-eVariant** if it was identified as trans-eQTL in at least one gene one tissue (at FDR < 0.1). Note that **cis-eVariant**, **cis-sVariant**, and **trans-eVariant** were counted in **signif** entry in the following 2-by-2 table.
+
+We obtained the list of variants that were tested for cis-eQTL and cis-sQTL by scanning through the files reporting all tested variant-gene/cluster pairs. We obtained the list of variants that were tested for trans-eQTL by scanning through the files in `trans-eQTL/variant_list/` which contained the list of variants included in trans-eQTL testing by tissue. Note that these variant lists were counted in **tested** entry in the following 2-by-2 table.
+
+
 # About loaded data.frame
 
 The script to generate the input data.frame can be found [here](https://bitbucket.org/yanyul/rotation-at-imlab/src/master/analysis/annotate_gwas_catalog/summary/output/gen_table_sub_new.R)
@@ -82,9 +90,9 @@ ngwas = df$ngwas
 # Count table
 
 ```{r}
-eqtl %>% pander(caption = 'cis-eQTL')
-sqtl %>% pander(caption = 'cis-sQTL')
-trans_eqtl %>% pander(caption = 'trans-eQTL')
+eqtl %>% pander(caption = 'cis-eVariant')
+sqtl %>% pander(caption = 'cis-sVariant')
+trans_eqtl %>% pander(caption = 'trans-eVariant')
 ```
 
 # QTL rate: GWAS catalog vs. overall
@@ -93,7 +101,7 @@ trans_eqtl %>% pander(caption = 'trans-eQTL')
 rate = eqtl %>% mutate(rate = signif / tested, qtl = 'eqtl') 
 rate = rbind(rate, sqtl %>% mutate(rate = signif / tested, qtl = 'sqtl'))
 rate = rbind(rate, trans_eqtl %>% mutate(rate = signif / tested, qtl = 'trans_eqtl'))
-rate %>% ggplot() + geom_bar(aes(x = type, y = rate, fill = type), stat = 'identity') + facet_wrap(~qtl, scales = 'free_y') + ggtitle('Significant QTL rate')
+rate %>% ggplot() + geom_bar(aes(x = type, y = rate, fill = type), stat = 'identity') + facet_wrap(~qtl, scales = 'free_y') + ggtitle('Significant xVariant rate')
 ```
 
 # Test rate (percentage of GWAS catalog variants are tested for QTL)
