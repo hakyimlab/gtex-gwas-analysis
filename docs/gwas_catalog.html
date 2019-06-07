@@ -520,10 +520,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree4a0996580dd8791f422a7bfda12c863a3e2790fdtargetblank4a09965a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/4a0996580dd8791f422a7bfda12c863a3e2790fd" target="_blank">4a09965</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree00636edee784b9ce2354ededde45555efae13976targetblank00636eda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/00636edee784b9ce2354ededde45555efae13976" target="_blank">00636ed</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree4a0996580dd8791f422a7bfda12c863a3e2790fdtargetblank4a09965a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree00636edee784b9ce2354ededde45555efae13976targetblank00636eda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -571,6 +571,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/00636edee784b9ce2354ededde45555efae13976/analysis/gwas_catalog.Rmd" target="_blank">00636ed</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+<td>
+workflowr::wflow_publish(“gwas_catalog.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/127938e7885efcc88819b7dbd87a43de6829f307/docs/gwas_catalog.html" target="_blank">127938e</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -877,8 +911,8 @@ ngwas = df$ngwas</code></pre>
 </tbody>
 </table>
 </div>
-<div id="qtl-rate-gwas-catalog-vs.overall" class="section level1">
-<h1>QTL rate: GWAS catalog vs. overall</h1>
+<div id="xvariant-rate-gwas-catalog-vs.overall" class="section level1">
+<h1>xVariant rate: GWAS catalog vs. overall</h1>
 <pre class="r"><code>rate = eqtl %&gt;% mutate(rate = signif / tested, qtl = &#39;eqtl&#39;) 
 rate = rbind(rate, sqtl %&gt;% mutate(rate = signif / tested, qtl = &#39;sqtl&#39;))
 rate = rbind(rate, trans_eqtl %&gt;% mutate(rate = signif / tested, qtl = &#39;trans_eqtl&#39;))
@@ -906,6 +940,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/127938e7885efcc88819b7dbd87a43de6829f307/docs/figure/gwas_catalog.Rmd/unnamed-chunk-2-1.png" target="_blank">127938e</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/18cfb9654de8f6d6ac8c202fae40081745b47de3/docs/figure/gwas_catalog.Rmd/unnamed-chunk-2-1.png" target="_blank">18cfb96</a>
