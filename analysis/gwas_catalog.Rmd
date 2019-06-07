@@ -95,7 +95,7 @@ sqtl %>% pander(caption = 'cis-sVariant')
 trans_eqtl %>% pander(caption = 'trans-eVariant')
 ```
 
-# QTL rate: GWAS catalog vs. overall
+# xVariant rate: GWAS catalog vs. overall
 
 ```{r}
 rate = eqtl %>% mutate(rate = signif / tested, qtl = 'eqtl') 
