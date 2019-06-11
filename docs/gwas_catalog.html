@@ -423,7 +423,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -432,7 +432,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#report"> Report <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -441,31 +441,31 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-03-26
+<strong>Last updated:</strong> 2019-06-11
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>gtex-gwas-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.2.0). The <em>Report</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.3.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
-<div id="report" class="tab-pane fade">
+<div id="checks" class="tab-pane fade">
 <div id="workflowr-checks" class="panel-group">
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -520,23 +520,23 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree0fc0a8f1ea6191e44c39417728b3885ba0d8fa0atargetblank0fc0a8fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/0fc0a8f1ea6191e44c39417728b3885ba0d8fa0a" target="_blank">0fc0a8f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreee6af0e411568c85ef12f71ac9e6997144a025101targetblanke6af0e4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/e6af0e411568c85ef12f71ac9e6997144a025101" target="_blank">e6af0e4</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree0fc0a8f1ea6191e44c39417728b3885ba0d8fa0atargetblank0fc0a8fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreee6af0e411568c85ef12f71ac9e6997144a025101targetblanke6af0e4a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .Rhistory
+    Ignored:    .DS_Store
     Ignored:    .Rproj.user/
-    Ignored:    .idea/
-    Ignored:    analysis/count_detections_cache/
+    Ignored:    data/.DS_Store
+    Ignored:    docs/.DS_Store
 
 Unstaged changes:
-    Modified:   analysis/count_detections.Rmd
+    Modified:   analysis/gwas_catalog.Rmd
 
 </code></pre>
 <p>
@@ -575,6 +575,159 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/e6af0e411568c85ef12f71ac9e6997144a025101/analysis/gwas_catalog.Rmd" target="_blank">e6af0e4</a>
+</td>
+<td>
+HKI imac 012
+</td>
+<td>
+2019-06-11
+</td>
+<td>
+gwas percentage
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/e6af0e411568c85ef12f71ac9e6997144a025101/docs/gwas_catalog.html" target="_blank">e6af0e4</a>
+</td>
+<td>
+HKI imac 012
+</td>
+<td>
+2019-06-11
+</td>
+<td>
+gwas percentage
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/9755ce0139979b5008980f9e5b35281459bd5ed5/docs/gwas_catalog.html" target="_blank">9755ce0</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/00636edee784b9ce2354ededde45555efae13976/analysis/gwas_catalog.Rmd" target="_blank">00636ed</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+<td>
+workflowr::wflow_publish(“gwas_catalog.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/127938e7885efcc88819b7dbd87a43de6829f307/docs/gwas_catalog.html" target="_blank">127938e</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/4a0996580dd8791f422a7bfda12c863a3e2790fd/analysis/gwas_catalog.Rmd" target="_blank">4a09965</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+<td>
+workflowr::wflow_publish(“gwas_catalog.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/18cfb9654de8f6d6ac8c202fae40081745b47de3/analysis/gwas_catalog.Rmd" target="_blank">18cfb96</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-05-02
+</td>
+<td>
+updated gwas catalog
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/18cfb9654de8f6d6ac8c202fae40081745b47de3/docs/gwas_catalog.html" target="_blank">18cfb96</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-05-02
+</td>
+<td>
+updated gwas catalog
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/d47dab0507e6bb08ae3fd20a1ee5dc0d2adc01fd/docs/gwas_catalog.html" target="_blank">d47dab0</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-03-26
+</td>
+<td>
+Updated workflowr site pages.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -660,107 +813,208 @@ Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>The following objects are masked from &#39;package:base&#39;:
 
     intersect, setdiff, setequal, union</code></pre>
-<div id="load-data.frame" class="section level4">
-<h4>Load data.frame</h4>
-<pre class="r"><code>df = readRDS(&#39;data/gwas_catalog_tables.rds&#39;)
+<pre class="r"><code>library(reshape2)
+library(ggplot2)</code></pre>
+<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 3.5.2</code></pre>
+<div id="analysis-pipeline" class="section level1">
+<h1>Analysis pipeline</h1>
+<p>First of all, we extracted all GWAS catalog variants which were identified as GTEx v8 variant (by matching rsID in lookup table). These variants were defined as <strong>GWAS catalog variants</strong> in this analysis. Next, we defined a variant to be <strong>cis-eVariant</strong> if it was identified as cis-eQTL in at least one gene and one tissue (at FDR &lt; 0.05). Similarly, we defined a variant to be <strong>cis-sVariant</strong> if it was identified as cis-sQTL in at least one cluster (only one cluster was used for each gene) and one tissue (at FDR &lt; 0.05). In the same manner, we defined a variant to be <strong>trans-eVariant</strong> if it was identified as trans-eQTL in at least one gene one tissue (at FDR &lt; 0.1). Note that <strong>cis-eVariant</strong>, <strong>cis-sVariant</strong>, and <strong>trans-eVariant</strong> were counted in <strong>signif</strong> entry in the following 2-by-2 table.</p>
+<p>We obtained the list of variants that were tested for cis-eQTL and cis-sQTL by scanning through the files reporting all tested variant-gene/cluster pairs. We obtained the list of variants that were tested for trans-eQTL by scanning through the files in <code>trans-eQTL/variant_list/</code> which contained the list of variants included in trans-eQTL testing by tissue. Note that these variant lists were counted in <strong>tested</strong> entry in the following 2-by-2 table.</p>
+</div>
+<div id="about-loaded-data.frame" class="section level1">
+<h1>About loaded data.frame</h1>
+<p>The script to generate the input data.frame can be found <a href="https://bitbucket.org/yanyul/rotation-at-imlab/src/master/analysis/annotate_gwas_catalog/summary/output/gen_table_sub_new.R">here</a></p>
+<p>The full script is shown below</p>
+<pre><code>library(data.table)
+options(datatable.fread.datatable = F)
+library(dplyr)
+df = readRDS(&#39;tables.rds&#39;)
 df_gwas_gtex_table = df$df_gwas_gtex_table
 df_gwas_table = df$df_gwas_table
-df_signif_eqtl_table = df$df_signif_eqtl_table</code></pre>
-</div>
-<div id="gwas-catalog-in-gtex-v8" class="section level4">
-<h4>GWAS catalog in GTEx V8</h4>
-<pre class="r"><code># Start with GWAS variant
 summary_gwas_variant &lt;- data.frame(gwas_table_idx = 1 : nrow(df_gwas_table), gwas_id = df_gwas_table$rsID)
-
-# Annotate with gtex ID
 summary_gwas_variant$gtex_id &lt;- rep(NA, nrow(df_gwas_table))
 summary_gwas_variant$gtex_id[match(df_gwas_gtex_table$rsID, df_gwas_table$rsID)] &lt;- df_gwas_gtex_table$GTExID
 
-# Annotate with whether it is significant eqtl in at least on tissue
-summary_gwas_variant$signif_eqtl &lt;- rep(FALSE, nrow(df_gwas_table))
-summary_gwas_variant$signif_eqtl[summary_gwas_variant$gtex_id %in% df_signif_eqtl_table$GTExID] &lt;- TRUE
 
-# Summarize
-pander(summary_gwas_variant %&gt;% filter(!duplicated(gwas_id)) %&gt;% mutate(gtex_variant = !is.na(gtex_id), gwas_variant = T) %&gt;% group_by(gwas_variant, gtex_variant, signif_eqtl) %&gt;% summarise(count = n()) %&gt;% ungroup() %&gt;% mutate(gwas_total = sum(count[gwas_variant]), gtex_total = sum(count[gtex_variant]), signif_eqtl_total = sum(count[signif_eqtl])) %&gt;% mutate(tag_rate = gtex_total / gwas_total, signif_eqtl_rate = signif_eqtl_total / gtex_total))</code></pre>
-<table style="width:100%;">
-<caption>Table continues below</caption>
+list_signif_eqtl = fread(&#39;../../output/ALL.signif_eqtl.GTExFDRlt0.05.txt&#39;, header = F)
+list_signif_sqtl = fread(&#39;../../output/ALL.signif_eqtl.GTExSQTLFDRlt0.05.txt&#39;, header = F)
+
+list_tested_eqtl = fread(&#39;../../output/ALL.tested_eqtl.GTExV8TestedEQTL.txt&#39;, header = F)
+list_tested_sqtl = fread(&#39;../../output/ALL.tested_eqtl.GTExV8TestedSQTL.txt&#39;, header = F)
+
+list_tested_trans_eqtl = fread(&#39;../../output/ALL.tested_trans_eqtl.GTExTestedTransEQTL.txt&#39;, header = F) 
+list_signif_trans_eqtl1 = fread(&#39;/gpfs/data/gtex-group/v8/trans-eQTL/trans_egenes/trans_genes_lincRNA_FDR_0.1.tsv&#39;) 
+list_signif_trans_eqtl2 = fread(&#39;/gpfs/data/gtex-group/v8/trans-eQTL/trans_egenes/trans_genes_protein_coding_FDR_0.1.tsv&#39;) 
+list_signif_trans_eqtl = union(list_signif_trans_eqtl1$rsid, list_signif_trans_eqtl2$rsid)
+
+my_summarize = function(gwas_table, tested_list, signif_list) {
+  # table
+  # type  tested  signif
+  # gwas  t_gwas  s_gwas
+  # all   t_all   s_all
+  t_all = length(tested_list)
+  s_all = length(signif_list)
+  gwas = gwas_table %&gt;% filter(!is.na(gtex_id)) %&gt;% filter(!duplicated(gwas_id)) %&gt;% mutate(is_tested = gtex_id %in% tested_list, is_signif = gtex_id %in% signif_list)
+  t_gwas = sum(gwas$is_tested)
+  s_gwas = sum(gwas$is_signif)
+  data.frame(type = c(&#39;gwas&#39;, &#39;all&#39;), tested = c(t_gwas, t_all), signif = c(s_gwas, s_all))
+}
+list_tested_eqtl = list_tested_eqtl$V1
+list_signif_eqtl = list_signif_eqtl$V1
+list_tested_sqtl = list_tested_sqtl$V1
+list_signif_sqtl = list_signif_sqtl$V1
+list_tested_trans_eqtl = list_tested_trans_eqtl$V1
+eqtl = my_summarize(summary_gwas_variant, list_tested_eqtl, list_signif_eqtl)
+sqtl = my_summarize(summary_gwas_variant, list_tested_sqtl, list_signif_sqtl)
+trans_eqtl = my_summarize(summary_gwas_variant, list_tested_trans_eqtl, list_signif_trans_eqtl)
+ngwas = sum(!duplicated(summary_gwas_variant$gwas_id))
+
+
+saveRDS(list(eqtl = eqtl, sqtl = sqtl, trans_eqtl = trans_eqtl, ngwas = ngwas), &#39;table_sub_new.rds&#39;)</code></pre>
+</div>
+<div id="load-data.frame" class="section level1">
+<h1>Load data.frame</h1>
+<pre class="r"><code>df = readRDS(&#39;data/gwas_catalog_tables.rds&#39;)
+eqtl = df$eqtl
+sqtl = df$sqtl
+trans_eqtl = df$trans_eqtl
+ngwas = df$ngwas</code></pre>
+</div>
+<div id="count-table" class="section level1">
+<h1>Count table</h1>
+<pre class="r"><code>eqtl %&gt;% mutate(percent = signif/tested) %&gt;% pander(caption = &#39;cis-eVariant&#39;)</code></pre>
+<table style="width:53%;">
+<caption>cis-eVariant</caption>
 <colgroup>
-<col width="19%" />
-<col width="19%" />
-<col width="17%" />
-<col width="10%" />
-<col width="16%" />
-<col width="16%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center">gwas_variant</th>
-<th align="center">gtex_variant</th>
-<th align="center">signif_eqtl</th>
-<th align="center">count</th>
-<th align="center">gwas_total</th>
-<th align="center">gtex_total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">TRUE</td>
-<td align="center">FALSE</td>
-<td align="center">FALSE</td>
-<td align="center">10663</td>
-<td align="center">54800</td>
-<td align="center">44137</td>
-</tr>
-<tr class="even">
-<td align="center">TRUE</td>
-<td align="center">TRUE</td>
-<td align="center">FALSE</td>
-<td align="center">16318</td>
-<td align="center">54800</td>
-<td align="center">44137</td>
-</tr>
-<tr class="odd">
-<td align="center">TRUE</td>
-<td align="center">TRUE</td>
-<td align="center">TRUE</td>
-<td align="center">27819</td>
-<td align="center">54800</td>
-<td align="center">44137</td>
-</tr>
-</tbody>
-</table>
-<table style="width:68%;">
-<colgroup>
-<col width="27%" />
+<col width="9%" />
 <col width="15%" />
-<col width="25%" />
+<col width="13%" />
+<col width="13%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">signif_eqtl_total</th>
-<th align="center">tag_rate</th>
-<th align="center">signif_eqtl_rate</th>
+<th align="center">type</th>
+<th align="center">tested</th>
+<th align="center">signif</th>
+<th align="center">percent</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td align="center">gwas</td>
+<td align="center">44137</td>
 <td align="center">27819</td>
-<td align="center">0.8054</td>
 <td align="center">0.6303</td>
 </tr>
 <tr class="even">
-<td align="center">27819</td>
-<td align="center">0.8054</td>
-<td align="center">0.6303</td>
-</tr>
-<tr class="odd">
-<td align="center">27819</td>
-<td align="center">0.8054</td>
-<td align="center">0.6303</td>
+<td align="center">all</td>
+<td align="center">10743590</td>
+<td align="center">4632457</td>
+<td align="center">0.4312</td>
 </tr>
 </tbody>
 </table>
-<br> <br>
+<pre class="r"><code>sqtl  %&gt;% mutate(percent = signif/tested)%&gt;% pander(caption = &#39;cis-sVariant&#39;)</code></pre>
+<table style="width:53%;">
+<caption>cis-sVariant</caption>
+<colgroup>
+<col width="9%" />
+<col width="15%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">type</th>
+<th align="center">tested</th>
+<th align="center">signif</th>
+<th align="center">percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">gwas</td>
+<td align="center">44029</td>
+<td align="center">16197</td>
+<td align="center">0.3679</td>
+</tr>
+<tr class="even">
+<td align="center">all</td>
+<td align="center">10299184</td>
+<td align="center">2027766</td>
+<td align="center">0.1969</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>trans_eqtl  %&gt;% mutate(percent = signif/tested)%&gt;% pander(caption = &#39;trans-eVariant&#39;)</code></pre>
+<table style="width:53%;">
+<caption>trans-eVariant</caption>
+<colgroup>
+<col width="9%" />
+<col width="13%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">type</th>
+<th align="center">tested</th>
+<th align="center">signif</th>
+<th align="center">percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">gwas</td>
+<td align="center">34406</td>
+<td align="center">10</td>
+<td align="center">0.0002906</td>
+</tr>
+<tr class="even">
+<td align="center">all</td>
+<td align="center">5302059</td>
+<td align="center">215</td>
+<td align="center">4.055e-05</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="xvariant-rate-gwas-catalog-vs.overall" class="section level1">
+<h1>xVariant rate: GWAS catalog vs. overall</h1>
+<pre class="r"><code>rate = eqtl %&gt;% mutate(rate = signif / tested, qtl = &#39;eqtl&#39;) 
+rate = rbind(rate, sqtl %&gt;% mutate(rate = signif / tested, qtl = &#39;sqtl&#39;))
+rate = rbind(rate, trans_eqtl %&gt;% mutate(rate = signif / tested, qtl = &#39;trans_eqtl&#39;))
+pp &lt;- rate %&gt;% ggplot() + geom_bar(aes(x = type, y = rate, fill = type), stat = &#39;identity&#39;) + facet_wrap(~qtl, scales = &#39;free_y&#39;) + ggtitle(&#39;Significant xVariant rate&#39;)
+pp</code></pre>
+<p><img src="figure/gwas_catalog.Rmd/plot%20prop%20xQTL%20GWAS%20vs%20all-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="enrichment-gwas-catalog-vs.overall" class="section level1">
+<h1>Enrichment: GWAS catalog vs. overall</h1>
+<pre class="r"><code>my_simple_enrichment = function(df)
+{
+  gwasrow = which(df$type==&quot;gwas&quot;)
+  allrow = which(df$type==&quot;all&quot;)
+  (df$signif[gwasrow]/df$tested[gwasrow]) / (df$signif[allrow] / df$tested[allrow])
+}
+
+my_simple_enrichment(eqtl)</code></pre>
+<pre><code>[1] 1.461762</code></pre>
+<pre class="r"><code>##[1] 1.461762
+my_simple_enrichment(sqtl)</code></pre>
+<pre><code>[1] 1.868447</code></pre>
+<pre class="r"><code>##[1] 1.868447
+my_simple_enrichment(trans_eqtl)</code></pre>
+<pre><code>[1] 7.167569</code></pre>
+<pre class="r"><code>##[1] 7.167569</code></pre>
+</div>
+<div id="test-rate-percentage-of-gwas-catalog-variants-are-tested-for-qtl" class="section level1">
+<h1>Test rate (percentage of GWAS catalog variants are tested for QTL)</h1>
+<pre class="r"><code>rate = eqtl %&gt;% filter(type == &#39;gwas&#39;) %&gt;% mutate(rate = tested / ngwas, qtl = &#39;eqtl&#39;)
+rate = rbind(rate, sqtl %&gt;% filter(type == &#39;gwas&#39;) %&gt;% mutate(rate = tested / ngwas, qtl = &#39;sqtl&#39;))
+rate = rbind(rate, trans_eqtl %&gt;% filter(type == &#39;gwas&#39;) %&gt;% mutate(rate = tested / ngwas, qtl = &#39;trans_eqtl&#39;))
+rate %&gt;% ggplot() + geom_bar(aes(x = qtl, y = rate), stat = &#39;identity&#39;) + ggtitle(&#39;Percentage of GWAS catalog variants are tested for QTL&#39;)</code></pre>
+<p><img src="figure/gwas_catalog.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
 <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
@@ -768,39 +1022,34 @@ pander(summary_gwas_variant %&gt;% filter(!duplicated(gwas_id)) %&gt;% mutate(gt
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.4.4 (2018-03-15)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 16.04.5 LTS
+<pre><code>R version 3.5.1 (2018-07-02)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS High Sierra 10.13.6
 
 Matrix products: default
-BLAS: /usr/lib/libblas/libblas.so.3.6.0
-LAPACK: /usr/lib/lapack/liblapack.so.3.6.0
+BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
 
 locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
- [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
- [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] dplyr_0.8.0.1 pander_0.6.3 
+[1] ggplot2_3.1.1  reshape2_1.4.3 dplyr_0.8.1    pander_0.6.3  
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.1         rstudioapi_0.10    knitr_1.22        
- [4] whisker_0.3-2      magrittr_1.5       workflowr_1.2.0   
- [7] tidyselect_0.2.5   R6_2.4.0           rlang_0.3.1       
-[10] stringr_1.4.0.9000 tools_3.4.4        xfun_0.5          
-[13] git2r_0.25.2       htmltools_0.3.6    yaml_2.2.0        
-[16] rprojroot_1.3-2    digest_0.6.18      assertthat_0.2.0  
-[19] tibble_2.0.1       crayon_1.3.4       purrr_0.2.5       
-[22] fs_1.2.7           glue_1.3.1         evaluate_0.13     
-[25] rmarkdown_1.12     stringi_1.4.4      compiler_3.4.4    
-[28] pillar_1.3.1       backports_1.1.3    pkgconfig_2.0.2   </code></pre>
+ [1] Rcpp_1.0.1       knitr_1.22       whisker_0.3-2    magrittr_1.5    
+ [5] workflowr_1.3.0  munsell_0.5.0    tidyselect_0.2.5 colorspace_1.4-1
+ [9] R6_2.4.0         rlang_0.3.4      plyr_1.8.4       stringr_1.4.0   
+[13] tools_3.5.1      grid_3.5.1       gtable_0.3.0     xfun_0.6        
+[17] withr_2.1.2      git2r_0.25.2     htmltools_0.3.6  lazyeval_0.2.2  
+[21] yaml_2.2.0       rprojroot_1.3-2  digest_0.6.18    assertthat_0.2.1
+[25] tibble_2.1.1     crayon_1.3.4     purrr_0.3.2      fs_1.3.1        
+[29] glue_1.3.1       evaluate_0.13    rmarkdown_1.12   labeling_0.3    
+[33] stringi_1.4.3    compiler_3.5.1   pillar_1.4.0     scales_1.0.0    
+[37] backports_1.1.4  pkgconfig_2.0.2 </code></pre>
 </div>
 </div>
 

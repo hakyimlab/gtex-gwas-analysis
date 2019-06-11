@@ -8,30 +8,131 @@ output:
 ```{r setup}
 library(pander)
 library(dplyr)
+library(reshape2)
+library(ggplot2)
 ```
-  
-#### Load data.frame
-```{r paths}
-df = readRDS('data/gwas_catalog_tables.rds')
+
+
+# Analysis pipeline
+
+First of all, we extracted all GWAS catalog variants which were identified as GTEx v8 variant (by matching rsID in lookup table). These variants were defined as **GWAS catalog variants** in this analysis. Next, we defined a variant to be **cis-eVariant** if it was identified as cis-eQTL in at least one gene and one tissue (at FDR < 0.05). Similarly, we defined a variant to be **cis-sVariant** if it was identified as cis-sQTL in at least one cluster (only one cluster was used for each gene) and one tissue (at FDR < 0.05). In the same manner, we defined a variant to be **trans-eVariant** if it was identified as trans-eQTL in at least one gene one tissue (at FDR < 0.1). Note that **cis-eVariant**, **cis-sVariant**, and **trans-eVariant** were counted in **signif** entry in the following 2-by-2 table.
+
+We obtained the list of variants that were tested for cis-eQTL and cis-sQTL by scanning through the files reporting all tested variant-gene/cluster pairs. We obtained the list of variants that were tested for trans-eQTL by scanning through the files in `trans-eQTL/variant_list/` which contained the list of variants included in trans-eQTL testing by tissue. Note that these variant lists were counted in **tested** entry in the following 2-by-2 table.
+
+
+# About loaded data.frame
+
+The script to generate the input data.frame can be found [here](https://bitbucket.org/yanyul/rotation-at-imlab/src/master/analysis/annotate_gwas_catalog/summary/output/gen_table_sub_new.R)
+
+The full script is shown below
+
+```
+library(data.table)
+options(datatable.fread.datatable = F)
+library(dplyr)
+df = readRDS('tables.rds')
 df_gwas_gtex_table = df$df_gwas_gtex_table
 df_gwas_table = df$df_gwas_table
-df_signif_eqtl_table = df$df_signif_eqtl_table
-```
-
-#### GWAS catalog in GTEx V8
-
-```{r}
-# Start with GWAS variant
 summary_gwas_variant <- data.frame(gwas_table_idx = 1 : nrow(df_gwas_table), gwas_id = df_gwas_table$rsID)
-
-# Annotate with gtex ID
 summary_gwas_variant$gtex_id <- rep(NA, nrow(df_gwas_table))
 summary_gwas_variant$gtex_id[match(df_gwas_gtex_table$rsID, df_gwas_table$rsID)] <- df_gwas_gtex_table$GTExID
 
-# Annotate with whether it is significant eqtl in at least on tissue
-summary_gwas_variant$signif_eqtl <- rep(FALSE, nrow(df_gwas_table))
-summary_gwas_variant$signif_eqtl[summary_gwas_variant$gtex_id %in% df_signif_eqtl_table$GTExID] <- TRUE
 
-# Summarize
-pander(summary_gwas_variant %>% filter(!duplicated(gwas_id)) %>% mutate(gtex_variant = !is.na(gtex_id), gwas_variant = T) %>% group_by(gwas_variant, gtex_variant, signif_eqtl) %>% summarise(count = n()) %>% ungroup() %>% mutate(gwas_total = sum(count[gwas_variant]), gtex_total = sum(count[gtex_variant]), signif_eqtl_total = sum(count[signif_eqtl])) %>% mutate(tag_rate = gtex_total / gwas_total, signif_eqtl_rate = signif_eqtl_total / gtex_total))
+list_signif_eqtl = fread('../../output/ALL.signif_eqtl.GTExFDRlt0.05.txt', header = F)
+list_signif_sqtl = fread('../../output/ALL.signif_eqtl.GTExSQTLFDRlt0.05.txt', header = F)
+
+list_tested_eqtl = fread('../../output/ALL.tested_eqtl.GTExV8TestedEQTL.txt', header = F)
+list_tested_sqtl = fread('../../output/ALL.tested_eqtl.GTExV8TestedSQTL.txt', header = F)
+
+list_tested_trans_eqtl = fread('../../output/ALL.tested_trans_eqtl.GTExTestedTransEQTL.txt', header = F) 
+list_signif_trans_eqtl1 = fread('/gpfs/data/gtex-group/v8/trans-eQTL/trans_egenes/trans_genes_lincRNA_FDR_0.1.tsv') 
+list_signif_trans_eqtl2 = fread('/gpfs/data/gtex-group/v8/trans-eQTL/trans_egenes/trans_genes_protein_coding_FDR_0.1.tsv') 
+list_signif_trans_eqtl = union(list_signif_trans_eqtl1$rsid, list_signif_trans_eqtl2$rsid)
+
+my_summarize = function(gwas_table, tested_list, signif_list) {
+  # table
+  # type  tested  signif
+  # gwas  t_gwas  s_gwas
+  # all   t_all   s_all
+  t_all = length(tested_list)
+  s_all = length(signif_list)
+  gwas = gwas_table %>% filter(!is.na(gtex_id)) %>% filter(!duplicated(gwas_id)) %>% mutate(is_tested = gtex_id %in% tested_list, is_signif = gtex_id %in% signif_list)
+  t_gwas = sum(gwas$is_tested)
+  s_gwas = sum(gwas$is_signif)
+  data.frame(type = c('gwas', 'all'), tested = c(t_gwas, t_all), signif = c(s_gwas, s_all))
+}
+list_tested_eqtl = list_tested_eqtl$V1
+list_signif_eqtl = list_signif_eqtl$V1
+list_tested_sqtl = list_tested_sqtl$V1
+list_signif_sqtl = list_signif_sqtl$V1
+list_tested_trans_eqtl = list_tested_trans_eqtl$V1
+eqtl = my_summarize(summary_gwas_variant, list_tested_eqtl, list_signif_eqtl)
+sqtl = my_summarize(summary_gwas_variant, list_tested_sqtl, list_signif_sqtl)
+trans_eqtl = my_summarize(summary_gwas_variant, list_tested_trans_eqtl, list_signif_trans_eqtl)
+ngwas = sum(!duplicated(summary_gwas_variant$gwas_id))
+
+
+saveRDS(list(eqtl = eqtl, sqtl = sqtl, trans_eqtl = trans_eqtl, ngwas = ngwas), 'table_sub_new.rds')
 ```
+
+
+
+# Load data.frame
+
+```{r paths}
+df = readRDS('data/gwas_catalog_tables.rds')
+eqtl = df$eqtl
+sqtl = df$sqtl
+trans_eqtl = df$trans_eqtl
+ngwas = df$ngwas
+```
+
+# Count table
+
+```{r count qtls}
+eqtl %>% mutate(percent = signif/tested) %>% pander(caption = 'cis-eVariant')
+sqtl  %>% mutate(percent = signif/tested)%>% pander(caption = 'cis-sVariant')
+trans_eqtl  %>% mutate(percent = signif/tested)%>% pander(caption = 'trans-eVariant')
+```
+
+
+# xVariant rate: GWAS catalog vs. overall
+
+```{r plot prop xQTL GWAS vs all}
+rate = eqtl %>% mutate(rate = signif / tested, qtl = 'eqtl') 
+rate = rbind(rate, sqtl %>% mutate(rate = signif / tested, qtl = 'sqtl'))
+rate = rbind(rate, trans_eqtl %>% mutate(rate = signif / tested, qtl = 'trans_eqtl'))
+pp <- rate %>% ggplot() + geom_bar(aes(x = type, y = rate, fill = type), stat = 'identity') + facet_wrap(~qtl, scales = 'free_y') + ggtitle('Significant xVariant rate')
+pp
+```
+
+# Enrichment: GWAS catalog vs. overall
+
+```{r enrichment of GWAS among xQTLs}
+
+my_simple_enrichment = function(df)
+{
+  gwasrow = which(df$type=="gwas")
+  allrow = which(df$type=="all")
+  (df$signif[gwasrow]/df$tested[gwasrow]) / (df$signif[allrow] / df$tested[allrow])
+}
+
+my_simple_enrichment(eqtl)
+##[1] 1.461762
+my_simple_enrichment(sqtl)
+##[1] 1.868447
+my_simple_enrichment(trans_eqtl)
+##[1] 7.167569
+
+
+```
+
+# Test rate (percentage of GWAS catalog variants are tested for QTL)
+
+```{r}
+rate = eqtl %>% filter(type == 'gwas') %>% mutate(rate = tested / ngwas, qtl = 'eqtl')
+rate = rbind(rate, sqtl %>% filter(type == 'gwas') %>% mutate(rate = tested / ngwas, qtl = 'sqtl'))
+rate = rbind(rate, trans_eqtl %>% filter(type == 'gwas') %>% mutate(rate = tested / ngwas, qtl = 'trans_eqtl'))
+rate %>% ggplot() + geom_bar(aes(x = qtl, y = rate), stat = 'identity') + ggtitle('Percentage of GWAS catalog variants are tested for QTL')
+```
+
