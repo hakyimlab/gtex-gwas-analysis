@@ -1,0 +1,80 @@
+---
+title: "Comparison of downstream effects of primary and secondary eQTL"
+output:
+  html_document: default
+  pdf_document: default
+---
+  
+  
+```{r}
+library(tidyverse)
+library(yaml)
+```
+
+
+```{r}
+dapg_file_pattern <- "data/dapg_variants/with_mashr_results/DAPG_with_mashr__{tissue}.rds"
+```
+
+```{r, cache=TRUE}
+tissues <- readLines("data/tissue_list.txt")
+phenotypes <- readLines("data/phenotypes.txt")
+
+rows <- vector(mode="list", length=0)
+for (tissue in tissues[49]) {
+  dfs <- readRDS(glue::glue(dapg_file_pattern))
+  for (phenotype in phenotypes) {
+    df <- dfs[[phenotype]]
+    corr <- cor(abs(df$eqtl_effect_size), abs(df$gwas_effect_size), use = "complete.obs")
+    corr_shuffled <- cor(abs(df$eqtl_effect_size), sample(abs(df$gwas_effect_size)), use = "complete.obs")
+    rows <- c(rows, 
+              list(data.frame(
+                "tissue"=c(tissue,tissue), 
+                "phenotype"=c(phenotype,phenotype), 
+                pearson=c(corr, corr_shuffled), 
+                data=c("real", "shuffled"))
+                )
+              )
+  }
+}
+suppressWarnings({
+  corr_df <- bind_rows(rows)
+})
+# knitr::kable(corr_df)
+
+```
+
+```{r, fig.height=10, fig.width=15}
+pp <- ggplot(corr_df, aes(x=phenotype, y=pearson, color=data)) + geom_point() + theme_bw(base_size = 15)
+pp <- pp + ggtitle("Whole Blood")
+pp <- pp + theme(axis.text.x=element_text(angle=65, hjust=1))
+pp
+```
+
+```{r}
+pp <- ggplot(corr_df, aes(x=pearson, color=data)) + geom_density()
+pp
+```
+
+```{r, cache=TRUE}
+tissue <- "Whole_Blood"
+phenotype <- "UKB_50_Standing_height"
+dd <- readRDS(glue::glue(dapg_file_pattern))[[phenotype]]
+```
+
+```{r}
+scatter_p <- ggplot(dd, aes(x=abs(eqtl_effect_size), y=abs(gwas_effect_size))) + geom_point(alpha=0.5) + theme_bw(base_size = 20)
+scatter_p
+```
+
+<!--
+# selectInput("phenotype", label = "Phenotype", choices = phenotypes)
+# selectInput("tissue", label = "Tissue", choices = tissues)
+# 
+# 
+# renderPlot({
+#   df <- glue::glue(dapg_file_pattern)[[input$phenotype]]
+#   ggp <- ggplot(df, aes(x=eqtl_effect_size,y=gwas_effect_size)) + geom_point() + theme_bw()
+#   ggp
+# })
+-->
