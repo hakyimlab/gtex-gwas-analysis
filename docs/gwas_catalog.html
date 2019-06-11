@@ -423,7 +423,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -432,7 +432,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -441,10 +441,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-06-07
+<strong>Last updated:</strong> 2019-06-11
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>gtex-gwas-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -460,12 +460,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -520,19 +520,23 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree00636edee784b9ce2354ededde45555efae13976targetblank00636eda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/00636edee784b9ce2354ededde45555efae13976" target="_blank">00636ed</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree9755ce0139979b5008980f9e5b35281459bd5ed5targetblank9755ce0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/9755ce0139979b5008980f9e5b35281459bd5ed5" target="_blank">9755ce0</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree00636edee784b9ce2354ededde45555efae13976targetblank00636eda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree9755ce0139979b5008980f9e5b35281459bd5ed5targetblank9755ce0a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .Rhistory
+    Ignored:    .DS_Store
     Ignored:    .Rproj.user/
-    Ignored:    analysis/.Rhistory
+    Ignored:    data/.DS_Store
+    Ignored:    docs/.DS_Store
+
+Unstaged changes:
+    Modified:   analysis/gwas_catalog.Rmd
 
 </code></pre>
 <p>
@@ -571,6 +575,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/9755ce0139979b5008980f9e5b35281459bd5ed5/docs/gwas_catalog.html" target="_blank">9755ce0</a>
+</td>
+<td>
+Yanyu Liang
+</td>
+<td>
+2019-06-07
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -760,6 +781,7 @@ Attaching package: &#39;dplyr&#39;</code></pre>
     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(reshape2)
 library(ggplot2)</code></pre>
+<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 3.5.2</code></pre>
 <div id="analysis-pipeline" class="section level1">
 <h1>Analysis pipeline</h1>
 <p>First of all, we extracted all GWAS catalog variants which were identified as GTEx v8 variant (by matching rsID in lookup table). These variants were defined as <strong>GWAS catalog variants</strong> in this analysis. Next, we defined a variant to be <strong>cis-eVariant</strong> if it was identified as cis-eQTL in at least one gene and one tissue (at FDR &lt; 0.05). Similarly, we defined a variant to be <strong>cis-sVariant</strong> if it was identified as cis-sQTL in at least one cluster (only one cluster was used for each gene) and one tissue (at FDR &lt; 0.05). In the same manner, we defined a variant to be <strong>trans-eVariant</strong> if it was identified as trans-eQTL in at least one gene one tissue (at FDR &lt; 0.1). Note that <strong>cis-eVariant</strong>, <strong>cis-sVariant</strong>, and <strong>trans-eVariant</strong> were counted in <strong>signif</strong> entry in the following 2-by-2 table.</p>
@@ -826,19 +848,21 @@ ngwas = df$ngwas</code></pre>
 </div>
 <div id="count-table" class="section level1">
 <h1>Count table</h1>
-<pre class="r"><code>eqtl %&gt;% pander(caption = &#39;cis-eVariant&#39;)</code></pre>
-<table style="width:40%;">
+<pre class="r"><code>eqtl %&gt;% mutate(percent = signif/tested) %&gt;% pander(caption = &#39;cis-eVariant&#39;)</code></pre>
+<table style="width:53%;">
 <caption>cis-eVariant</caption>
 <colgroup>
 <col width="9%" />
 <col width="15%" />
-<col width="15%" />
+<col width="13%" />
+<col width="13%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">type</th>
 <th align="center">tested</th>
 <th align="center">signif</th>
+<th align="center">percent</th>
 </tr>
 </thead>
 <tbody>
@@ -846,27 +870,31 @@ ngwas = df$ngwas</code></pre>
 <td align="center">gwas</td>
 <td align="center">44137</td>
 <td align="center">27819</td>
+<td align="center">0.6303</td>
 </tr>
 <tr class="even">
 <td align="center">all</td>
 <td align="center">10743590</td>
 <td align="center">4632457</td>
+<td align="center">0.4312</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>sqtl %&gt;% pander(caption = &#39;cis-sVariant&#39;)</code></pre>
-<table style="width:40%;">
+<pre class="r"><code>sqtl  %&gt;% mutate(percent = signif/tested)%&gt;% pander(caption = &#39;cis-sVariant&#39;)</code></pre>
+<table style="width:53%;">
 <caption>cis-sVariant</caption>
 <colgroup>
 <col width="9%" />
 <col width="15%" />
-<col width="15%" />
+<col width="13%" />
+<col width="13%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">type</th>
 <th align="center">tested</th>
 <th align="center">signif</th>
+<th align="center">percent</th>
 </tr>
 </thead>
 <tbody>
@@ -874,27 +902,31 @@ ngwas = df$ngwas</code></pre>
 <td align="center">gwas</td>
 <td align="center">44029</td>
 <td align="center">16197</td>
+<td align="center">0.3679</td>
 </tr>
 <tr class="even">
 <td align="center">all</td>
 <td align="center">10299184</td>
 <td align="center">2027766</td>
+<td align="center">0.1969</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>trans_eqtl %&gt;% pander(caption = &#39;trans-eVariant&#39;)</code></pre>
-<table style="width:38%;">
+<pre class="r"><code>trans_eqtl  %&gt;% mutate(percent = signif/tested)%&gt;% pander(caption = &#39;trans-eVariant&#39;)</code></pre>
+<table style="width:53%;">
 <caption>trans-eVariant</caption>
 <colgroup>
 <col width="9%" />
 <col width="13%" />
-<col width="13%" />
+<col width="12%" />
+<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">type</th>
 <th align="center">tested</th>
 <th align="center">signif</th>
+<th align="center">percent</th>
 </tr>
 </thead>
 <tbody>
@@ -902,11 +934,13 @@ ngwas = df$ngwas</code></pre>
 <td align="center">gwas</td>
 <td align="center">34406</td>
 <td align="center">10</td>
+<td align="center">0.0002906</td>
 </tr>
 <tr class="even">
 <td align="center">all</td>
 <td align="center">5302059</td>
 <td align="center">215</td>
+<td align="center">4.055e-05</td>
 </tr>
 </tbody>
 </table>
@@ -1019,13 +1053,13 @@ Yanyu Liang
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.4.0 (2017-04-21)
-Platform: x86_64-apple-darwin16.5.0 (64-bit)
-Running under: macOS  10.13.6
+<pre><code>R version 3.5.1 (2018-07-02)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS High Sierra 10.13.6
 
 Matrix products: default
-BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
-LAPACK: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib
+BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -1034,20 +1068,19 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] bindrcpp_0.2.2 ggplot2_3.1.0  reshape2_1.4.3 dplyr_0.7.8   
-[5] pander_0.6.3  
+[1] ggplot2_3.1.1  reshape2_1.4.3 dplyr_0.8.1    pander_0.6.3  
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.1       compiler_3.4.0   pillar_1.3.1     git2r_0.25.2    
- [5] plyr_1.8.4       workflowr_1.3.0  bindr_0.1.1      tools_3.4.0     
- [9] digest_0.6.18    evaluate_0.13    tibble_2.0.1     gtable_0.2.0    
-[13] pkgconfig_2.0.2  rlang_0.3.1      rstudioapi_0.10  yaml_2.2.0      
-[17] xfun_0.6         withr_2.1.2      stringr_1.4.0    knitr_1.22      
-[21] fs_1.2.7         rprojroot_1.3-2  grid_3.4.0       tidyselect_0.2.5
-[25] glue_1.3.1       R6_2.4.0         rmarkdown_1.12   purrr_0.2.3     
-[29] magrittr_1.5     whisker_0.3-2    backports_1.1.4  scales_1.0.0    
-[33] htmltools_0.3.6  assertthat_0.2.0 colorspace_1.4-0 labeling_0.3    
-[37] stringi_1.2.4    lazyeval_0.2.0   munsell_0.5.0    crayon_1.3.4    </code></pre>
+ [1] Rcpp_1.0.1       knitr_1.22       whisker_0.3-2    magrittr_1.5    
+ [5] workflowr_1.3.0  munsell_0.5.0    tidyselect_0.2.5 colorspace_1.4-1
+ [9] R6_2.4.0         rlang_0.3.4      plyr_1.8.4       stringr_1.4.0   
+[13] tools_3.5.1      grid_3.5.1       gtable_0.3.0     xfun_0.6        
+[17] withr_2.1.2      git2r_0.25.2     htmltools_0.3.6  lazyeval_0.2.2  
+[21] yaml_2.2.0       rprojroot_1.3-2  digest_0.6.18    assertthat_0.2.1
+[25] tibble_2.1.1     crayon_1.3.4     purrr_0.3.2      fs_1.3.1        
+[29] glue_1.3.1       evaluate_0.13    rmarkdown_1.12   labeling_0.3    
+[33] stringi_1.4.3    compiler_3.5.1   pillar_1.4.0     scales_1.0.0    
+[37] backports_1.1.4  pkgconfig_2.0.2 </code></pre>
 </div>
 </div>
 

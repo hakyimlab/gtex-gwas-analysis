@@ -90,10 +90,11 @@ ngwas = df$ngwas
 # Count table
 
 ```{r}
-eqtl %>% pander(caption = 'cis-eVariant')
-sqtl %>% pander(caption = 'cis-sVariant')
-trans_eqtl %>% pander(caption = 'trans-eVariant')
+eqtl %>% mutate(percent = signif/tested) %>% pander(caption = 'cis-eVariant')
+sqtl  %>% mutate(percent = signif/tested)%>% pander(caption = 'cis-sVariant')
+trans_eqtl  %>% mutate(percent = signif/tested)%>% pander(caption = 'trans-eVariant')
 ```
+
 
 # xVariant rate: GWAS catalog vs. overall
 
