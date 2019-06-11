@@ -89,7 +89,7 @@ ngwas = df$ngwas
 
 # Count table
 
-```{r}
+```{r count qtls}
 eqtl %>% mutate(percent = signif/tested) %>% pander(caption = 'cis-eVariant')
 sqtl  %>% mutate(percent = signif/tested)%>% pander(caption = 'cis-sVariant')
 trans_eqtl  %>% mutate(percent = signif/tested)%>% pander(caption = 'trans-eVariant')
@@ -98,11 +98,33 @@ trans_eqtl  %>% mutate(percent = signif/tested)%>% pander(caption = 'trans-eVari
 
 # xVariant rate: GWAS catalog vs. overall
 
-```{r}
+```{r plot prop xQTL GWAS vs all}
 rate = eqtl %>% mutate(rate = signif / tested, qtl = 'eqtl') 
 rate = rbind(rate, sqtl %>% mutate(rate = signif / tested, qtl = 'sqtl'))
 rate = rbind(rate, trans_eqtl %>% mutate(rate = signif / tested, qtl = 'trans_eqtl'))
-rate %>% ggplot() + geom_bar(aes(x = type, y = rate, fill = type), stat = 'identity') + facet_wrap(~qtl, scales = 'free_y') + ggtitle('Significant xVariant rate')
+pp <- rate %>% ggplot() + geom_bar(aes(x = type, y = rate, fill = type), stat = 'identity') + facet_wrap(~qtl, scales = 'free_y') + ggtitle('Significant xVariant rate')
+pp
+```
+
+# Enrichment: GWAS catalog vs. overall
+
+```{r enrichment of GWAS among xQTLs}
+
+my_simple_enrichment = function(df)
+{
+  gwasrow = which(df$type=="gwas")
+  allrow = which(df$type=="all")
+  (df$signif[gwasrow]/df$tested[gwasrow]) / (df$signif[allrow] / df$tested[allrow])
+}
+
+my_simple_enrichment(eqtl)
+##[1] 1.461762
+my_simple_enrichment(sqtl)
+##[1] 1.868447
+my_simple_enrichment(trans_eqtl)
+##[1] 7.167569
+
+
 ```
 
 # Test rate (percentage of GWAS catalog variants are tested for QTL)
