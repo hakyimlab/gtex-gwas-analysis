@@ -75,25 +75,24 @@ $$
 \end{equation}
 $$
 
-We expect the thus estimated $\var{\gamma}$ to be approximately the same across tissues.
+## eQTL
 
-```{r gamma_adjusting, cache=TRUE}
+We estimate the variance of $\var{\hat\gamma}$ using all variants in GTEx. We expect this to be approximately the same across tissues.
+
+```{r gamma_adjusting, echo=FALSE, cache=TRUE}
 rows <- vector(mode="list", length=0)
 minimum_eqtl_number <- 7427 # Number of eQTLs for Kidney_Cortex
-df_all_snps <- read.table("data/kk.txt", header=TRUE) %>% rename(var_gamma_all="var_gamma", var_se_all="var_se")
+df_all_snps <- read.table("output/var_gamma_all_variants.txt", header=TRUE) %>% rename(var_gamma_all="var_gamma", var_se_all="var_se")
 
 for (file in list.files("data/dapg_variants/eqtl_data", full.names = TRUE)) {
   tissue <- str_match(pattern = ".*/DAPG_pip_gt_0.01-(.*)-independent_eQTL.txt", file)[2]
   sample_size <- gtex_tissue_metadata[gtex_tissue_metadata$tissue == tissue, "sample_size"]
   df <- read.table(file, header=TRUE, stringsAsFactors=FALSE)
-
   df_ <- df %>% top_n(minimum_eqtl_number, wt = abs(slope/slope_se))
   
-  print(c(df_all_snps[df_all_snps$tissue==tissue, "var_gamma_all"], df_all_snps[df_all_snps$tissue==tissue, "var_gamma_all"] - df_all_snps[df_all_snps$tissue==tissue, "var_se_all"])        )
-  
   # add one row for var(gamma), one for var(gamma_hat)
-  new_row <- data.frame("tissue" = rep(tissue, 2), 
-                        "sample_size" = rep(sample_size, 2), 
+  new_row <- data.frame("tissue" = rep(tissue, 2),
+                        "sample_size" = rep(sample_size, 2),
                         "var_gamma" = c(var(df$slope), var(df$slope)-sum(df$slope_se**2)/nrow(df)),
                         "var_gamma_top_n" = c(var(df_$slope), var(df_$slope)-sum(df_$slope_se**2)/nrow(df_)),
                         "n_snps"=nrow(df),
@@ -102,12 +101,10 @@ for (file in list.files("data/dapg_variants/eqtl_data", full.names = TRUE)) {
   rows <- c(rows, list(new_row))
 }
 
-var_gamma <- bind_rows(rows)
-
-# var_gamma <- var_gamma %>% inner_join(df, by="tissue")
+suppressWarnings({var_gamma <- bind_rows(rows)})
 ```
 
-```{r}
+```{r, echo=FALSE}
 ggp <- ggplot(var_gamma, aes(x=sample_size, y=var_gamma, color=which))
 ggp <- ggp + geom_point()
 ggp <- ggp + theme_bw()
@@ -115,7 +112,7 @@ ggp <- ggp + xlab("Sample size") + ylab("var(gamma)")
 ggp <- ggtitle("")
 ```
 
-```{r}
+```{r, echo=FALSE}
 ggp <- ggplot(var_gamma %>% filter(abs(var_gamma_all) < 1), aes(x=sample_size, y=var_gamma_all, color=which))
 ggp <- ggp + geom_point()
 ggp <- ggp + theme_bw()
@@ -123,7 +120,7 @@ ggp <- ggp + xlab("Sample size") + ylab("var(gamma)")
 ggp
 ```
 
-```{r}
+```{r, echo=FALSE}
 ggp <- ggplot(var_gamma %>% filter(abs(var_gamma_all) < 1 & which == "var(gamma)"), aes(x=sample_size, y=var_gamma_all, color=which))
 ggp <- ggp + geom_point()
 ggp <- ggp + theme_bw()
@@ -133,31 +130,25 @@ ggp
 
 Actually, DAP-G selects less SNPs for the tissues with smaller sample sizes. For these, the effect sizes tend to be larger.
 
-```{r}
-ggp <- ggplot(var_gamma, aes(x=sample_size, y=n_snps))
-ggp <- ggp + geom_point()
-ggp <- ggp + theme_bw()
-ggp <- ggp + xlab("Sample size") + ylab("# of SNPs selected")
+```{r, echo=FALSE}
+knitr::kable(var_gamma)
+var_gamma$tissue <- factor(var_gamma$tissue, levels = as.factor(gtex_tissue_metadata[order(gtex_tissue_metadata$sample_size), "tissue"]))
+knitr::kable(var_gamma)
+ggp <- ggplot(var_gamma, aes(x=tissue, y=n_snps))
+ggp <- ggp + theme_bw(base_size=10)
+ggp <- ggp + geom_bar(stat="identity") + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp <- ggp + xlab("Tissue") + ylab("# of eQTL selected")
 ggp
 ```
 
-
 ```{r}
-ggp <- ggplot(var_gamma, aes(x=sample_size, y=n_snps))
-ggp <- ggp + geom_point()
-ggp <- ggp + theme_bw()
-ggp <- ggp + xlab("Sample size") + ylab("# of SNPs selected")
-ggp
-```
-
-
-```{r}
-regulability_df <- readRDS("output/estimated_regulability.rds") %>% filter(tissue == "Whole_Blood") 
+tissue_ <- "Whole_Blood"
+regulability_df <- read.table("output/estimated_regulability.tsv", header=TRUE) %>% filter(tissue == tissue_)
 regulability_df <- regulability_df %>% inner_join(gwas_metadata %>% select(phenotype, new_Phenotype), by="phenotype")
-regulability_df$phenotype <- factor(regulability_df$phenotype, levels=regulability_df[order(-regulability_df$var_gamma), "phenotype"])
-regulability_df$new_Phenotype <- factor(regulability_df$new_Phenotype, levels=regulability_df[order(-regulability_df$var_gamma), "new_Phenotype"])
+regulability_df$phenotype <- factor(regulability_df$phenotype, levels=regulability_df[order(-regulability_df$regulability), "phenotype"])
+regulability_df$new_Phenotype <- factor(regulability_df$new_Phenotype, levels=regulability_df[order(-regulability_df$regulability), "new_Phenotype"])
 
-ggp <- ggplot(regulability_df, aes(x=new_Phenotype, y=var_gamma))
+ggp <- ggplot(regulability_df, aes(x=new_Phenotype, y=regulability))
 ggp <- ggp + geom_point() + theme_bw()
 ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1)) + ylab("regulability (=var(T)/var(Y))")
 
@@ -165,5 +156,87 @@ ggp <- ggp + scale_y_log10()
 ```
 
 ```{r, fig.width = 10, fig.asp = 0.7}
+ggp
+```
+
+## sQTL
+
+```{r, cache=TRUE, autodep=TRUE}
+read_sqtl <- function(filename) {
+  df <- read.table(filename, header=TRUE)
+  tissue <- str_match(pattern=".*/(.*).v8.sqtl.*", filename)[2]
+  df$tissue <- tissue
+  df
+}
+
+suppressWarnings({ df <- bind_rows(lapply(list.files("data/dapg_variants/sqtl_data", full.names = TRUE), read_sqtl)) })
+df$tissue <- factor(df$tissue, levels = as.factor(gtex_tissue_metadata[order(gtex_tissue_metadata$sample_size), "tissue"]))
+```
+
+```{r}
+ggp <- ggplot(df %>% group_by(tissue) %>% summarise(n_sqtl=n()), aes(x=tissue, y=n_sqtl)) 
+ggp <- ggp + theme_bw(base_size=10)
+ggp <- ggp + geom_bar(stat="identity")
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1))
+ggp <- ggp + xlab("Tissue") + ylab("# of eQTL selected")
+ggp
+```
+
+
+```{r}
+# tissue_ <- "Whole_Blood"
+tissue_ <- "Kidney_Cortex"
+sigma_g_sqtl_df <- read.table("output/sqtl_beta_variance.tsv", header=TRUE) %>% filter(tissue == tissue_)
+sigma_g_sqtl_df <- sigma_g_sqtl_df %>% inner_join(gwas_metadata %>% select(phenotype, new_Phenotype), by="phenotype")
+sigma_g_sqtl_df$phenotype <- factor(sigma_g_sqtl_df$phenotype, levels=sigma_g_sqtl_df[order(-sigma_g_sqtl_df$var_beta_gene), "phenotype"])
+sigma_g_sqtl_df$new_Phenotype <- factor(sigma_g_sqtl_df$new_Phenotype, levels=sigma_g_sqtl_df[order(-sigma_g_sqtl_df$var_beta_gene), "new_Phenotype"])
+
+ggp <- ggplot(sigma_g_sqtl_df, aes(x=new_Phenotype, y=var_beta_gene))
+ggp <- ggp + geom_point() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1)) + ylab("var(beta)")
+ggp <- ggp + ggtitle(tissue_)
+ggp <- ggp + scale_y_log10()
+```
+
+```{r sqtl_var_beta, fig.width = 10, fig.asp = 0.7}
+ggp
+```
+
+
+```{r}
+sigma_g_sqtl_df <- sigma_g_sqtl_df %>% 
+                   mutate(regulability = var_beta_gene * var_gamma * sum_var_X) %>% 
+                   filter(regulability > 0)
+
+ggp <- ggplot(sigma_g_sqtl_df, aes(x=new_Phenotype, y=regulability))
+ggp <- ggp + geom_point() + theme_bw()
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1)) + ylab("regulability from introns")
+ggp <- ggp + ggtitle("Whole Blood")
+ggp <- ggp + scale_y_log10()
+```
+
+```{r sqtl_reg, fig.width = 10, fig.asp = 0.7}
+ggp
+```
+
+```{r}
+regulability_df <- regulability_df %>% rename(regulability_eqtl=regulability)
+sigma_g_sqtl_df <- sigma_g_sqtl_df %>% rename(regulability_sqtl=regulability)
+eqtl_vs_sqtl_df <- inner_join(regulability_df %>% select(new_Phenotype, regulability_eqtl), sigma_g_sqtl_df %>% select(new_Phenotype, regulability_sqtl), by="new_Phenotype")
+eqtl_vs_sqtl_df$new_Phenotype <- factor(eqtl_vs_sqtl_df$new_Phenotype, levels=sigma_g_sqtl_df[order(-sigma_g_sqtl_df$var_beta_gene), "new_Phenotype"])
+
+ggp <- ggplot(eqtl_vs_sqtl_df) + geom_point(aes(x=new_Phenotype, y=regulability_eqtl, color="eQTL")) + geom_point(aes(x=new_Phenotype, y=regulability_sqtl, color="sQTL"))
+ggp <- ggp + theme_bw(base_size = 8)
+ggp <- ggp + theme(axis.text.x=element_text(angle=65, hjust = 1)) + ylab("regulability eQTL vs sQTL")
+ggp <- ggp + ggtitle("Whole Blood")
+ggp <- ggp + scale_y_log10()
+ggp
+```
+
+```{r}
+ggp <- ggplot(eqtl_vs_sqtl_df) + geom_point(aes(x=regulability_eqtl, y=regulability_sqtl))
+ggp <- ggp + theme_bw(base_size = 8)
+ggp <- ggp + ggtitle("Whole Blood")
+ggp <- ggp + geom_abline(intercept=0, slope=1)
 ggp
 ```
