@@ -7,74 +7,109 @@ output:
   
   
 ```{r}
-library(tidyverse)
-library(yaml)
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(yaml)
+})
 ```
 
 
 ```{r}
-dapg_file_pattern <- "data/dapg_variants/with_mashr_results/DAPG_with_mashr__{tissue}.rds"
+corr_df <- read.table("output/gwas_eqtl_correlation.tsv", header = T, sep = "\t")
 ```
 
-```{r, cache=TRUE}
-tissues <- readLines("data/tissue_list.txt")
-phenotypes <- readLines("data/phenotypes.txt")
 
-rows <- vector(mode="list", length=0)
-for (tissue in tissues[49]) {
-  dfs <- readRDS(glue::glue(dapg_file_pattern))
-  for (phenotype in phenotypes) {
-    df <- dfs[[phenotype]]
-    corr <- cor(abs(df$eqtl_effect_size), abs(df$gwas_effect_size), use = "complete.obs")
-    corr_shuffled <- cor(abs(df$eqtl_effect_size), sample(abs(df$gwas_effect_size)), use = "complete.obs")
-    rows <- c(rows, 
-              list(data.frame(
-                "tissue"=c(tissue,tissue), 
-                "phenotype"=c(phenotype,phenotype), 
-                pearson=c(corr, corr_shuffled), 
-                data=c("real", "shuffled"))
-                )
-              )
-  }
-}
-suppressWarnings({
-  corr_df <- bind_rows(rows)
-})
-# knitr::kable(corr_df)
-
-```
-
-```{r, fig.height=10, fig.width=15}
-pp <- ggplot(corr_df, aes(x=phenotype, y=pearson, color=data)) + geom_point() + theme_bw(base_size = 15)
+```{r, fig.height=10, fig.width=15, fig.height=15}
+pp <- ggplot(corr_df, aes(x=phenotype, y=pearson, color=data))
+pp <- pp + geom_point()
+pp <- pp + theme_bw(base_size = 15)
 pp <- pp + ggtitle("Whole Blood")
 pp <- pp + theme(axis.text.x=element_text(angle=65, hjust=1))
 pp
 ```
 
-```{r}
-pp <- ggplot(corr_df, aes(x=pearson, color=data)) + geom_density()
+
+```{r, warning=FALSE}
+pp <- ggplot(corr_df, aes(x=pearson, color=data))
+pp <- pp + geom_density()
+pp <- pp + ggtitle("Density plot: real vs. shuffled data")
 pp
 ```
 
-```{r, cache=TRUE}
+```{r, warning=FALSE}
+dapg_file_pattern <- "data/dapg_variants/with_mashr_results/DAPG_with_mashr__{tissue}.rds"
 tissue <- "Whole_Blood"
 phenotype <- "UKB_50_Standing_height"
 dd <- readRDS(glue::glue(dapg_file_pattern))[[phenotype]]
 ```
 
-```{r}
-scatter_p <- ggplot(dd, aes(x=abs(eqtl_effect_size), y=abs(gwas_effect_size))) + geom_point(alpha=0.5) + theme_bw(base_size = 20)
+
+```{r, echo=FALSE, warning=FALSE}
+scatter_p <- ggplot(dd, aes(x=abs(eqtl_effect_size), y=abs(gwas_effect_size)))
+scatter_p <- scatter_p + geom_point(alpha=0.5)
+scatter_p <- scatter_p + theme_bw(base_size = 20)
+scatter_p <- scatter_p + stat_density_2d(aes(fill = ..level..), geom = "polygon")
+scatter_p <- scatter_p + ggtitle("Real data")
 scatter_p
 ```
 
+
+```{r, echo=FALSE, warning=FALSE}
+scatter_p <- ggplot(dd, aes(x=sample(abs(eqtl_effect_size)), y=abs(gwas_effect_size)))
+scatter_p <- scatter_p + geom_point(alpha=0.5)
+scatter_p <- scatter_p + theme_bw(base_size = 20)
+scatter_p <- scatter_p + stat_density_2d(aes(fill = ..level..), geom = "polygon")
+scatter_p <- scatter_p + ggtitle("Shuffled data")
+scatter_p
+```
+
+
+```{r, cache=TRUE}
+# dd <- readRDS(glue::glue(dapg_file_pattern)) %>% bind_rows()
+dd_gt_1 <- dd %>% 
+  group_by(tissue, phenotype, gene_id) %>%
+  filter(n() > 1) %>%
+  mutate(ranking=order(order(abs(eqtl_effect_size), decreasing=TRUE))) %>%
+  ungroup() %>%
+  mutate(beta_gene=gwas_effect_size/eqtl_effect_size) %>%
+  select(gene_id, ranking, beta_gene) %>%
+  filter(ranking <= 2)
+```
+
+
+```{r}
+pp <- ggplot(dd_gt_1, aes(x=abs(beta_gene)))
+pp <- pp + geom_density()
+pp <- pp + facet_wrap(facets = vars(ranking), nrow = 2)
+pp <- pp + xlim(c(0,0.5))
+pp
+```
+
+
+Whole Blood - UKB Height
+```{r}
+dd_wide <- inner_join(dd_gt_1 %>% filter(ranking==1), dd_gt_1 %>% filter(ranking==2), by="gene_id") %>%
+      filter(beta_gene.x > quantile(beta_gene.x, 0.05, na.rm = T) & beta_gene.y > quantile(beta_gene.y, 0.05, na.rm = T) & beta_gene.x < quantile(beta_gene.x, 0.95, na.rm = T) & beta_gene.y < quantile(beta_gene.y, 0.95, na.rm = T))
+
+pp <- ggplot(dd_wide, aes(x=beta_gene.x, y=beta_gene.y)) 
+pp <- pp + geom_point(alpha=0.5) 
+pp <- pp + geom_abline(slope=1,intercept=0) 
+pp <- pp + stat_density_2d(aes(fill = ..level..), geom = "polygon")
+pp <- pp + theme_bw(base_size = 20)
+pp <- pp + xlab("beta (primary)") + ylab("beta (secondary)")
+pp
+```
+
+```{r}
+table(sign(dd_wide$beta_gene.x) == sign(dd_wide$beta_gene.y))
+```
+
 <!--
-# selectInput("phenotype", label = "Phenotype", choices = phenotypes)
-# selectInput("tissue", label = "Tissue", choices = tissues)
-# 
-# 
-# renderPlot({
-#   df <- glue::glue(dapg_file_pattern)[[input$phenotype]]
-#   ggp <- ggplot(df, aes(x=eqtl_effect_size,y=gwas_effect_size)) + geom_point() + theme_bw()
-#   ggp
-# })
+Pearson
+Real: `r cor(abs(dd$eqtl_effect_size), abs(dd$gwas_effect_size), use="complete.obs")`
+Shuffled: `r cor(sample(abs(dd$eqtl_effect_size)), abs(dd$gwas_effect_size), use="complete.obs")`
+
+Spearman
+Real: `r cor(abs(dd$eqtl_effect_size), abs(dd$gwas_effect_size), use="complete.obs", method="spearman")`
+Shuffled: `r cor(sample(abs(dd$eqtl_effect_size)), abs(dd$gwas_effect_size), use="complete.obs", method="spearman")`
 -->
