@@ -17,7 +17,7 @@ phenotype <- args$phenotype
 metadata <- read_tsv("data/gwas_metadata.txt")
 dapg_file_pattern <- "data/dapg_variants/with_mashr_results/DAPG_with_mashr__{tissue}.rds"
 enloc_file_pattern <- "data/enloc/{tissue}_w_{short_phenotype}_enloc_output.txt.gz"
-ld_file_pattern <- "data/dapg_variants/eqtl_data/LD/dapg_filterd_LD_{tissue}.txt"
+ld_file_pattern <- "data/dapg_variants/LD/dapg_filterd_LD_{tissue}.txt"
 output_file_pattern <- "output/eqtl_gwas_correlation/{phenotype}__{tissue}__correlation.txt"
 
 short_phenotype <- as.character(metadata[metadata$Tag==phenotype, "new_Phenotype"])
@@ -73,7 +73,9 @@ for (rcp_threshold in args$rcp_thresholds) {
         "tissue"=tissue, 
         "phenotype"=phenotype, 
         "rcp_threshold"=rcp_threshold,
-        "corr_pearson"=cor(dd_rcp$beta_gene.x, dd_rcp$beta_gene.y, use="complete.obs", method="pearson"), 
+        "concordance_pearson"=cor(dd_rcp$beta_gene.x, dd_rcp$beta_gene.y, use="complete.obs", method="pearson"), 
+        "concordance_spearman"=cor(dd_rcp$beta_gene.x, dd_rcp$beta_gene.y, use="complete.obs", method="spearman"),
+        "corr__pearson"=cor(dd_rcp$beta_gene.x, dd_rcp$beta_gene.y, use="complete.obs", method="pearson"), 
         "corr_spearman"=cor(dd_rcp$beta_gene.x, dd_rcp$beta_gene.y, use="complete.obs", method="spearman"),
         "n"=nrow(dd_rcp),
         "ld_median"=median(dd_rcp$r2, na.rm=T),
