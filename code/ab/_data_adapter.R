@@ -41,6 +41,12 @@ get_models_logic <- WRAP_(function(identifier="v6p_en"){
           "v7_en"="data/models/gtex_v7",
           "v8_en"="data/models/gtex_v8",
           "v8_en_splicing"="data/models/gtex_v8_splicing",
+          "v8_ols_dapgs"="data/models/gtex_v8_ols_dapgs",
+          "v8_en_dapgw"="data/models/gtex_v8_dapgw",
+          "v8_en_dapgw_hapmap"="data/models/gtex_v8_dapgw_hapmap",
+          "v8_dapg_gene_snp"="data/models/gene_snp_dapg",
+          "v8_mashr"="data/models/mashr",
+          "v8_ctimp"="data/models/ctimp",
           "v8_cgp"="data/models/conditional",
           "v8_cgs"="data/models/conditional",
           "v8_cmp"="data/models/marginal",
@@ -51,6 +57,12 @@ get_models_logic <- WRAP_(function(identifier="v6p_en"){
           "v7_en"="gtex_v7_(.*)_imputed_europeans_tw_0.5_signif.db",
           "v8_en"="gtex_v8_(.*)_itm_signif.db",
           "v8_en_splicing"="gtex_splicing_v8_eur_(.*)_signif.db",
+          "v8_ols_dapgs"="dapgw_(.*).db",
+          "v8_en_dapgw"="dapgw_(.*).db",
+          "v8_en_dapgw_hapmap"="dapgw_(.*).db",
+          "v8_dapg_gene_snp"="gene_snps_(.*).db",
+          "v8_mashr"="mashr_(.*).db",
+          "v8_ctimp"="ctimp_(.*).db",
           "v8_cgp"="(.*)_primary_eQTLs.db",
           "v8_cgs"="(.*)_secondary_eQTLs.db",
           "v8_cmp"="(.*)_Conditional_analysis_primary_eQTL.db",
@@ -96,18 +108,18 @@ get_model_weight <- WRAP_( function(file_logic, tissue_, fields="gene, rsid, var
 
 #model file logic,  fields
 get_model_weight_2 <- WRAP_(function(file_logics, fields="gene, rsid, varID, ref_allele, eff_allele, weight"){
-  d <- data.frame()
+  d <- list()
+  i <- 1
   for (file_logic in file_logics) {
     family <- file_logic$family %>% unique
     cat("Family: ", family, "\n")
     for (tissue in file_logic$tissue)  {
-      #cat(tissue, "\n")
-      d_ <- get_model_weight(file_logic, tissue) %>% 
+      d[[i]] <- get_model_weight(file_logic, tissue) %>% 
         mutate(family = family, tissue=tissue)
-      d <- rbind(d, d_)
+      i <- i+1
     }
   }
-  d
+  do.call(rbind, d)
 } ,NULL)
 
 ###############################################################################
@@ -136,17 +148,39 @@ read_gtex_coloc_ <- function(path) {
     mutate(p012 = p0+p1+p2, pc=p4)
 }
 
+read_coloc_ <- function(path) {
+  path %>% r_tsv_() %>% mutate(p012 = p0+p1+p2, pc=p4)
+}
+
 # result_logic, pheno, tissue
-get_coloc_result <- WRAP_(function(file_logic, pheno_, tissue_, mode="a") {
+get_coloc_result_ <- WRAP_(function(file_logic, pheno_=NULL, tissue_=NULL, mode="gtex_run") {
   path <- file_logic %>% filter(pheno == pheno_, tissue == tissue_) %>% .$path 
-  if (mode == "a") {
-    if (length(path) == 0) 
-      return(data.frame(gene=character(0), pheno=character(0), tissue=character(0), p0=double(0), p1=double(0), p2=double(0), p3=double(0), p4=double(0), p012=double(0), pc=double(0)))
-    
+  if (length(path) == 0) 
+    return(data.frame(gene=character(0), pheno=character(0), tissue=character(0), p0=double(0), p1=double(0), p2=double(0), p3=double(0), p4=double(0), p012=double(0), pc=double(0)))
+  
+  if (mode == "gtex_run") {
     path %>% read_gtex_coloc_ %>% mutate(pheno=pheno_, tissue=tissue_)
   } else {
-    stop("unimplemented")
+    path %>% read_coloc_ %>% mutate(pheno=pheno_, tissue=tissue_)
   }
+}, NULL)
+
+get_coloc_result <- WRAP_(function(file_logic, pheno_=NULL, tissue_=NULL, type="gtex") {
+  if (!is.null(pheno_)) {
+    file_logic <- file_logic %>% filter(pheno %in% pheno_)
+  }
+  if (!is.null(tissue_)) {
+    file_logic <- file_logic %>% filter(tissue %in% tissue_)
+  }
+  r <- list()
+  i <- 1
+  for (trait_ in unique(file_logic$pheno)) {
+    for (tiss_ in unique(file_logic$tissue)) {
+      r[[i]] <- get_coloc_result_(file_logic, trait_, tiss_, type) %>% mutate(trait = trait_, tissue = tiss_)
+      i <- i+1
+    }
+  }
+  do.call(rbind, r)
 }, NULL)
 
 ###############################################################################
@@ -163,11 +197,15 @@ get_enloc_results_logic <- WRAP_(function(identifier="v8_expression"){
 }, NULL)
 
 read_gtex_enloc_ <- function(path) {
-  path %>% r_tsv_(col_types=cols_only(gene_id="c",  rcp="d", experiment_rcp="d")) %>% rename( gene=gene_id)
+  #One gene might be tested against multiple variants. Keep only the best.
+  path %>% r_tsv_(col_types=cols_only(gene_id="c",  rcp="d", experiment_rcp="d")) %>% rename( gene=gene_id) %>%
+    group_by(gene) %>% arrange(-rcp) %>% slice(1) %>% ungroup
 }
 
 read_vanilla_enloc_ <- function(path) {
-  path %>% r_tsv_%>%  select(gene=molecular_qtl_trait, rcp=locus_rcp) %>% mutate(experiment_rcp = NA)
+  #One gene might be tested against multiple variants. Keep only the best.
+  path %>% r_tsv_%>%  select(gene=molecular_qtl_trait, rcp=locus_rcp) %>% mutate(experiment_rcp = NA) %>%
+    group_by(gene) %>% arrange(-rcp) %>% slice(1) %>% ungroup
 }
 
 
@@ -198,14 +236,6 @@ get_enloc_result <- WRAP_(function(file_logic, phenos=NULL, tissues=NULL, type="
   do.call(rbind, r)
 }, NULL)
 
-get_enloc_results <- WRAP_(function(file_logic, phenos_=NULL, tissue_=NULL, type="gtex"){
-  l_
-},NULL)
-
-get_enloc_result_trait <- WRAP_( function(file_logic, pheno_){
-  l_ <- file_logic %>% filter(pheno == pheno_)
-  
-}, NULL)
 
 ###############################################################################
 
@@ -215,6 +245,12 @@ get_predixcan_results_logic <- WRAP_(function(identifier="v8_en"){
             "v7_en"="data/spredixcan/sp_imputed_gwas_gtexv7_en", 
             "v8_en"="data/spredixcan/sp_imputed_gwas_gtexv8_en", 
             "v8_en_splicing"="data/spredixcan/sp_imputed_gwas_gtexv8_en_splicing",
+            "v8_ols_dapgs"="data/spredixcan/sp_imputed_gwas_gtexv8_ols_dapgs",
+            "v8_en_dapgw"="data/spredixcan/sp_imputed_gwas_gtexv8_en_dapgw",
+            "v8_en_dapgw_hapmap"="data/spredixcan/sp_imputed_gwas_gtexv8_en_dapgw_hapmap",
+            "v8_dapg_gene_snp"="data/spredixcan/sp_imputed_gwas_gtex_dapg_gene_snp",
+            "v8_mashr"="data/spredixcan/sp_imputed_gwas_gtexv8_mashr",
+            "v8_ctimp"="data/spredixcan/sp_imputed_gwas_gtexv8_ctimp",
             "v8_cgp"="data/spredixcan/sp_imputed_gwas_conditional_gtex_primary",
             "v8_cmp"="data/spredixcan/sp_imputed_gwas_conditional_marginal_gtex_primary",
             "v8_cdp"="data/spredixcan/sp_imputed_gwas_dapg_gtex_primary",
@@ -224,6 +260,12 @@ get_predixcan_results_logic <- WRAP_(function(identifier="v8_en"){
             "v7_en"="spredixcan_igwas_gtexenv7_(.*)__PM__(.*).csv",
             "v8_en"="spredixcan_igwas_gtexenv8_(.*)__PM__(.*).csv",
             "v8_en_splicing"="spredixcan_igwas_gtexenv8_splicing_(.*)__PM__(.*).csv",
+            "v8_ols_dapgs"="spredixcan_igwas_gtexolsdapgsv8_(.*)__PM__(.*).csv",
+            "v8_en_dapgw"="spredixcan_igwas_gtexendapgwv8_(.*)__PM__(.*).csv",
+            "v8_en_dapgw_hapmap"="spredixcan_igwas_gtexenv8dapgwhm_(.*)__PM__(.*).csv",
+            "v8_dapg_gene_snp"="spredixcan_igwas_dgs_(.*)__PM__(.*).csv",
+            "v8_mashr"="spredixcan_igwas_gtexmashrv8_(.*)__PM__(.*).csv",
+            "v8_ctimp"="spredixcan_igwas_gtexctimpv8_(.*)__PM__(.*).csv",
             "v8_cgp"="spredixcan_igwas_cgtexp_(.*)__PM__(.*).csv",
             "v8_cmp"="spredixcan_igwas_cmgtexp_(.*)__PM__(.*).csv",
             "v8_cdp"="spredixcan_igwas_dgtexp_(.*)__PM__(.*).csv",
@@ -281,7 +323,7 @@ get_predixcan_result_pheno_2 <- function(file_logics, pheno_, col_types=cols_onl
 }
 
 # result_logics (list of logic), pheno, tissue
-get_predixcan_result_2 <- WRAP_(function(file_logics, pheno_, tissue_, col_types=cols_only(gene="c", zscore="d", pvalue="d", pred_perf_pval="d")) {
+get_predixcan_result_2 <- WRAP_(function(file_logics, pheno_=NULL, tissue_=NULL, col_types=cols_only(gene="c", zscore="d", pvalue="d", pred_perf_pval="d")) {
   d <- data.frame()
   for (l_ in file_logics) {
     d_ <- get_predixcan_result(l_, pheno_, tissue_, col_types=col_types) %>% mutate(family = unique(l_$family))

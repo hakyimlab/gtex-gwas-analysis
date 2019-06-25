@@ -76,7 +76,13 @@ save_plot <- function(plot, path, height, width, res=NA) {
 }
 
 save_delim <- function(x, path) {
-  write.table(x, path, sep="\t", row.names = FALSE, quote=FALSE)  
+  if (grepl(".gz$",path)) {
+    gz1 <- gzfile("data/geuvadis_eur_hg38/snps_l.txt.gz", "w")
+    write.table(x, gz1, sep="\t", row.names = FALSE, quote=FALSE)    
+    close(gz1)
+  } else {
+    write.table(x, path, sep="\t", row.names = FALSE, quote=FALSE)    
+  }
 }
 
 d_theme_ <- function() {
@@ -87,4 +93,16 @@ d_theme_ <- function() {
         axis.text = element_text(size=20),
         legend.text = element_text(size = 15)) + 
   ggplot2::theme(legend.position="bottom",legend.direction="horizontal")
+}
+
+load_folder <- function(path, filter_=NULL) {
+  files <- list.files(path)
+  if (!is.null(filter_)) {
+    files <- files[filter_(files)]
+  }
+  r <- list()
+  for (i in 1:length(files)) {
+    r[[i]] <- file.path(path, files[i]) %>% r_tsv_
+  }
+  do.call(rbind, r)
 }
