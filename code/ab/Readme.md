@@ -9,7 +9,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Miscellaneous scripts
 
-All scripts in this folder are meant to be ran from this folder. Note that they assume a local `data` folder.
+All scripts in this folder are meant to be ran from this folder. Note that they assume a local `data` folder. 
+The current data folder  is in UChicago CRI: `/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/analysis/data`
 
 ## Counting significant associations
 
