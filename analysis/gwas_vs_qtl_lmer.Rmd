@@ -1,0 +1,121 @@
+---
+title: "gwas_vs_qtl_lmer"
+author: "Yanyu Liang"
+date: "2019-07-09"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+library(pander)
+```
+
+## Introduction
+
+Exploring why `lmer` gives warning on summarizing estimates. Load data from Rodrigo.
+
+```{r}
+df_eqtl = readRDS('output/eqtl_gwas_correlation_with_ci.rds')
+df_sqtl = readRDS('output/sqtl_gwas_correlation_with_ci.rds')
+df_eqtl = df_eqtl %>% mutate(se = (pearson-ci95_lower)/1.96)
+df_sqtl = df_sqtl %>% mutate(se = (pearson-ci95_lower)/1.96)
+```
+
+Summary and plot `est` and `est_se`
+
+```{r}
+df_eqtl %>% ggplot() + geom_point(aes(x = pearson, y = se, color = data))
+df_sqtl %>% ggplot() + geom_point(aes(x = pearson, y = se, color = data))
+```
+
+# Run `lmer`
+
+```{r}
+meta_est_across_all = function(trait, tissue, est, est_sd, scale = T) {
+  weight = 1 / est_sd ^ 2
+  if(scale == T) {
+    weight = weight / mean(weight)
+  }
+  mod = lme4::lmer(est ~ 1 + (1 | trait) + (1 | tissue), weights = weight)
+  est = summary(mod)$coefficients
+  return(data.frame(est = est[1, 1], est_sd = est[1, 2]))
+}
+meta_est_across_all_v2 = function(trait, tissue, est, est_sd, scale = T) {
+  weight = 1 / est_sd ^ 2
+  if(scale == T) {
+    weight = weight / mean(weight)
+  }
+  mod = lme4::lmer(est ~ 1 + (1 | trait), weights = weight)
+  est = summary(mod)$coefficients
+  return(data.frame(est = est[1, 1], est_sd = est[1, 2]))
+}
+```
+
+## Real eQTL
+
+```{r}
+df_here = df_eqtl %>% filter(data == 'real')
+rep = data.frame()
+for(scale in c(F, T)) {
+  message('scale = ', scale, ' model = (1 | trait) + (1 | tissue)')
+  mod = meta_est_across_all(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod %>% mutate(type = '(1|trait)+(1|tissue)', scale = scale))
+  message('scale = ', scale, ' model = (1 | trait)')
+  mod_v2 = meta_est_across_all_v2(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod_v2 %>% mutate(type = '(1|trait)', scale = scale))
+}
+rep %>% pander
+```
+
+## Real sQTL
+
+```{r}
+df_here = df_sqtl %>% filter(data == 'real')
+rep = data.frame()
+for(scale in c(F, T)) {
+  message('scale = ', scale, ' model = (1 | trait) + (1 | tissue)')
+  mod = meta_est_across_all(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod %>% mutate(type = '(1|trait)+(1|tissue)', scale = scale))
+  message('scale = ', scale, ' model = (1 | trait)')
+  mod_v2 = meta_est_across_all_v2(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod_v2 %>% mutate(type = '(1|trait)', scale = scale))
+}
+rep %>% pander
+```
+
+## Shuffled eQTL
+
+```{r}
+df_here = df_eqtl %>% filter(data == 'shuffled')
+rep = data.frame()
+for(scale in c(F, T)) {
+  message('scale = ', scale, ' model = (1 | trait) + (1 | tissue)')
+  mod = meta_est_across_all(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod %>% mutate(type = '(1|trait)+(1|tissue)', scale = scale))
+  message('scale = ', scale, ' model = (1 | trait)')
+  mod_v2 = meta_est_across_all_v2(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod_v2 %>% mutate(type = '(1|trait)', scale = scale))
+}
+rep %>% pander
+```
+
+## Shuffled sQTL
+
+```{r}
+df_here = df_sqtl %>% filter(data == 'shuffled')
+rep = data.frame()
+for(scale in c(F, T)) {
+  message('scale = ', scale, ' model = (1 | trait) + (1 | tissue)')
+  mod = meta_est_across_all(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod %>% mutate(type = '(1|trait)+(1|tissue)', scale = scale))
+  message('scale = ', scale, ' model = (1 | trait)')
+  mod_v2 = meta_est_across_all_v2(df_here$phenotype, df_here$tissue, df_here$pearson, df_here$se, scale = scale)
+  rep = rbind(rep, mod_v2 %>% mutate(type = '(1|trait)', scale = scale))
+}
+rep %>% pander
+```
+
+
