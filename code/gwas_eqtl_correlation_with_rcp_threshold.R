@@ -15,9 +15,9 @@ phenotype <- args$phenotype
 
 # metadata <- read.table("data/gwas_metadata.txt", header=TRUE, stringsAsFactors=FALSE)
 metadata <- read_tsv("../data/gwas_metadata.txt")
-dapg_file_pattern <- "../data/dapg_variants/with_mashr_results/DAPG_with_mashr__{tissue}.rds"
+dapg_file_pattern <- "../data/dapg_selected_variants/expression/gwas_and_eqtl/DAPG_with_mashr__{tissue}.rds"
 enloc_file_pattern <- "../data/enloc/{tissue}_w_{short_phenotype}_enloc_output.txt.gz"
-ld_file_pattern <- "../data/dapg_variants/LD/dapg_filterd_LD_{tissue}.txt"
+ld_file_pattern <- "../data/dapg_selected_variants/expression/LD/dapg_filterd_LD_{tissue}.txt"
 output_file_pattern <- "../output/eqtl_gwas_correlation/{phenotype}__{tissue}__correlation.txt"
 
 short_phenotype <- as.character(metadata[metadata$Tag==phenotype, "new_Phenotype"])
@@ -112,30 +112,13 @@ for (rcp_threshold in args$rcp_thresholds) {
     dd_wide %>% filter(rcp < 0.01),
     dd_wide_rcp$r2
   )
-  
-  conc_baseline_pearson <- cor(
-    dd_baseline$beta_gene.x,
-    dd_baseline$beta_gene.y,
-    use="complete.obs", method="pearson"
-  )
-  
-  conc_baseline_spearman <- cor(
-    dd_baseline$beta_gene.x,
-    dd_baseline$beta_gene.y,
-    use="complete.obs", method="spearman"
-  )
-  
-  corr_eqtl_gwas_pearson <- cor(
-    abs(dd_rcp$eqtl_effect_size),
-    abs(dd_rcp$gwas_effect_size),
-    use="complete.obs", method="pearson"
-  )
-  
-  corr_eqtl_gwas_spearman <- cor(
-    abs(dd_rcp$eqtl_effect_size),
-    abs(dd_rcp$gwas_effect_size),
-    use="complete.obs", method="spearman"
-  )
+
+  concordance_pearson <- cor.test(dd_wide_rcp$beta_gene.x, dd_wide_rcp$beta_gene.y, use="complete.obs", method="pearson")
+  concordance_spearman <- cor.test(dd_wide_rcp$beta_gene.x, dd_wide_rcp$beta_gene.y, use="complete.obs", method="spearman")   
+  conc_baseline_pearson <- cor.test(dd_baseline$beta_gene.x, dd_baseline$beta_gene.y, use="complete.obs", method="pearson")
+  conc_baseline_spearman <- cor.test(dd_baseline$beta_gene.x, dd_baseline$beta_gene.y, use="complete.obs", method="spearman")
+  corr_eqtl_gwas_pearson <- cor.test(abs(dd_rcp$eqtl_effect_size), abs(dd_rcp$gwas_effect_size), use="complete.obs", method="pearson")
+  corr_eqtl_gwas_spearman <- cor.test(abs(dd_rcp$eqtl_effect_size), abs(dd_rcp$gwas_effect_size), use="complete.obs", method="spearman")
   
   rows <- c(
     rows,
@@ -144,12 +127,16 @@ for (rcp_threshold in args$rcp_thresholds) {
         "tissue"=tissue,
         "phenotype"=phenotype,
         "rcp_threshold"=rcp_threshold,
-        "corr_eqtl_gwas_pearson"=corr_eqtl_gwas_pearson,
-        "corr_eqtl_gwas_spearman"=corr_eqtl_gwas_spearman,
-        "concordance_pearson"=cor(dd_wide_rcp$beta_gene.x, dd_wide_rcp$beta_gene.y, use="complete.obs", method="pearson"),
-        "concordance_spearman"=cor(dd_wide_rcp$beta_gene.x, dd_wide_rcp$beta_gene.y, use="complete.obs", method="spearman"),
-        "conc_baseline_pearson"=conc_baseline_pearson,
-        "conc_baseline_spearman"=conc_baseline_spearman,
+        "corr_eqtl_gwas_pearson"=corr_eqtl_gwas_pearson$estimate,
+        "corr_eqtl_gwas_spearman"=corr_eqtl_gwas_spearman$estimate,
+        "concordance_pearson"=concordance_pearson$estimate,
+        "concordance_pearson_ci95lower"=concordance_pearson$conf.int[1],
+        "concordance_pearson_ci95upper"=concordance_pearson$conf.int[2],
+        "concordance_spearman"=concordance_spearman$estimate,
+        "conc_baseline_pearson"=conc_baseline_pearson$estimate,
+        "conc_baseline_pearson_ci95lower"=conc_baseline_pearson$conf.int[1],
+        "conc_baseline_pearson_ci95upper"=conc_baseline_pearson$conf.int[2],
+        "conc_baseline_spearman"=conc_baseline_spearman$estimate,
         "n"=nrow(dd_wide_rcp),
         "ld_1st_quartile"=quantile(dd_wide_rcp$r2, 0.25, na.rm=T),
         "ld_median"=median(dd_wide_rcp$r2, na.rm=T),
