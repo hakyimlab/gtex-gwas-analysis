@@ -1,0 +1,97 @@
+---
+title: "miscellaneous_statistics_2"
+author: "Alvaro"
+date: "2019-08-20"
+output: workflowr::wflow_html
+---
+
+## Introduction
+
+Here follow miscellaneous numbers to be plugged in the main GTEx paper, supplements, and GWAs companion (and its supplement)
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(bigrquery))
+
+
+suppressWarnings(source("code/helpers/_helpers.R"))
+suppressWarnings(source("code/helpers/_helpers_big_query.R"))
+suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
+
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+gwas_metadata <- (function(){
+  query <- glue::glue("SELECT Tag as phenotype, Deflation as deflation, new_abbreviation as abbreviation
+                       FROM {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name}
+                       WHERE Deflation=0")
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})()
+pheno_whitelist <- sprintf("(%s)", toString(sprintf("'%s'", gwas_metadata$phenotype)))
+```
+
+# ENLOC runs
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_eqtl_eur_tuples <- (function(){
+  query <- 
+"SELECT COUNT(*) 
+ FROM (SELECT DISTINCT molecular_qtl_trait as gene_id, phenotype, tissue
+       FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
+       WHERE phenotype in {pheno_whitelist})" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.double
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_eqtl_eur_gt_pairs <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id, tissue
+  FROM (
+    SELECT molecular_qtl_trait as gene_id, phenotype, tissue
+    FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
+    WHERE phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.double
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_sqtl_eur_tuples <- (function(){
+  query <- 
+"SELECT COUNT(*) 
+ FROM (SELECT DISTINCT molecular_qtl_trait as intron_id, phenotype, tissue
+       FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name} as e
+       WHERE phenotype in {pheno_whitelist})" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.double
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_sqtl_eur_gt_pairs <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT intron_id, tissue
+  FROM (
+    SELECT molecular_qtl_trait as intron_id, phenotype, tissue
+    FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name} as e
+    WHERE phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.double
+```
+
+We obtained:
+
+- `r n_enloc_eqtl_eur_tuples` `(gene, tissue, phenotype)` distinct tuples from expression on Eur individuals
+- `r n_enloc_eqtl_eur_gt_pairs` `(gene, tissue)` distinct pairs from expression on Eur individuals
+- `r n_enloc_sqtl_eur_tuples` `(gene, tissue, phenotype)` distinct tuples from splicing on Eur individuals
+- `r n_enloc_sqtl_eur_gt_pairs` `(gene, tissue)` distinct pairs from splicing on Eur individuals
+

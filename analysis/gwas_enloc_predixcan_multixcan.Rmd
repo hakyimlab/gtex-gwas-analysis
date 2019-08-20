@@ -1,0 +1,144 @@
+---
+title: "gwas_enloc_predixcan_multixcan"
+author: "Alvaro"
+date: "2019-08-20"
+output: workflowr::wflow_html
+---
+
+## Introduction
+
+GWAS subgroup Figures for the main paper
+
+
+#### Import libraries and source scripts
+```{r import}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(UpSetR))
+suppressPackageStartupMessages(library(viridis))
+suppressWarnings(source("code/helpers/_helpers.R"))
+
+SUMMARY <- "data/summaries/regions.txt"
+
+RESULT<-"output/g"
+dir.create(RESULT, showWarnings = FALSE, recursive=TRUE)
+fp_ <- function(p) file.path(RESULT, p)
+```
+
+
+
+## read number GWAS/PrediXcan/enloc significant association per region/trait
+
+```{r read number of significant blocks, echo=FALSE, warning=FALSE, message=FALSE}
+ldblockinfo = read_tsv(SUMMARY) %>% rename(trait=phenotype, n=count, results=method)
+
+## spread data 
+tempo <- ldblockinfo %>% mutate(flag = n >= 1) %>% rename(results_type=results) %>% 
+  select(region, trait, results_type, flag) %>% spread(key=unique(results_type),value=flag)
+## set NAs to 0
+tempo[is.na(tempo)] <- 0
+tempo$gwas <- 1
+
+tempo <- tempo %>%
+  mutate(spredixcan_eqtl_enloc = ifelse(spredixcan_eqtl & enloc_eqtl, 1, 0)) %>%
+  mutate(spredixcan_sqtl_enloc = ifelse(spredixcan_sqtl & enloc_sqtl, 1, 0)) %>%
+  mutate(smultixcan_eqtl_enloc = ifelse(smultixcan_eqtl & enloc_eqtl, 1, 0)) %>%
+  mutate(smultixcan_sqtl_enloc = ifelse(smultixcan_sqtl & enloc_sqtl, 1, 0))
+```
+
+```{r number of significant loci, echo=FALSE, warning=FALSE, message=FALSE}
+summary <- apply(tempo %>% select(-region,-trait),2,sum)
+summary
+```
+
+```{r number of gwas region/trait pairs, echo=FALSE, warning=FALSE, message=FALSE}
+print("n of significant gwas block/traits")
+ldblockinfo %>% filter(results=="gwas") %>% count(region,trait) %>% nrow() 
+
+print("n of significant gwas blocks")
+ldblockinfo %>% filter(results=="gwas") %>% count(region) %>% nrow() 
+
+print("n of significant gwas traits")
+ldblockinfo %>% filter(results=="gwas") %>% count(trait) %>% nrow() 
+```
+
+out of 5385 GWAS significant associations (in 1167 loci across 82 traits)
+
+```{r plot number of expression significant loci, echo=FALSE, warning=FALSE, message=FALSE}
+upset(tempo %>% as.data.frame(),sets= c("gwas","smultixcan_eqtl","enloc_eqtl"),order.by="freq")
+# 
+png(fp_("upset1.png"), 600, 600)
+upset(tempo %>% as.data.frame(),sets= c("gwas","smultixcan_eqtl","enloc_eqtl"),order.by="freq")
+dev.off()
+```
+
+
+`r format(summary["spredixcan_eqtl"]/summary["gwas"]*100, digits=0)`% (`r summary["spredixcan_eqtl"]`/`r summary["gwas"]`) GWAS loci could be associated to changes in expression of a gene using PrediXcan (aggregated across tissues), `r format(summary["spredixcan_eqtl_enloc"]/summary["spredixcan_eqtl"]*100, digits=0)`% (`r summary["spredixcan_eqtl_enloc"]`/`r summary["spredixcan_eqtl"]`) of which are also colocalized (enloc colocalization probability > 0.5).
+
+```{r plot number of splicing significant loci, echo=FALSE, warning=FALSE, message=FALSE}
+upset(tempo %>% as.data.frame(),sets= c("gwas","smultixcan_sqtl","enloc_sqtl"),order.by="freq")
+png(fp_("upset2.png"), 600, 600)
+upset(tempo %>% as.data.frame(),sets= c("gwas","smultixcan_sqtl","enloc_sqtl"),order.by="freq")
+dev.off()
+```
+
+`r format(summary["spredixcan_sqtl"]/summary["gwas"]*100, digits=0)`% (`r summary["spredixcan_sqtl"]`/`r summary["gwas"]`)  could be associated with changes in splicing of a gene using PrediXcan, but only `r format(summary["spredixcan_sqtl_enloc"]/summary["spredixcan_sqtl"]*100, digits=0)`% (`r summary["spredixcan_sqtl_enloc"]`/`r summary["spredixcan_sqtl"]`) of which were colocalized. 
+
+
+```{r plot significant expr and splicing loci, echo=FALSE, warning=FALSE, message=FALSE}
+upset(tempo %>% as.data.frame(),sets= c("gwas","smultixcan_eqtl","enloc_eqtl","smultixcan_sqtl","enloc_sqtl"),order.by="freq")
+png(fp_("upset3.png"), 600, 600)
+upset(tempo %>% as.data.frame(),sets= c("gwas","smultixcan_eqtl","enloc_eqtl","smultixcan_sqtl","enloc_sqtl"),order.by="freq")
+dev.off()
+```
+
+```{r plot enloc expr and splicing loci, echo=FALSE, warning=FALSE, message=FALSE}
+upset(tempo %>% as.data.frame(),sets= c("gwas","enloc_eqtl","enloc_sqtl"),order.by="freq")
+png(fp_("upset4.png"), 600, 600)
+upset(tempo %>% as.data.frame(),sets= c("gwas","enloc_eqtl","enloc_sqtl"),order.by="freq")
+dev.off()
+```
+
+```{r eqtl and sqtl, echo=FALSE, warning=FALSE, message=FALSE}
+tempo <- tempo %>% mutate(enloc_eqtl_sqtl = ifelse(enloc_eqtl & enloc_sqtl, 1, 0))
+summary <- apply(tempo %>% select(-region,-trait),2,sum)
+```
+
+`r format(summary["enloc_eqtl"]/summary["gwas"]*100, digits=0)`% (`r summary["enloc_eqtl"]`/`r summary["gwas"]`)  of GWAS associations were colocalized with an eQTL whereas `r format(summary["enloc_sqtl"]/summary["gwas"]*100, digits=0)`% (`r summary["enloc_sqtl"]`/`r summary["gwas"]`)  could be colocalized with an sQTL. `r format(summary["enloc_eqtl_sqtl"]/summary["enloc_sqtl"]*100, digits=0)`% (`r summary["enloc_eqtl_sqtl"]`/`r summary["enloc_eqtl_sqtl"]`)  colocalized with an sQTL were also colocalized with an eQTL.
+
+`r format(summary["spredixcan_eqtl_enloc"]/summary["enloc_eqtl"]*100, digits=0)`% (`r summary["spredixcan_eqtl_enloc"]`/`r summary["enloc_eqtl"]`)  of expression colocalized associations were also significantly associated with the predicted expression of a gene. `r format(summary["spredixcan_sqtl_enloc"]/summary["enloc_sqtl"]*100, digits=0)`% (`r summary["spredixcan_sqtl_enloc"]`/`r summary["enloc_sqtl"]`) of splicing colocalized associations were linked to predicted splicing events.
+
+```{r upset, echo=FALSE, cache=FALSE, warning=FALSE}
+(function(){
+  color_pal <- viridis(3)
+  eqtl_ <- (function(){
+    d_ <- ldblockinfo %>% select(region,results,trait) %>% unique %>% 
+      filter(results %in% c("gwas", "smultixcan_eqtl", "enloc_eqtl")) %>% mutate(flag = 1) %>% 
+      spread(key=unique(results),value=flag) 
+    d_[is.na(d_)] <- 0
+    d_ %>% rename(enloc=enloc_eqtl, smultixcan=smultixcan_eqtl) %>% select(gwas, enloc, smultixcan)
+  })()
+
+  svg(fp_("upset_expression.svg"))
+  upset(eqtl_ %>% as.data.frame(),
+    sets= c("gwas", "smultixcan", "enloc"), keep.order = TRUE, text.scale = 3,
+    main.bar.color = color_pal[1], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+  dev.off()
+  
+  sqtl_ <- (function(){
+    d_ <- ldblockinfo %>% select(region,results,trait) %>% unique %>% 
+      filter(results %in% c("gwas", "smultixcan_sqtl", "enloc_sqtl")) %>% mutate(flag = 1) %>% 
+      spread(key=unique(results),value=flag) 
+    d_[is.na(d_)] <- 0
+    d_ %>% rename(enloc=enloc_sqtl, smultixcan=smultixcan_sqtl) %>% select(gwas, enloc, smultixcan)
+  })()
+  svg(fp_("upset_splicing.svg"))
+  upset(sqtl_ %>% as.data.frame(),
+    sets= c("gwas", "smultixcan", "enloc"), keep.order = TRUE, text.scale = 3,
+    main.bar.color = color_pal[2], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+  dev.off()
+})()
+```
+
