@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Alvaro" />
+
+<meta name="date" content="2019-08-20" />
+
+<title>miscellaneous_statistics_2</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">gtex-gwas-analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+<li>
+  <a href="miscellaneous_statistics.html">Statistics</a>
+</li>
+<li>
+  <a href="count_detections.html">Detections</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">miscellaneous_statistics_2</h1>
+<h4 class="author">Alvaro</h4>
+<h4 class="date">2019-08-20</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#report"> Report <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-08-21
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 4 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>gtex-gwas-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.2.0). The <em>Report</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="report" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongobjectspresent"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Environment:</strong> objects present </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongobjectspresent" class="panel-collapse collapse">
+<div class="panel-body">
+The global environment had objects present when the code in the R Markdown file was run. These objects can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment. Use <code>wflow_publish</code> or <code>wflow_build</code> to ensure that the code is always run in an empty environment. <br><br>
+<p>
+The following objects were defined in the global environment when these results were created:
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+Name
+</th>
+<th style="text-align:left;">
+Class
+</th>
+<th style="text-align:left;">
+Size
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+basicQuery
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+28.1 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CA_eqtl_and_gwas_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+760 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CA_eqtl_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+760 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CA_gwas_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+760 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+coloc_tbl_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cpt_results_logic
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5.4 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DAPG_eqtl_and_gwas_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DAPG_eqtl_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DAPG_gwas_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+db_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+18.6 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_results_logic_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+10 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_theme_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+7.9 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+enloc_tbl_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+enloc_tbl_eqtl_eur
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+728 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+enloc_tbl_sqtl_eur
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ensembl_collapsed_annotations_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+file_logic_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+8.6 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fill_with_zeros
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5.2 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gencode_all_annotation_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+728 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gencode_annotation_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+728 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gene_essentiality_annotation_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+get_gtex_tissue_metadata
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+4.1 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+getListOfPhenotypes
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+6.6 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+getListOfTissues
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+6.6 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+g_results_logic
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gtex_gwas_metadata
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+4.1 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gtex_sample_size_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+728 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gtex_tissue_metadata_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+760 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gwas_catalog_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gwas_metadata
+</td>
+<td style="text-align:left;">
+data.frame
+</td>
+<td style="text-align:left;">
+14.1 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gwas_metadata_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gwas_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+720 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+intron_annotation_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+720 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ld_independent_regions_tbl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+744 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+load_folder
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+23.1 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+load_from_logic_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5.8 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+load_from_logic_2_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+6.3 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+m_results_logic
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+multixcan_tbl_count_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+multixcan_tbl_count_sqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+multixcan_tbl_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+multixcan_tbl_sqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+n_enloc_eqtl_eur_gt_pairs
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+48 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+n_enloc_eqtl_eur_tuples
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+48 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+n_enloc_sqtl_eur_gt_pairs
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+48 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+n_enloc_sqtl_eur_tuples
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+48 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pheno_whitelist
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:left;">
+3.5 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+prediction_models_extra_tbl_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+752 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+prediction_models_extra_tbl_sqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+760 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+prediction_models_tbl_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+prediction_models_tbl_sqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+760 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+predixcan_tbl_count_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+predixcan_tbl_count_sqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+predixcan_tbl_eqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+predixcan_tbl_sqtl
+</td>
+<td style="text-align:left;">
+list
+</td>
+<td style="text-align:left;">
+776 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+p_results_logic
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5.4 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+queryByPhenotypeAndTissue
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+59.5 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+queryModels
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+54 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r_csv_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+remove_id_from_ensemble
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5.8 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r_tsv_
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+5 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+save_delim
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+14.8 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+save_plot
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+7.2 Kb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tableInfo
+</td>
+<td style="text-align:left;">
+function
+</td>
+<td style="text-align:left;">
+20.5 Kb
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190312code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190312)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190312code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190312)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree048c5339974d7750b0387df8f9db5395c52a4052targetblank048c533a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/048c5339974d7750b0387df8f9db5395c52a4052" target="_blank">048c533</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree048c5339974d7750b0387df8f9db5395c52a4052targetblank048c533a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    .httr-oauth
+
+Untracked files:
+    Untracked:  code/test.R
+
+Unstaged changes:
+    Modified:   analysis/miscellaneous_statistics_2.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/048c5339974d7750b0387df8f9db5395c52a4052/analysis/miscellaneous_statistics_2.Rmd" target="_blank">048c533</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-08-20
+</td>
+<td>
+Added GWAS/ENLOC/PrediXcan/Multixcan ld region counts. Updated stats.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Here follow miscellaneous numbers to be plugged in the main GTEx paper, supplements, and GWAs companion (and its supplement)</p>
+</div>
+<div id="enloc-runs" class="section level1">
+<h1>ENLOC runs</h1>
+<p>We obtained:</p>
+<ul>
+<li>12662634 <code>(gene, tissue, phenotype)</code> distinct tuples from expression on Eur individuals</li>
+<li>862723 <code>(gene, tissue)</code> distinct pairs from expression on Eur individuals</li>
+<li>67943800 <code>(gene, tissue, phenotype)</code> distinct tuples from splicing on Eur individuals</li>
+<li>4473974 <code>(gene, tissue)</code> distinct pairs from splicing on Eur individuals</li>
+</ul>
+<br> <br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.4.4 (2018-03-15)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 16.04.6 LTS
+
+Matrix products: default
+BLAS: /usr/lib/libblas/libblas.so.3.6.0
+LAPACK: /usr/lib/lapack/liblapack.so.3.6.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] bigrquery_1.2.0.9000 readr_1.2.0          dplyr_0.8.0.1       
+[4] workflowr_1.2.0     
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.2         highr_0.8          later_0.7.3       
+ [4] pillar_1.4.2       compiler_3.4.4     git2r_0.25.2      
+ [7] prettyunits_1.0.2  progress_1.2.2     tools_3.4.4       
+[10] zeallot_0.1.0      digest_0.6.20      bit_1.1-12        
+[13] jsonlite_1.6       evaluate_0.13      tibble_2.1.3      
+[16] gargle_0.3.1.9000  pkgconfig_2.0.2    rlang_0.4.0       
+[19] DBI_1.0.0          curl_4.0           yaml_2.2.0        
+[22] xfun_0.5           stringr_1.4.0.9000 httr_1.4.1        
+[25] knitr_1.22         askpass_1.1        fs_1.3.1          
+[28] vctrs_0.2.0        hms_0.5.0          rprojroot_1.3-2   
+[31] bit64_0.9-7        tidyselect_0.2.5   glue_1.3.1.9000   
+[34] R6_2.4.0           rmarkdown_1.12     purrr_0.3.2       
+[37] magrittr_1.5       whisker_0.3-2      promises_1.0.1    
+[40] backports_1.1.4    htmltools_0.3.6    assertthat_0.2.0  
+[43] httpuv_1.4.5       stringi_1.4.4      openssl_1.4.1     
+[46] crayon_1.3.4      </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

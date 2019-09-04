@@ -41,7 +41,7 @@ n_enloc_eqtl_eur_tuples <- (function(){
        FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
        WHERE phenotype in {pheno_whitelist})" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
-})() %>% as.double
+})() %>% as.integer
 ```
 
 
@@ -58,7 +58,7 @@ FROM (
   )
 )" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
-})() %>% as.double
+})() %>% as.integer
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -69,7 +69,7 @@ n_enloc_sqtl_eur_tuples <- (function(){
        FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name} as e
        WHERE phenotype in {pheno_whitelist})" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
-})() %>% as.double
+})() %>% as.integer
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -85,7 +85,7 @@ FROM (
   )
 )" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
-})() %>% as.double
+})() %>% as.integer
 ```
 
 We obtained:

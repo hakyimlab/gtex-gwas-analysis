@@ -1,6 +1,8 @@
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(bigrquery))
+suppressPackageStartupMessages(library(viridis))
+suppressPackageStartupMessages(library(cowplot))
 
 suppressWarnings(source("code/helpers/_helpers.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
@@ -52,23 +54,63 @@ eur <- (function() {
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })()
 
-d <- all %>% full_join(eur, by=c("gene_id", "phenotype", "tissue")) %>%
-  rename(all=rcp.x, eur=rcp.y) %>%
-  mutate(all=ifelse(is.na(all), 0, all)) %>%
-  mutate(eur=ifelse(is.na(eur), 0, eur)) %>%
-  mutate(complete=ifelse(all>0&eur>0, "complete", "incomplete")) %>%
-  filter(gene_id %in% gene_metadata$gene_id) %>%
-  inner_join(gwas_metadata %>% select(phenotype, abbreviation), by="phenotype") %>%
-  select(-phenotype) %>% rename(phenotype=abbreviation) %>%
-  inner_join(gtex_metadata %>% select(tissue, tissue_abbrv), by="tissue") %>%
-  select(-tissue) %>% rename(tissue=tissue_abbrv) %>%
-  mutate(phenotype = factor(phenotype, levels=c("CAD", "ATH_UKBS", "HEIGHT"))) %>%
-  mutate(tissue = factor(tissue, levels=c("KDNCTX", "BRNCHA", "MSCLSK")))
 
-p_ <- ggplot(d) + theme_bw(base_size=18) +
-  geom_abline(intercept=0, slope=1) +
-  geom_point(aes(x=all,y=eur,color=complete), show.legend = FALSE) +
-  scale_color_manual(values = c("complete"="black", "incomplete"="darkgray")) +
-  facet_grid(tissue ~phenotype)
+p_ <- (function(){
+  d <- all %>% full_join(eur, by=c("gene_id", "phenotype", "tissue")) %>%
+    rename(all=rcp.x, eur=rcp.y) %>%
+    mutate(all=ifelse(is.na(all), 0, all)) %>%
+    mutate(eur=ifelse(is.na(eur), 0, eur)) %>%
+    mutate(complete=ifelse(all>0&eur>0, "complete", "incomplete")) %>%
+    filter(gene_id %in% gene_metadata$gene_id) %>%
+    inner_join(gwas_metadata %>% select(phenotype, abbreviation), by="phenotype") %>%
+    select(-phenotype) %>% rename(phenotype=abbreviation) %>%
+    inner_join(gtex_metadata %>% select(tissue, tissue_abbrv), by="tissue") %>%
+    select(-tissue) %>% rename(tissue=tissue_abbrv) %>%
+    mutate(phenotype = factor(phenotype, levels=c("CAD", "ATH_UKBS", "HEIGHT"))) %>%
+    mutate(tissue = factor(tissue, levels=c("KDNCTX", "BRNCHA", "MSCLSK")))
 
-save_plot(p_, fp_("ENLOC_ALL_EUR.png"), 600, 600)
+  ggplot(d) + theme_bw(base_size=14) +
+    theme(axis.text.x = element_text(angle = 45)) +
+    geom_abline(intercept=0, slope=1) +
+    geom_point(aes(x=all,y=eur,color=complete), show.legend = FALSE) +
+    scale_color_manual(values = c("complete"="black", "incomplete"="darkgray")) +
+    facet_grid(tissue ~phenotype) +
+    xlab("All individuals") + ylab("Europeans") +
+    ggtitle("ENLOC results agreement", subtitle="all individuals vs Europeans-only")
+})()
+
+#save_plot(p_, fp_("ENLOC_ALL_EUR.png"), 600, 600)
+
+
+all_ <- (function() {
+  query_ <- glue::glue(
+    "SELECT gene_id, rcp, phenotype, tissue
+             FROM {enloc_tbl_eqtl$dataset_name}.{enloc_tbl_eqtl$table_name} where rcp>0.5"
+  )
+  query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})()
+
+eur_ <- (function() {
+  query_ <- glue::glue(
+    "SELECT molecular_qtl_trait as gene_id, locus_rcp as rcp, phenotype, tissue
+             FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} WHERE locus_rcp>0.5"
+  )
+  query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})()
+
+f_ <- (function(){
+  a_ <- all_ %>% filter(gene_id %in% gene_metadata$gene_id) %>% group_by(phenotype, tissue) %>% arrange(-rcp) %>% slice(1) %>% ungroup
+  e_ <- eur_ %>% group_by(phenotype, tissue) %>% arrange(-rcp) %>% slice(1) %>% ungroup
+  d_ <- a_ %>% select(gene_id, phenotype) %>% mutate(all=1) %>%
+    full_join(e_ %>% select(gene_id, phenotype) %>% mutate(eur=1), by=c("phenotype", "gene_id"))
+  d_[is.na(d_)] <- 0
+
+  d_ <- d_ %>% mutate(type=ifelse(all & eur, "both\npopulations",
+                     ifelse(all, "all\nindividuals", "Europeans\nonly")))
+  ggplot(d_) + theme_bw(base_size=14) + geom_bar(aes(type, fill=type), show.legend = FALSE) + scale_color_viridis_d() +
+    xlab("population") +
+    ggtitle("ENLOC detections", subtitle = "gene-phenotype pairs with rcp>0.5 across tissues")
+})()
+
+plot_ <- plot_grid(p_, f_, labels = c("A", "B"), ncol=2)
+cowplot::save_plot(fp_("ENLOC_ALL_EUR.png"), plot_, base_width =12, base_height=6)
