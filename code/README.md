@@ -4,7 +4,7 @@ Save command-line scripts and shared R code here.
 
 # Structure
 
-`code/preprocess` contins scripts that were once for the project, to setup data and Google Cloud BigQuery tables.
+`code/preprocess` contains scripts that were once for the project, to setup data and Google Cloud BigQuery tables.
 
 `code/figures` contains scripts to generate specific figures for the paper.
 
@@ -18,5 +18,5 @@ Save command-line scripts and shared R code here.
 
 `code/preprocess/preprocess_setup_auxiliary_tables.R` is a script left here for reference purposes only. It was used to create support tables in google cloud.
 
-`code/preprocess/preprocess_gwas_regions.R` is a script left here for reference purposes only. It was used to create support tables in google cloud.
+`code/preprocess_gwas_regions.R` is a script left here for reference purposes only. It was used to compute counts of detections from different methods in LD-independent regions.
 
