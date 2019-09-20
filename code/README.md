@@ -20,3 +20,8 @@ Save command-line scripts and shared R code here.
 
 `code/preprocess_gwas_regions.R` is a script left here for reference purposes only. It was used to compute counts of detections from different methods in LD-independent regions.
 
+## Figures
+
+`code/figures/figure_enloc_all_vs_eur.R` yields a figure comparing ENLOC results when using all individuals, to ENLOC using only Europeans.
+
+`code/figures/predixcan_enloc_eqtl_sqtl.R` yields many figures ummarising the number of loci with GWAS-significant detections, and enloc and S-MultiXcan results.

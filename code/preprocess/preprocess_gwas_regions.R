@@ -26,14 +26,14 @@ pheno_whitelist <- sprintf("(%s)", toString(sprintf("'%s'", gwas_metadata$phenot
 #########################################################################
 
 get_if_not_exists <- function(path, method) {
-  # if (file.exists(path)) {
-  #   r_tsv_(path)
-  # } else {
-  #   d <- method()
-  #   save_delim(d, path)
-  #   d
-  # }
-  method()
+  if (file.exists(path)) {
+    r_tsv_(path)
+  } else {
+    d <- method()
+    save_delim(d, path)
+    d
+  }
+  #method()
 }
 
 #########################################################################
