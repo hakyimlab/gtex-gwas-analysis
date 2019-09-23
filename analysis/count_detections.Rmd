@@ -20,7 +20,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(cowplot))
 suppressPackageStartupMessages(library(ggrepel))
 suppressPackageStartupMessages(library(RSQLite))
-suppressWarnings(source("code/ab/_helpers.R"))
+suppressWarnings(source("code/helpers/_helpers.R"))
 ```
 
 ```{r trait_data, echo=FALSE}

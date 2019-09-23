@@ -24,21 +24,21 @@ v_ <- viridis(3)
 scale_enloc <- c("gwas"="darkgray", "enloc"=v_[2])
 scale_smultixcan <- c("gwas"="darkgray", "smultixcan"=v_[3], "enlocalized smultixcan"=v_[2])
 
-regions <- "data/summaries/regions.txt" %>% r_tsv_ %>% rename(trait=phenotype)
+regions <- "data/summaries/regions.txt" %>% r_tsv_
 gwas_metadata <- (function(){
-  query <- glue::glue("SELECT Tag as trait, new_abbreviation as abbreviation, Category as category from
+  query <- glue::glue("SELECT Tag as phenotype, new_abbreviation as abbreviation, Category as category from
                       {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name} WHERE Deflation=0")
   query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })()
 
-pheno_whitelist <- sprintf("(%s)", toString(sprintf("'%s'", gwas_metadata$trait)))
+pheno_whitelist <- sprintf("(%s)", toString(sprintf("'%s'", gwas_metadata$phenotype)))
 
 d <- (function(){
   d <- regions
   d <- d %>% spread(key=method, value=count) %>%
     mutate_at(c("gwas", "enloc_eqtl", "smultixcan_eqtl", "enloc_sqtl", "smultixcan_sqtl"), function(x){ifelse(x>0,1,0)})
   d[is.na(d)] <- 0
-  d <- d %>% group_by(trait) %>%
+  d <- d %>% group_by(phenotype) %>%
     summarise(gwas_s_regions=sum(gwas),
               gwas_s_regions_enlocalized_eqtl=sum(enloc_eqtl),
               gwas_s_regions_smultixcan_eqtl=sum(smultixcan_eqtl),
@@ -46,8 +46,8 @@ d <- (function(){
               gwas_s_regions_enlocalized_sqtl=sum(enloc_sqtl),
               gwas_s_regions_smultixcan_sqtl=sum(smultixcan_sqtl),
               gwas_s_regions_smultixcan_enlocalized_sqtl=sum(smultixcan_sqtl*enloc_sqtl))
-  left_ <- gwas_metadata %>% filter(!(trait %in% unique(d$trait))) %>% .$trait %>% sort %>% unlist
-  left_ <- data.frame(trait=left_,
+  left_ <- gwas_metadata %>% filter(!(phenotype %in% unique(d$phenotype))) %>% .$phenotype %>% sort %>% unlist
+  left_ <- data.frame(phenotype=left_,
                       gwas_s_regions=0,
                       gwas_s_regions_enlocalized_eqtl=0,
                       gwas_s_regions_smultixcan_eqtl=0,
@@ -56,7 +56,7 @@ d <- (function(){
                       gwas_s_regions_smultixcan_sqtl=0,
                       gwas_s_regions_smultixcan_enlocalized_sqtl=0)
   rbind(d, left_) %>%
-    inner_join(gwas_metadata, by="trait")
+    inner_join(gwas_metadata, by="phenotype")
 })()
 
 order_ <- d %>% arrange(gwas_s_regions) %>% .$abbreviation
@@ -68,26 +68,26 @@ d <- d %>% mutate(abbreviation = factor(abbreviation, levels=order_))
 #additional data
 enloc_genes_ <- (function() {
   query_ <- glue::glue(
-    "SELECT molecular_qtl_trait as gene_id, locus_rcp as rcp, phenotype as trait, tissue
+    "SELECT molecular_qtl_trait as gene_id, locus_rcp as rcp, phenotype, tissue
              FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
              WHERE locus_rcp>0.5 and e.phenotype in {pheno_whitelist}"
   )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })()
-enloc_genes <- enloc_genes_ %>% group_by(trait, gene_id) %>% arrange(-rcp) %>% slice(1) %>% ungroup %>%
-  group_by(trait) %>% summarise(n=n())  %>%  inner_join(gwas_metadata, by="trait") %>%
+enloc_genes <- enloc_genes_ %>% group_by(phenotype, gene_id) %>% arrange(-rcp) %>% slice(1) %>% ungroup %>%
+  group_by(phenotype) %>% summarise(n=n())  %>%  inner_join(gwas_metadata, by="phenotype") %>%
   mutate(abbreviation = factor(abbreviation, levels=order_))
 
 enloc_introns_ <- (function() {
   query_ <- glue::glue(
-    "SELECT molecular_qtl_trait as intron_id, locus_rcp as rcp, phenotype as trait, tissue
+    "SELECT molecular_qtl_trait as intron_id, locus_rcp as rcp, phenotype, tissue
              FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name} as s
              WHERE locus_rcp>0.5 and s.phenotype in {pheno_whitelist}"
   )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })()
-enloc_introns <- enloc_introns_ %>% group_by(trait, intron_id) %>% arrange(-rcp) %>% slice(1) %>% ungroup %>%
-  group_by(trait) %>% summarise(n=n())  %>%  inner_join(gwas_metadata, by="trait") %>%
+enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-rcp) %>% slice(1) %>% ungroup %>%
+  group_by(phenotype) %>% summarise(n=n())  %>%  inner_join(gwas_metadata, by="phenotype") %>%
   mutate(abbreviation = factor(abbreviation, levels=order_))
 
 ###############################################################################
@@ -157,7 +157,7 @@ enloc_introns <- enloc_introns_ %>% group_by(trait, intron_id) %>% arrange(-rcp)
 #additional data
 smultixcan_genes <- (function() {
   query_ <- glue::glue("
-SELECT m.phenotype as trait, m.gene, m.pvalue
+SELECT m.phenotype, m.gene, m.pvalue
 FROM {multixcan_tbl_eqtl$dataset_name}.{multixcan_tbl_eqtl$table_name} as m
 JOIN {multixcan_tbl_count_eqtl$dataset_name}.{multixcan_tbl_count_eqtl$table_name} as m_count
 ON m_count.phenotype=m.phenotype
@@ -166,27 +166,27 @@ WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })()
 smultixcan_genes <- smultixcan_genes %>%
-  left_join(enloc_genes_ %>% select(trait, gene=gene_id) %>% mutate(enloc=1), by=c("trait", "gene")) %>%
+  left_join(enloc_genes_ %>% select(phenotype, gene=gene_id) %>% mutate(enloc=1), by=c("phenotype", "gene")) %>%
   mutate(enloc=ifelse(is.na(enloc),0,1)) %>%
-  group_by(trait) %>% summarise(smultixcan=n(), enloc=sum(enloc)) %>%
-  inner_join(gwas_metadata, by="trait") %>%
+  group_by(phenotype) %>% summarise(smultixcan=n(), enloc=sum(enloc)) %>%
+  inner_join(gwas_metadata, by="phenotype") %>%
   mutate(abbreviation = factor(abbreviation, levels=order_))
 
 smultixcan_introns <- (function() {
   query_ <- glue::glue("
-SELECT m.trait, m.gene as intron, m.pvalue
+SELECT m.phenotype, m.gene as intron, m.pvalue
 FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name} as m
 JOIN {multixcan_tbl_count_sqtl$dataset_name}.{multixcan_tbl_count_sqtl$table_name} as m_count
-ON m_count.trait=m.trait
-WHERE m.pvalue < m_count.b and m.trait in {pheno_whitelist}
+ON m_count.phenotype=m.phenotype
+WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
 ")
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })()
 smultixcan_introns <- smultixcan_introns %>%
-  left_join(enloc_introns_ %>% select(trait, intron=intron_id) %>% mutate(enloc=1), by=c("trait", "intron")) %>%
+  left_join(enloc_introns_ %>% select(phenotype, intron=intron_id) %>% mutate(enloc=1), by=c("phenotype", "intron")) %>%
   mutate(enloc=ifelse(is.na(enloc),0,1)) %>%
-  group_by(trait) %>% summarise(smultixcan=n(), enloc=sum(enloc)) %>%
-  inner_join(gwas_metadata, by="trait") %>%
+  group_by(phenotype) %>% summarise(smultixcan=n(), enloc=sum(enloc)) %>%
+  inner_join(gwas_metadata, by="phenotype") %>%
   mutate(abbreviation = factor(abbreviation, levels=order_))
 
 ###############################################################################

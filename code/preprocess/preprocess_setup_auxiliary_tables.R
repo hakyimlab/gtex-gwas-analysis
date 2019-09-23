@@ -13,7 +13,6 @@ suppressPackageStartupMessages(library(bigrquery))
 suppressPackageStartupMessages(library(RCurl))
 
 suppressWarnings(source("code/helpers/_helpers.R"))
-suppressWarnings(source("code/helpers/_helpers_data.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 
@@ -38,12 +37,13 @@ fp_ <- function(p) file.path(RESULT, p)
 #
 #   k <- p_ %>% full_join(df, by=c("gene", "tissue"))
 # })()
-#
+
 # #We avoid bq_table_create because it converts `snake_case` to `camelCase`
 # # Create a table with bonferroni thresholds
 # (function(){
 #   ds <- bq_dataset(predixcan_tbl_eqtl$project, predixcan_tbl_eqtl$dataset_name)
 #
+#   (function(){
 #   query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {predixcan_tbl_eqtl$dataset_name}.{predixcan_tbl_eqtl$table_name}
 #                       WHERE pvalue IS NOT NULL
 #                       GROUP BY phenotype")
@@ -51,27 +51,29 @@ fp_ <- function(p) file.path(RESULT, p)
 #     mutate(b=0.05/n) %>% select(phenotype, n, b)
 #   df %>% save_delim(fp_("expression_b.txt"))
 #
-#   bq_ <- bq_table(predixcan_tbl_eqtl$project, predixcan_tbl_eqtl$dataset_name, "predixcan_results_count")
+#   bq_ <- bq_table(predixcan_tbl_count_eqtl$project,predixcan_tbl_count_eqtl$dataset_name, predixcan_tbl_count_eqtl$table_name)
 #   bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
 #   bq_table_upload(bq_, df)
+#   })()
 #
-#
-#   query <- glue::glue("SELECT count(pvalue) as n, trait FROM {predixcan_tbl_sqtl$dataset_name}.{predixcan_tbl_sqtl$table_name}
+#   (function(){
+#   query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {predixcan_tbl_sqtl$dataset_name}.{predixcan_tbl_sqtl$table_name}
 #                       WHERE pvalue IS NOT NULL
-#                       GROUP BY trait")
-#   df <- query_exec(query, project = predixcan_tbl_eqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
-#     mutate(b=0.05/n) %>% select(trait, n, b)
+#                       GROUP BY phenotype")
+#   df <- query_exec(query, project = predixcan_tbl_sqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
+#     mutate(b=0.05/n) %>% select(phenotype, n, b)
 #   df %>% save_delim(fp_("splicing_b.txt"))
 #
-#   bq_ <- bq_table(predixcan_tbl_sqtl$project, predixcan_tbl_sqtl$dataset_name, "predixcan_results_count")
+#   bq_ <- bq_table(predixcan_tbl_count_sqtl$project, predixcan_tbl_count_sqtl$dataset_name, predixcan_tbl_count_sqtl$table_name)
 #   bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
 #   bq_table_upload(bq_, df)
-#
+#   })()
 # })()
-#
+
 # (function(){
 #   ds <- bq_dataset(multixcan_tbl_eqtl$project, multixcan_tbl_eqtl$dataset_name)
 #
+#   (function(){
 #   query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {multixcan_tbl_eqtl$dataset_name}.{multixcan_tbl_eqtl$table_name}
 #                       WHERE pvalue IS NOT NULL
 #                       GROUP BY phenotype")
@@ -79,24 +81,25 @@ fp_ <- function(p) file.path(RESULT, p)
 #     mutate(b=0.05/n) %>% select(phenotype, n, b)
 #   df %>% save_delim(fp_("expression_m_b.txt"))
 #
-#   bq_ <- bq_table(multixcan_tbl_eqtl$project, multixcan_tbl_eqtl$dataset_name, "multixcan_results_count")
+#   bq_ <- bq_table(multixcan_tbl_count_eqtl$project, multixcan_tbl_count_eqtl$dataset_name, multixcan_tbl_count_eqtl$table_name)
 #   bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
 #   bq_table_upload(bq_, df)
+#   })()
 #
-#
-#   query <- glue::glue("SELECT count(pvalue) as n, trait FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name}
+#   (function(){
+#   query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name}
 #                        WHERE pvalue IS NOT NULL
-#                        GROUP BY trait")
+#                        GROUP BY phenotype")
 #   df <- query_exec(query, project = multixcan_tbl_sqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
-#     mutate(b=0.05/n) %>% select(trait, n, b)
+#     mutate(b=0.05/n) %>% select(phenotype, n, b)
 #   df %>% save_delim(fp_("splicing_m_b.txt"))
 #
-#   bq_ <- bq_table(multixcan_tbl_sqtl$project, multixcan_tbl_sqtl$dataset_name, "multixcan_results_count")
+#   bq_ <- bq_table(multixcan_tbl_count_sqtl$project, multixcan_tbl_count_sqtl$dataset_name, multixcan_tbl_count_sqtl$table_name)
 #   bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
 #   bq_table_upload(bq_, df)
-#
+#   })
 # })()
-#
+
 # (function(){
 #   ds <- bq_dataset(gwas_tbl$project, gwas_tbl$dataset_name)
 #

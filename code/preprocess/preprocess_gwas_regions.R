@@ -26,14 +26,14 @@ pheno_whitelist <- sprintf("(%s)", toString(sprintf("'%s'", gwas_metadata$phenot
 #########################################################################
 
 get_if_not_exists <- function(path, method) {
-  if (file.exists(path)) {
-    r_tsv_(path)
-  } else {
+  # if (file.exists(path)) {
+  #   r_tsv_(path)
+  # } else {
     d <- method()
     save_delim(d, path)
     d
-  }
-  #method()
+  # }
+  # method()
 }
 
 #########################################################################
@@ -51,8 +51,8 @@ get_multixcan_regions_eqtl <- function() {
              WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
            ) as m
       JOIN ( SELECT a.*, ld.region
-        FROM `gtex-awg-im.annotations.gencode_v26_all` AS a
-        JOIN `gtex-awg-im.annotations.ld_independent_regions_2` as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
+        FROM {gencode_all_annotation_tbl$dataset_name}.{gencode_all_annotation_tbl$table_name} AS a
+        JOIN {ld_independent_regions_2_tbl$dataset_name}.{ld_independent_regions_2_tbl$table_name} as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
         ) AS r
       ON m.gene = r.gene_id
     )
@@ -67,27 +67,27 @@ get_multixcan_regions_sqtl <- function() {
   query_ <- glue::glue(
 "WITH ranked_introns AS (
   SELECT *,
-  COUNT(*) OVER (PARTITION BY region, trait) as count,
-  ROW_NUMBER() OVER (PARTITION BY region, trait ORDER BY pvalue) as rk
+  COUNT(*) OVER (PARTITION BY region, phenotype) as count,
+  ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY pvalue) as rk
     FROM ( SELECT r.region, m.*
       FROM ( SELECT m.*
              FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name} as m
              JOIN {multixcan_tbl_count_sqtl$dataset_name}.{multixcan_tbl_count_sqtl$table_name} as m_count
-             ON m_count.trait=m.trait
-             WHERE m.pvalue < m_count.b and m.trait in {pheno_whitelist}
+             ON m_count.phenotype=m.phenotype
+             WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
            ) as m
       JOIN ( SELECT a.*, ld.region
-        FROM `gtex-awg-im.annotations.introns` AS a
-        JOIN `gtex-awg-im.annotations.ld_independent_regions_2` as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
+        FROM {intron_annotation_tbl$dataset_name}.{intron_annotation_tbl$table_name} AS a
+        JOIN {ld_independent_regions_2_tbl$dataset_name}.{ld_independent_regions_2_tbl$table_name}  as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
         ) AS r
       ON m.gene = r.intron_id
     )
   )
-  SELECT region, trait, count, pvalue as best_pvalue FROM ranked_introns  WHERE rk = 1"
+  SELECT region, phenotype, count, pvalue as best_pvalue FROM ranked_introns  WHERE rk = 1"
   )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-m_sqtl_ <- get_if_not_exists(dp_("regions_multixcan_sqtl.txt"), get_multixcan_regions_sqtl) %>% rename(phenotype=trait)
+m_sqtl_ <- get_if_not_exists(dp_("regions_multixcan_sqtl.txt"), get_multixcan_regions_sqtl)
 
 #########################################################################
 get_predixcan_regions_eqtl <- function() {
@@ -105,8 +105,8 @@ get_predixcan_regions_eqtl <- function() {
              WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
            ) as px
       JOIN ( SELECT a.*, ld.region
-        FROM `gtex-awg-im.annotations.gencode_v26_all` AS a
-        JOIN `gtex-awg-im.annotations.ld_independent_regions_2` as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
+        FROM {gencode_all_annotation_tbl$dataset_name}.{gencode_all_annotation_tbl$table_name} AS a
+        JOIN {ld_independent_regions_2_tbl$dataset_name}.{ld_independent_regions_2_tbl$table_name} as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
         ) AS r
       ON px.gene = r.gene_id
     )
@@ -121,28 +121,28 @@ get_predixcan_regions_sqtl <- function() {
   query_ <- glue::glue(
 "WITH ranked_genes AS (
   SELECT *,
-  COUNT(*) OVER (PARTITION BY region, trait) as count,
-  ROW_NUMBER() OVER (PARTITION BY region, trait ORDER BY pvalue) as rk
+  COUNT(*) OVER (PARTITION BY region, phenotype) as count,
+  ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY pvalue) as rk
     FROM (
       SELECT r.region, px.*
       FROM ( SELECT px.*
              FROM {predixcan_tbl_sqtl$dataset_name}.{predixcan_tbl_sqtl$table_name} as px
              JOIN {predixcan_tbl_count_sqtl$dataset_name}.{predixcan_tbl_count_sqtl$table_name} as px_count
-             ON px_count.trait=px.trait
-             WHERE px.pvalue < px_count.b and px.trait in {pheno_whitelist}
+             ON px_count.phenotype=px.phenotype
+             WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
            ) as px
       JOIN ( SELECT a.*, ld.region
-        FROM `gtex-awg-im.annotations.introns` AS a
-        JOIN `gtex-awg-im.annotations.ld_independent_regions_2` as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
+        FROM {intron_annotation_tbl$dataset_name}.{intron_annotation_tbl$table_name} AS a
+        JOIN {ld_independent_regions_2_tbl$dataset_name}.{ld_independent_regions_2_tbl$table_name} as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
         ) AS r
       ON px.gene = r.intron_id
     )
   )
-  SELECT region, trait, count, pvalue as best_pvalue FROM ranked_genes  WHERE rk = 1"
+  SELECT region, phenotype, count, pvalue as best_pvalue FROM ranked_genes  WHERE rk = 1"
   )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-p_sqtl_ <- get_if_not_exists(dp_("regions_predixcan_sqtl.txt"), get_predixcan_regions_sqtl) %>% rename(phenotype=trait)
+p_sqtl_ <- get_if_not_exists(dp_("regions_predixcan_sqtl.txt"), get_predixcan_regions_sqtl)
 
 ###############################################################################
 get_enloc_regions_eqtl <- function() {
@@ -157,8 +157,8 @@ get_enloc_regions_eqtl <- function() {
              FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
              WHERE locus_rcp>0.5 ) as e
       JOIN ( SELECT a.*, ld.region
-        FROM `gtex-awg-im.annotations.gencode_v26_all` AS a
-        JOIN `gtex-awg-im.annotations.ld_independent_regions_2` as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
+        FROM {gencode_all_annotation_tbl$dataset_name}.{gencode_all_annotation_tbl$table_name} AS a
+        JOIN {ld_independent_regions_2_tbl$dataset_name}.{ld_independent_regions_2_tbl$table_name} as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
         ) AS r
       ON e.gene_id = r.gene_id
     )
@@ -181,8 +181,8 @@ get_enloc_regions_sqtl <- function() {
              FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name} as e
              WHERE locus_rcp>0.5 ) as e
       JOIN ( SELECT a.*, ld.region
-        FROM `gtex-awg-im.annotations.introns` AS a
-        JOIN `gtex-awg-im.annotations.ld_independent_regions_2` as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
+        FROM {intron_annotation_tbl$dataset_name}.{intron_annotation_tbl$table_name} AS a
+        JOIN  {ld_independent_regions_2_tbl$dataset_name}.{ld_independent_regions_2_tbl$table_name} as ld ON (ld.start_location < a.start_location AND a.start_location <= ld.end_location AND a.chromosome = ld.chromosome)
         ) AS r
       ON e.intron_id = r.intron_id
     )
