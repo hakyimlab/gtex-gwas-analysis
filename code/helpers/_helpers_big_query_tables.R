@@ -59,6 +59,7 @@ gencode_annotation_tbl <-             tableInfo("annotations", "gencode_v26")
 intron_annotation_tbl <-              tableInfo("annotations", "introns")
 gtex_sample_size_tbl <-               tableInfo("annotations", "sample_size")
 gwas_metadata_tbl <-                  tableInfo("GTEx_V8_metadata", "gwas_metadata")
+trait_metadata_tbl <-                 tableInfo("GTEx_V8_metadata", "phenotype_classes_colors")
 gtex_tissue_metadata_tbl <-           tableInfo("GTEx_V8_metadata", "gtex_tissue_metadata")
 
 # miscellaneous

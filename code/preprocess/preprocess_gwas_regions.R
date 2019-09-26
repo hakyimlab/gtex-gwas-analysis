@@ -150,7 +150,7 @@ get_enloc_regions_eqtl <- function() {
 "WITH ranked_genes AS (
   SELECT *,
   ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY rcp DESC) as rk,
-  COUNT(*) OVER (PARTITION BY region, phenotype ORDER BY rcp DESC) as count
+  COUNT(*) OVER (PARTITION BY region, phenotype) as count
     FROM (
       SELECT r.region, e.*
       FROM ( SELECT molecular_qtl_trait as gene_id, locus_rcp as rcp, phenotype, tissue
@@ -173,7 +173,7 @@ get_enloc_regions_sqtl <- function() {
   query_ <- glue::glue(
 "WITH ranked_genes AS (
   SELECT *,
-  COUNT(*) OVER (PARTITION BY region, phenotype ORDER BY rcp DESC) as count,
+  COUNT(*) OVER (PARTITION BY region, phenotype) as count,
   ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY rcp DESC) as rk
     FROM (
       SELECT r.region, e.*
@@ -200,7 +200,7 @@ get_gwas_regions <- function() {
 "WITH ranked_gwas AS (
   SELECT *,
   ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY pvalue) as rk,
-  COUNT(*) OVER (PARTITION BY region, phenotype ORDER BY pvalue) as count
+  COUNT(*) OVER (PARTITION BY region, phenotype) as count
     FROM ( SELECT ld.region, g.*
            FROM ( SELECT g.* FROM `gtex-awg-im.GWAS_all.gwas` as g
                   JOIN `gtex-awg-im.GWAS_all.gwas_results_count` as g_count ON g_count.phenotype=g.phenotype
@@ -232,3 +232,27 @@ results <- tidy_up(g_, method="gwas") %>%
     rbind(tidy_up(e_sqtl_, "enloc_sqtl"))
 results %>% save_delim(dp_("regions.txt"))
 
+metadata_ <- (function(){
+  gm_ <- (function(){
+    query <- glue::glue(
+"SELECT Tag as trait, new_abbreviation as abbreviation, Category
+ FROM {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name}  WHERE Deflation=0")
+    query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+  })()
+  gm_ <- gm_ %>%
+    mutate(Category=ifelse(Category == "Endocrine system disease", "Endocrine system", Category)) %>%
+    mutate(Category=ifelse(Category == "Morphology", "Hair morphology", Category)) %>%
+    mutate(Category=ifelse(Category == "Psychiatric_neurologic", "Psychiatric-neurologic", Category))
+
+  tm_ <- (function(){
+    query <- glue::glue(
+"SELECT *
+ FROM {trait_metadata_tbl$dataset_name}.{trait_metadata_tbl$table_name}")
+    query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+  })()
+  gm_ %>% inner_join(tm_, by=c("Category"="phenotype_class"))
+})()
+
+r_ <- results %>% select(region, n=count, trait=phenotype, results=method) %>%
+  inner_join(metadata_ %>% rename(category=Category), by="trait")
+r_ %>% save_delim(dp_("ld_region_count.txt"))

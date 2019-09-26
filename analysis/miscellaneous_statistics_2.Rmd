@@ -14,11 +14,15 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(library(bigrquery))
 
-
 suppressWarnings(source("code/helpers/_helpers.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 
+options(gargle_oauth_email = TRUE)
+
+OUTPUT<-"output"
+dir.create(OUTPUT, showWarnings = FALSE, recursive=TRUE)
+fp_ <- function(p) file.path(OUTPUT, p)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -44,7 +48,6 @@ n_enloc_eqtl_eur_tuples <- (function(){
 })() %>% as.integer
 ```
 
-
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n_enloc_eqtl_eur_gt_pairs <- (function(){
   query <- "
@@ -60,6 +63,7 @@ FROM (
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
 ```
+
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n_enloc_sqtl_eur_tuples <- (function(){
@@ -95,3 +99,143 @@ We obtained:
 - `r n_enloc_sqtl_eur_tuples` `(gene, tissue, phenotype)` distinct tuples from splicing on Eur individuals
 - `r n_enloc_sqtl_eur_gt_pairs` `(gene, tissue)` distinct pairs from splicing on Eur individuals
 
+
+# PrediXcan
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_models_gt_pairs_eur_eqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene, tissue
+  FROM (
+    SELECT gene, tissue
+    FROM {prediction_models_extra_tbl_eqtl$dataset_name}.{prediction_models_extra_tbl_eqtl$table_name} as e
+    WHERE n_snps_in_model > 0
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_models_gt_pairs_eqtl_eur <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene, tissue
+  FROM (
+    SELECT gene, tissue
+    FROM {prediction_models_extra_tbl_eqtl$dataset_name}.{prediction_models_extra_tbl_eqtl$table_name} as e
+    WHERE n_snps_in_model > 0
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_models_genes_eqtl_eur <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene
+  FROM (
+    SELECT gene
+    FROM {prediction_models_extra_tbl_eqtl$dataset_name}.{prediction_models_extra_tbl_eqtl$table_name} as e
+    WHERE n_snps_in_model > 0
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_genes_eqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene
+  FROM ( SELECT px.gene
+         FROM {predixcan_tbl_eqtl$dataset_name}.{predixcan_tbl_eqtl$table_name} as px
+         JOIN {predixcan_tbl_count_eqtl$dataset_name}.{predixcan_tbl_count_eqtl$table_name} as px_count
+         ON px_count.phenotype=px.phenotype
+         WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_tuples_eqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM {predixcan_tbl_eqtl$dataset_name}.{predixcan_tbl_eqtl$table_name} as px
+WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_tuples_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM {predixcan_tbl_sqtl$dataset_name}.{predixcan_tbl_sqtl$table_name} as px
+WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_smultixcan_tuples_eqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM {multixcan_tbl_eqtl$dataset_name}.{multixcan_tbl_eqtl$table_name} as px
+WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_smultixcan_tuples_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name} as px
+WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+We obtained:
+
+- `r n_models_gt_pairs_eur_eqtl` `(gene, tissue)` pairs in Elastic Expression models
+- `r n_spredixcan_genes_eqtl` significant s-predixcan genes in Elastic Expression models
+- `r n_spredixcan_tuples` S-PrediXcan tuples in expression models
+
+# Tables
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table <- function(p_tbl, pc_tbl, e_tbl, field, field_plus){
+  query <- "
+SELECT p.phenotype, p.tissue, p.{field}, {field_plus} p.pvalue, e.locus_rcp as rcp
+FROM {p_tbl$dataset_name}.{p_tbl$table_name} as p 
+INNER JOIN {pc_tbl$dataset_name}.{pc_tbl$table_name} as pc
+ON p.phenotype = pc.phenotype
+INNER JOIN {e_tbl$dataset_name}.{e_tbl$table_name} as e
+ON p.phenotype = e.phenotype AND p.tissue = e.tissue AND p.{field} = e.molecular_qtl_trait
+WHERE p.pvalue is not NULL AND p.pvalue < pc.b AND e.locus_rcp > 0.5 AND p.phenotype in {pheno_whitelist}
+ORDER BY p.phenotype, p.tissue, p.pvalue
+" %>% glue::glue()
+  #print(query)
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+
+sp_eqtl_discovery_table <- table(predixcan_tbl_eqtl, predixcan_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
+save_delim(sp_eqtl_discovery_table, fp_("spredixcan_enloc_discovery_eqtl.txt"))
+#gsutil cp -a public-read output/spredixcan_enloc_discovery_eqtl.txt gs://gtex-gwas-share/data-for-paper/spredixcan_enloc_discovery_eqtl.txt
+```
