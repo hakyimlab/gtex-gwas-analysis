@@ -16,6 +16,8 @@ tableInfo <- function(dataset="GTEx_V8_ElasticNet_EUR_2018_07_05", table="predix
 
 # elastic net models and gene-level associations
 gwas_tbl <- tableInfo("GWAS_all", "gwas")
+gwas_tbl_count <- tableInfo("GWAS_all", "gwas_results_count")
+gwas_formatted_tbl <- tableInfo("GWAS_all", "formatted_gwas")
 
 prediction_models_tbl_eqtl <-       tableInfo("GTEx_V8_ElasticNet_EUR_v1", "weights_eqtl")
 prediction_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_ElasticNet_EUR_v1", "extra_eqtl")

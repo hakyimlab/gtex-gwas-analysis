@@ -33,6 +33,18 @@ gwas_metadata <- (function(){
   query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })()
 pheno_whitelist <- sprintf("(%s)", toString(sprintf("'%s'", gwas_metadata$phenotype)))
+
+gencode <- (function(){
+  query <- glue::glue("SELECT *
+                       FROM {gencode_all_annotation_tbl$dataset_name}.{gencode_all_annotation_tbl$table_name}
+                       WHERE gene_type in ('lincRNA', 'protein_coding', 'pseudogene')")
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})()
+
+introns <- (function(){
+  query <- glue::glue("SELECT * FROM {intron_annotation_tbl$dataset_name}.{intron_annotation_tbl$table_name}")
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})()
 ```
 
 # ENLOC runs
@@ -214,13 +226,97 @@ WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
 We obtained:
 
 - `r n_models_gt_pairs_eur_eqtl` `(gene, tissue)` pairs in Elastic Expression models
+- `r n_models_genes_eqtl_eur` genes in Elastic Expression models
 - `r n_spredixcan_genes_eqtl` significant s-predixcan genes in Elastic Expression models
-- `r n_spredixcan_tuples` S-PrediXcan tuples in expression models
+- `r n_spredixcan_tuples_eqtl` S-PrediXcan tuples in expression models
 
 # Tables
 
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-table <- function(p_tbl, pc_tbl, e_tbl, field, field_plus){
+sp_table_ <- function(p_tbl, pc_tbl, field, field_plus){
+  query <- "
+SELECT p.phenotype, p.tissue, p.{field}, {field_plus} p.pvalue
+FROM {p_tbl$dataset_name}.{p_tbl$table_name} as p 
+INNER JOIN {pc_tbl$dataset_name}.{pc_tbl$table_name} as pc
+ON p.phenotype = pc.phenotype
+WHERE p.pvalue is not NULL AND p.pvalue < pc.b AND p.phenotype in {pheno_whitelist}
+ORDER BY p.phenotype, p.tissue, p.pvalue
+" %>% glue::glue()
+  #print(query)
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+sp_eqtl_assoc_df <- sp_table_(predixcan_tbl_eqtl, predixcan_tbl_count_eqtl, "gene", "gene_name, ")
+sp_sqtl_assoc_df <- sp_table_(predixcan_tbl_sqtl, predixcan_tbl_count_sqtl, "gene", "gene_name, ")
+
+sm_table_ <- function(m_tbl, mc_tbl, field, field_plus){
+  query <- "
+SELECT m.phenotype, m.{field}, {field_plus} m.pvalue
+FROM {m_tbl$dataset_name}.{m_tbl$table_name} as m
+INNER JOIN {mc_tbl$dataset_name}.{mc_tbl$table_name} as mc
+ON m.phenotype = mc.phenotype
+WHERE m.pvalue is not NULL AND m.pvalue < mc.b AND m.phenotype in {pheno_whitelist}
+ORDER BY m.phenotype, m.pvalue
+" %>% glue::glue()
+  #print(query)
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+sm_eqtl_assoc_table <- sm_table_(multixcan_tbl_eqtl, multixcan_tbl_count_eqtl, "gene", "gene_name, ")
+sm_sqtl_assoc_table <- sm_table_(multixcan_tbl_sqtl, multixcan_tbl_count_sqtl, "gene", "gene_name, ")
+
+e_table_ <- function(e_tbl){
+  query <- "
+SELECT phenotype, tissue, molecular_qtl_trait as gene, locus_rcp as rcp
+FROM {e_tbl$dataset_name}.{e_tbl$table_name} 
+WHERE locus_rcp > 0.5 AND phenotype in {pheno_whitelist}
+ORDER BY phenotype, tissue, locus_rcp DESC 
+" %>% glue::glue()
+  #print(query)
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+eqtl_enloc_df <- e_table_(enloc_tbl_eqtl_eur)
+sqtl_enloc_df <- e_table_(enloc_tbl_sqtl_eur)
+
+c_table_ <- function(c_tbl) {
+    query <- "
+SELECT phenotype, tissue, gene_id as gene, pp_H4_abf as p4
+FROM {c_tbl$dataset_name}.{c_tbl$table_name} 
+WHERE pp_H4_abf > 0.5 AND phenotype in {pheno_whitelist}
+ORDER BY phenotype, tissue, pp_H4_abf DESC 
+" %>% glue::glue()
+  #print(query)
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+eqtl_coloc_df <- c_table_(coloc_tbl_eqtl )
+
+build_sp_table <- function(sp, e) {
+  sp %>%  full_join(e, by=c("phenotype", "tissue", "gene")) %>%
+  mutate(is_enloc=!is.na(rcp)&rcp>0.5) %>%
+  mutate(is_predixcan=!is.na(pvalue)) %>%
+  select(-pvalue, -rcp)
+}
+
+eqtl_sp_df <- build_sp_table(sp_eqtl_assoc_df, eqtl_enloc_df)
+sqtl_sp_df <- build_sp_table(sp_sqtl_assoc_df, sqtl_enloc_df)
+
+build_sm_table <- function(sm, e) {
+  sm %>% 
+  full_join(e %>% group_by(phenotype, gene) %>% arrange(-rcp) %>% slice(1) %>% ungroup, by=c("phenotype", "gene")) %>%
+  mutate(is_enloc=!is.na(rcp)&rcp>0.5) %>%
+  mutate(is_multixcan=!is.na(pvalue)) %>%
+  select(-pvalue, -rcp, -tissue)
+}
+
+eqtl_sm_df <- build_sm_table(sm_eqtl_assoc_table, eqtl_enloc_df)
+sqtl_sm_df <- build_sm_table(sm_sqtl_assoc_table, sqtl_enloc_df)
+
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+#LIST OF DISCOVERIES
+
+#S-PrediXcan
+sp_table <- function(p_tbl, pc_tbl, e_tbl, field, field_plus){
   query <- "
 SELECT p.phenotype, p.tissue, p.{field}, {field_plus} p.pvalue, e.locus_rcp as rcp
 FROM {p_tbl$dataset_name}.{p_tbl$table_name} as p 
@@ -235,7 +331,163 @@ ORDER BY p.phenotype, p.tissue, p.pvalue
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
 
-sp_eqtl_discovery_table <- table(predixcan_tbl_eqtl, predixcan_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
+sp_eqtl_discovery_table <- sp_table(predixcan_tbl_eqtl, predixcan_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
 save_delim(sp_eqtl_discovery_table, fp_("spredixcan_enloc_discovery_eqtl.txt"))
 #gsutil cp -a public-read output/spredixcan_enloc_discovery_eqtl.txt gs://gtex-gwas-share/data-for-paper/spredixcan_enloc_discovery_eqtl.txt
+
+sp_sqtl_discovery_table <- sp_table(predixcan_tbl_sqtl, predixcan_tbl_count_sqtl, enloc_tbl_sqtl_eur, "gene", "gene_name, ")
+sp_sqtl_discovery_table %>% rename(intron=gene) %>% select(-gene_name) %>% save_delim(fp_("spredixcan_enloc_discovery_sqtl.txt"))
+#gsutil cp -a public-read output/spredixcan_enloc_discovery_sqtl.txt gs://gtex-gwas-share/data-for-paper/spredixcan_enloc_discovery_sqtl.txt
+
+#S-MultiXcan
+sm_table <- function(m_tbl, mc_tbl, e_tbl, field, field_plus){
+  query <- "
+SELECT m.phenotype, m.{field}, {field_plus} m.pvalue, e.locus_rcp as rcp
+FROM {m_tbl$dataset_name}.{m_tbl$table_name} as m
+INNER JOIN {mc_tbl$dataset_name}.{mc_tbl$table_name} as mc
+ON m.phenotype = mc.phenotype
+INNER JOIN (
+  SELECT molecular_qtl_trait, locus_rcp, phenotype FROM (
+    SELECT molecular_qtl_trait, locus_rcp, phenotype, tissue,
+    ROW_NUMBER() OVER (PARTITION BY phenotype, molecular_qtl_trait ORDER BY locus_rcp DESC) as rk
+    FROM {e_tbl$dataset_name}.{e_tbl$table_name} )
+  WHERE locus_rcp >0.5 and rk=1) as e
+ON m.phenotype = e.phenotype AND m.{field} = e.molecular_qtl_trait
+WHERE m.pvalue is not NULL AND m.pvalue < mc.b AND e.locus_rcp > 0.5 AND m.phenotype in {pheno_whitelist}
+ORDER BY m.phenotype, m.pvalue
+" %>% glue::glue()
+  #print(query)
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+
+sm_eqtl_discovery_table <- sm_table(multixcan_tbl_eqtl, multixcan_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
+sm_eqtl_discovery_table %>% save_delim( fp_("smultixcan_enloc_discovery_eqtl.txt"))
+#gsutil cp -a public-read output/smultixcan_enloc_discovery_eqtl.txt gs://gtex-gwas-share/data-for-paper/smultixcan_enloc_discovery_eqtl.txt
+
+sm_sqtl_discovery_table <- sm_table(multixcan_tbl_sqtl, multixcan_tbl_count_sqtl, enloc_tbl_sqtl_eur, "gene", "gene_name, ")
+sm_sqtl_discovery_table %>% rename(intron=gene) %>% select(-gene_name) %>% save_delim( fp_("smultixcan_enloc_discovery_sqtl.txt"))
+#gsutil cp -a public-read output/smultixcan_enloc_discovery_sqtl.txt gs://gtex-gwas-share/data-for-paper/smultixcan_enloc_discovery_sqtl.txt
+
 ```
+
+Enloc gene-phenotype pairs:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+data.frame(
+  data = c("eqtl", "sqtl"),
+  enloc = c(
+    eqtl_enloc_df %>% filter(gene %in% gencode$gene_id) %>% select (phenotype, gene) %>% unique %>% nrow,
+    sqtl_enloc_df %>% select (phenotype, gene) %>% unique %>% nrow
+  )
+) %>% kableExtra::kable(caption="gene-phenotype enloc")
+
+```
+
+Enloc gene-tissue pairs:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+data.frame(
+  data = c("eqtl", "sqtl"),
+  enloc = c(
+    eqtl_enloc_df %>% select (phenotype, tissue) %>% unique %>% nrow,
+    sqtl_enloc_df %>% select (phenotype, tissue) %>% unique %>% nrow
+  )
+) %>% kableExtra::kable(caption="tissue-phenotype enloc")
+
+```
+Enloc gene pairs:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+data.frame(
+  data = c("eqtl", "sqtl"),
+  enloc = c(
+    eqtl_enloc_df %>% select (gene) %>% unique %>% nrow,
+    sqtl_enloc_df %>% select (gene) %>% unique %>% nrow
+  )
+) %>% kableExtra::kable(caption="gene  enloc")
+
+```
+
+COLOC:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+(function(){
+c_ <- eqtl_coloc_df %>% filter(gene %in% gencode$gene_id)
+data.frame(
+  t=c("gene-phenotype", "gene-tissue", "gene"),
+  c=c(
+    c_ %>% select(phenotype, gene) %>% unique %>% nrow,
+    c_ %>% select(phenotype, tissue) %>% unique %>% nrow,
+    c_ %>% select(gene) %>% unique %>% nrow
+  )
+)
+})()  %>% kableExtra::kable(caption="gene  enloc")
+```
+
+
+Coloc versus enloc:
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+(function() {
+  subtype_ <- function(e_, c_, gene_type_) {
+    genes <- gencode %>% filter(gene_type == gene_type_) %>% .$gene_id
+    data.frame( enloc= e_ %>% filter(gene %in% genes) %>% .$gene %>% unique %>%  length,
+                coloc= c_ %>% filter(gene %in% genes) %>% .$gene %>% unique %>% length,
+                intersection = c_ %>% inner_join(e_, by=c("phenotype", "tissue", "gene")) %>% filter(gene %in% genes) %>% .$gene %>% unique %>% length,
+                total_genes = length(genes))
+  }
+  rbind(
+    subtype_(eqtl_enloc_df, eqtl_coloc_df, "protein_coding"),
+    subtype_(eqtl_enloc_df, eqtl_coloc_df, "lincRNA")
+  )
+})()  %>% kableExtra::kable(caption="gene  enloc")
+```
+
+discovery gene-trait pairs:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+data.frame(
+  association_method = c("s-predixcan", "s-predixcan", "s-multixcan", "s-multixcan"),
+  data = c("eqtl", "sqtl", "eqtl", "sqtl"),
+  discovery = c(
+    eqtl_sp_df %>% filter(is_predixcan, is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow,
+    sqtl_sp_df %>% filter(is_predixcan, is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow,
+    eqtl_sm_df %>% filter(is_multixcan, is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow,
+    sqtl_sm_df %>% filter(is_multixcan, is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow
+  ),
+  association = c(
+    eqtl_sp_df %>% filter(is_predixcan) %>% select(phenotype, gene) %>% unique %>% nrow,
+    sqtl_sp_df %>% filter(is_predixcan) %>% select(phenotype, gene) %>% unique %>% nrow,
+    eqtl_sm_df %>% filter(is_multixcan) %>% select(phenotype, gene) %>% unique %>% nrow,
+    sqtl_sm_df %>% filter(is_multixcan) %>% select(phenotype, gene) %>% unique %>% nrow
+  ),
+  enloc = c(
+    eqtl_sp_df %>% filter(is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow,
+    sqtl_sp_df %>% filter(is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow,
+    eqtl_sm_df %>% filter(is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow,
+    sqtl_sm_df %>% filter(is_enloc) %>% select(phenotype, gene) %>% unique %>% nrow
+  )
+) %>% kableExtra::kable(caption="gene-phenotype discoveries")
+```
+
+discovery  tissue-trait pairs:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+data.frame(
+  association_method = c("s-predixcan", "s-predixcan", "s-multixcan", "s-multixcan"),
+  data = c("eqtl", "sqtl", "eqtl", "sqtl"),
+  discovery = c(
+    eqtl_sp_df %>% filter(is_predixcan, is_enloc) %>% select(phenotype, tissue) %>% unique %>% nrow,
+    sqtl_sp_df %>% filter(is_predixcan, is_enloc) %>% select(phenotype, tissue) %>% unique %>% nrow,
+    eqtl_sm_df %>% filter(is_multixcan, is_enloc) %>% select(phenotype) %>% unique %>% nrow,
+    sqtl_sm_df %>% filter(is_multixcan, is_enloc) %>% select(phenotype) %>% unique %>% nrow
+  ),
+  association = c(
+    eqtl_sp_df %>% filter(is_predixcan) %>% select(phenotype, tissue) %>% unique %>% nrow,
+    sqtl_sp_df %>% filter(is_predixcan) %>% select(phenotype, tissue) %>% unique %>% nrow,
+    eqtl_sm_df %>% filter(is_multixcan) %>% select(phenotype) %>% unique %>% nrow,
+    sqtl_sm_df %>% filter(is_multixcan) %>% select(phenotype) %>% unique %>% nrow
+  ),
+  enloc = c(
+    eqtl_sp_df %>% filter(is_enloc) %>% select(phenotype, tissue) %>% unique %>% nrow,
+    sqtl_sp_df %>% filter(is_enloc) %>% select(phenotype, tissue) %>% unique %>% nrow,
+    eqtl_sm_df %>% filter(is_enloc) %>% select(phenotype) %>% unique %>% nrow,
+    sqtl_sm_df %>% filter(is_enloc) %>% select(phenotype) %>% unique %>% nrow
+  )
+) %>% kableExtra::kable(caption="gene-tissue discoveries")
+```
+

@@ -202,12 +202,12 @@ get_gwas_regions <- function() {
   ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY pvalue) as rk,
   COUNT(*) OVER (PARTITION BY region, phenotype) as count
     FROM ( SELECT ld.region, g.*
-           FROM ( SELECT g.* FROM `gtex-awg-im.GWAS_all.gwas` as g
-                  JOIN `gtex-awg-im.GWAS_all.gwas_results_count` as g_count ON g_count.phenotype=g.phenotype
+           FROM ( SELECT g.* FROM `{gwas_tbl$dataset_name}.{gwas_tbl$table_name}` as g
+                  JOIN `{gwas_tbl_count$dataset_name}.{gwas_tbl_count$table_name}` as g_count ON g_count.phenotype=g.phenotype
                   WHERE g.pvalue < g_count.b and g.phenotype in {pheno_whitelist}
                 ) as g
           JOIN
-            `gtex-awg-im.annotations.ld_independent_regions_2` as ld ON (ld.start_location < g.position AND g.position <= ld.end_location AND g.chromosome = ld.chromosome
+            `{ld_independent_regions_2_tbl$dataset_name}.{ld_independent_regions_2_tbl$table_name}` as ld ON (ld.start_location < g.position AND g.position <= ld.end_location AND g.chromosome = ld.chromosome
           )
     )
   )
