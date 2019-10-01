@@ -44,9 +44,12 @@ CA_gwas_tbl <- tableInfo("GTEx_V8_ConditionalAnalysis_2018_10_05", "gwas_results
 CA_eqtl_and_gwas_tbl <- tableInfo("GTEx_V8_ConditionalAnalysis_2018_10_05", "gwas_and_eqtl")
 
 # DAPG
+#DAPG_eqtl_tbl <- tableInfo("GTEx_V8_DAPG_2018_10_05", "eqtl_analysis")
 DAPG_eqtl_tbl <- tableInfo("GTEx_V8_DAPG_2018_10_05", "eqtl_analysis")
 DAPG_gwas_tbl <- tableInfo("GTEx_V8_DAPG_2018_10_05", "gwas_results")
 DAPG_eqtl_and_gwas_tbl <- tableInfo("GTEx_V8_DAPG_2018_10_05", "gwas_and_eqtl")
+
+DAPG_eqtl_clusters <- tableInfo("GTEx_V8_DAPG_EUR_v1", "clusters_eqtl")
 
 # colocalization results
 coloc_tbl_eqtl <- tableInfo("GTEx_V8_COLOC", "coloc_with_enloc_priors")

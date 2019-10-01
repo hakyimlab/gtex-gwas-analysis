@@ -75,6 +75,20 @@ FROM (
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
 ```
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_eqtl_eur_genes <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM (
+    SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name}
+    WHERE phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -173,6 +187,20 @@ FROM (
          JOIN {predixcan_tbl_count_eqtl$dataset_name}.{predixcan_tbl_count_eqtl$table_name} as px_count
          ON px_count.phenotype=px.phenotype
          WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_dapg_genes_eqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene
+  FROM ( SELECT gene
+         FROM {DAPG_eqtl_clusters$dataset_name}.{DAPG_eqtl_clusters$table_name}
   )
 )" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
@@ -311,6 +339,8 @@ eqtl_sm_df <- build_sm_table(sm_eqtl_assoc_table, eqtl_enloc_df)
 sqtl_sm_df <- build_sm_table(sm_sqtl_assoc_table, sqtl_enloc_df)
 
 ```
+
+## Discoveries
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 #LIST OF DISCOVERIES

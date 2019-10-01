@@ -427,7 +427,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -436,7 +436,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#report"> Report <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#report"> Report <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -445,10 +445,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-09-26
+<strong>Last updated:</strong> 2019-09-30
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>gtex-gwas-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -464,12 +464,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -524,10 +524,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb4854e4f6d94036e9081bc0e633306dbb8080d65targetblankb4854e4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/b4854e4f6d94036e9081bc0e633306dbb8080d65" target="_blank">b4854e4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree61f35665ba7dec451ee2b33e2791c6fa822579cetargetblank61f3566a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/61f35665ba7dec451ee2b33e2791c6fa822579ce" target="_blank">61f3566</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreeb4854e4f6d94036e9081bc0e633306dbb8080d65targetblankb4854e4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree61f35665ba7dec451ee2b33e2791c6fa822579cetargetblank61f3566a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -540,12 +540,12 @@ Ignored files:
     Ignored:    results/
 
 Untracked files:
-    Untracked:  output/smultixcan_enloc_discovery_eqtl.txt
-    Untracked:  output/smultixcan_enloc_discovery_sqtl.txt
-    Untracked:  output/spredixcan_enloc_discovery_sqtl.txt
+    Untracked:  code/checks/check_bigquery_tables.R
 
 Unstaged changes:
+    Modified:   analysis/gwas_enloc_predixcan_multixcan.Rmd
     Modified:   analysis/miscellaneous_statistics_2.Rmd
+    Modified:   code/helpers/_helpers_big_query_tables.R
 
 </code></pre>
 <p>
@@ -584,6 +584,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/51aff2045bec9eaeac486d945b65edae4309a9c9/docs/gwas_enloc_predixcan_multixcan.html" target="_blank">51aff20</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-09-27
+</td>
+<td>
+More miscellaneous summary statistics. Detection by s-predixcan/s-multixcan/enoc in eQTL and sQTL. Figure for GWAS deflation
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -657,7 +674,18 @@ suppressWarnings(source(&quot;code/helpers/_helpers.R&quot;))
 
 SUMMARY &lt;- &quot;data/summaries/regions.txt&quot;
 
-RESULT&lt;-&quot;output/g&quot;
+gwas_metadata &lt;- &quot;data/gwas_metadata.txt&quot; %&gt;% read_tsv</code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  .default = col_character(),
+  Description = col_logical(),
+  Sample_Size = col_double(),
+  Binary = col_double(),
+  Cases = col_double(),
+  Deflation = col_double()
+)</code></pre>
+<pre><code>See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>RESULT&lt;-&quot;output/g&quot;
 dir.create(RESULT, showWarnings = FALSE, recursive=TRUE)
 fp_ &lt;- function(p) file.path(RESULT, p)</code></pre>
 </div>
@@ -876,6 +904,11 @@ Alvaro
   2 </code></pre>
 <p>43% (2303/5385) of GWAS associations were colocalized with an eQTL whereas 23% (1223/5385) could be colocalized with an sQTL. 73% (898/898) colocalized with an sQTL were also colocalized with an eQTL.</p>
 <p>86% (1989/2303) of expression colocalized associations were also significantly associated with the predicted expression of a gene. 88% (1081/1223) of splicing colocalized associations were linked to predicted splicing events.</p>
+<pre><code>png 
+  2 </code></pre>
+</div>
+<div id="proportion-of-gwas-loci" class="section level2">
+<h2>Proportion of GWAS loci</h2>
 <pre><code>png 
   2 </code></pre>
 <br> <br>

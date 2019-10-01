@@ -22,6 +22,8 @@ suppressWarnings(source("code/helpers/_helpers.R"))
 
 SUMMARY <- "data/summaries/regions.txt"
 
+gwas_metadata <- "data/gwas_metadata.txt" %>% read_tsv
+
 RESULT<-"output/g"
 dir.create(RESULT, showWarnings = FALSE, recursive=TRUE)
 fp_ <- function(p) file.path(RESULT, p)
@@ -110,6 +112,9 @@ summary <- apply(tempo %>% select(-region,-trait),2,sum)
 
 `r format(summary["spredixcan_eqtl_enloc"]/summary["enloc_eqtl"]*100, digits=0)`% (`r summary["spredixcan_eqtl_enloc"]`/`r summary["enloc_eqtl"]`)  of expression colocalized associations were also significantly associated with the predicted expression of a gene. `r format(summary["spredixcan_sqtl_enloc"]/summary["enloc_sqtl"]*100, digits=0)`% (`r summary["spredixcan_sqtl_enloc"]`/`r summary["enloc_sqtl"]`) of splicing colocalized associations were linked to predicted splicing events.
 
+# Upset plot
+
+
 ```{r upset, echo=FALSE, cache=FALSE, warning=FALSE}
 (function(){
   color_pal <- viridis(3)
@@ -121,7 +126,7 @@ summary <- apply(tempo %>% select(-region,-trait),2,sum)
     d_ %>% rename(enloc=enloc_eqtl, smultixcan=smultixcan_eqtl) %>% select(gwas, enloc, smultixcan)
   })()
 
-  svg(fp_("upset_expression.svg"))
+  svg(fp_("upset_sme_expression.svg"))
   upset(eqtl_ %>% as.data.frame(),
     sets= c("gwas", "smultixcan", "enloc"), keep.order = TRUE, text.scale = 3,
     main.bar.color = color_pal[1], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
@@ -134,7 +139,7 @@ summary <- apply(tempo %>% select(-region,-trait),2,sum)
     d_[is.na(d_)] <- 0
     d_ %>% rename(enloc=enloc_sqtl, smultixcan=smultixcan_sqtl) %>% select(gwas, enloc, smultixcan)
   })()
-  svg(fp_("upset_splicing.svg"))
+  svg(fp_("upset_sme_splicing.svg"))
   upset(sqtl_ %>% as.data.frame(),
     sets= c("gwas", "smultixcan", "enloc"), keep.order = TRUE, text.scale = 3,
     main.bar.color = color_pal[2], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
@@ -142,3 +147,102 @@ summary <- apply(tempo %>% select(-region,-trait),2,sum)
 })()
 ```
 
+```{r upset, echo=FALSE, cache=FALSE, warning=FALSE}
+(function(){
+  color_pal <- viridis(3)
+  eqtl_ <- (function(){
+    d_ <- ldblockinfo %>% select(region,results,trait) %>% unique %>% 
+      filter(results %in% c("gwas", "spredixcan_eqtl", "enloc_eqtl")) %>% mutate(flag = 1) %>% 
+      spread(key=unique(results),value=flag) 
+    d_[is.na(d_)] <- 0
+    d_ %>% rename(enloc=enloc_eqtl, spredixcan=spredixcan_eqtl) %>% select(gwas, enloc, spredixcan)
+  })()
+
+  svg(fp_("upset_spe_expression.svg"))
+  upset(eqtl_ %>% as.data.frame(),
+    sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
+    main.bar.color = color_pal[1], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+  dev.off()
+  
+  png(fp_("upset_spe_expression.png"), 600, 600)
+  upset(eqtl_ %>% as.data.frame(),
+    sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
+    main.bar.color = color_pal[1], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+  dev.off()
+
+  sqtl_ <- (function(){
+    d_ <- ldblockinfo %>% select(region,results,trait) %>% unique %>% 
+      filter(results %in% c("gwas", "spredixcan_sqtl", "enloc_sqtl")) %>% mutate(flag = 1) %>% 
+      spread(key=unique(results),value=flag) 
+    d_[is.na(d_)] <- 0
+    d_ %>% rename(enloc=enloc_sqtl, spredixcan=spredixcan_sqtl) %>% select(gwas, enloc, spredixcan)
+  })()
+  svg(fp_("upset_spe_splicing.svg"))
+  upset(sqtl_ %>% as.data.frame(),
+    sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
+    main.bar.color = color_pal[2], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+  dev.off()
+  
+  png(fp_("upset_spe_splicing.png"), 600, 600)
+  upset(sqtl_ %>% as.data.frame(),
+    sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
+    main.bar.color = color_pal[2], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+  dev.off()
+})()
+```
+
+## Additional tables
+
+Proportion of loci with associated/colocalized genes/introns
+
+```{r proportion_of_loci, echo=FALSE, cache=FALSE, warning=FALSE}
+(function(){
+d_ <- tempo%>% group_by(trait) %>%
+  summarise(n=n(), 
+            spredixcan_eqtl=sum(spredixcan_eqtl), spredixcan_sqtl=sum(spredixcan_sqtl),
+            enloc_eqtl=sum(enloc_eqtl), enloc_sqtl=sum(enloc_sqtl),
+            spredixcan_enloc_eqtl=sum(spredixcan_eqtl_enloc), spredixcan_enloc_sqtl=sum(spredixcan_sqtl_enloc)) %>%
+  gather(key="method_", value="count", -trait, -n) %>%
+  mutate(f = count/n) %>% 
+  mutate(data = ifelse(grepl("eqtl", method_), "expression", "splicing")) %>%
+  mutate(method = ifelse(grepl("^spredixcan_(\\w)qtl$", method_), "S-PrediXcan",
+                         ifelse(grepl("^enloc_(\\w)qtl$", method_),"ENLOC", "S-PrediXcan\n&\nENLOC")))
+
+d2_ <- tempo %>% group_by(region) %>%
+  summarise(spredixcan_eqtl=sum(spredixcan_eqtl), spredixcan_sqtl=sum(spredixcan_sqtl),
+            enloc_eqtl=sum(enloc_eqtl), enloc_sqtl=sum(enloc_sqtl),
+            spredixcan_enloc_eqtl=sum(spredixcan_eqtl_enloc), spredixcan_enloc_sqtl=sum(spredixcan_sqtl_enloc)) %>%
+  mutate(spredixcan_eqtl=spredixcan_eqtl>0, spredixcan_sqtl=spredixcan_sqtl>0,
+         enloc_eqtl=enloc_eqtl>0, enloc_sqtl=enloc_sqtl>0,
+        spredixcan_enloc_eqtl=spredixcan_enloc_eqtl>0, spredixcan_enloc_sqtl=spredixcan_enloc_sqtl>0) %>%
+  gather(key="method_", value="count", -region) %>%
+  mutate(data = ifelse(grepl("eqtl", method_), "expression", "splicing")) %>%
+  mutate(method = ifelse(grepl("^spredixcan_(\\w)qtl$", method_), "S-PrediXcan",
+                         ifelse(grepl("^enloc_(\\w)qtl$", method_),"ENLOC", "S-PrediXcan\n&\nENLOC")))
+
+#    theme(legend.position="bottom") +
+p_ <- ggplot(d_) + theme_bw(base_size=18) +
+  geom_boxplot(aes(method, f, fill=data)) +
+  ggtitle("Proportion of GWAS loci\nwith colocalized/associated genes or introns")  +
+  ylab("Proportion of loci")
+save_plot(p_,fp_("SUMMARY_PREDIXCAN_ENLOC.png"), 500, 600)
+
+t_ <- d_ %>% group_by(method, data) %>% summarise(f=median(f))
+t2_ <- d2_ %>% group_by(method, data) %>% summarise(n=sum(count)) %>%
+  mutate(p = n/1167)
+  
+})()
+```
+
+
+```{r loci_counts, echo=FALSE, cache=FALSE, warning=FALSE}
+d_ <- summary["gwas"]
+d_ <- c(d_,summary[!(summary %in% d_)])
+d_ <- data.frame(method_=names(d_), count=unname(d_))
+d_ %>% filter(!grepl("smultixcan",method_)) %>%
+  mutate(data = ifelse(grepl("eqtl", method_), "expression", "splicing")) %>%
+  mutate(method = ifelse(grepl("gwas", method_), "loci",
+                    ifelse(grepl("^spredixcan_(\\w)qtl$", method_), "S-PrediXcan",
+                         ifelse(grepl("^enloc_(\\w)qtl$", method_),"ENLOC", "S-PrediXcan\n&\nENLOC")))) %>%
+  select(method, data, count)
+```
