@@ -20,23 +20,43 @@ gwas_tbl_count <-                   tableInfo("GWAS_all", "gwas_results_count")
 gwas_formatted_tbl <-               tableInfo("GWAS_all", "formatted_gwas")
 gwas_imputation_verification_tbl <- tableInfo("GWAS_all", "gwas_imputation_verification")
 
-prediction_models_tbl_eqtl <-       tableInfo("GTEx_V8_ElasticNet_EUR_v1", "weights_eqtl")
-prediction_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_ElasticNet_EUR_v1", "extra_eqtl")
+#elastic net predixcan
+prediction_en_models_tbl_eqtl <-       tableInfo("GTEx_V8_ElasticNet_EUR_v1", "weights_eqtl")
+prediction_en_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_ElasticNet_EUR_v1", "extra_eqtl")
 
-prediction_models_tbl_sqtl <-       tableInfo("GTEx_V8_ElasticNet_EUR_v1", "weights_sqtl")
-prediction_models_extra_tbl_sqtl <- tableInfo("GTEx_V8_ElasticNet_EUR_v1", "extra_sqtl")
+prediction_en_models_tbl_sqtl <-       tableInfo("GTEx_V8_ElasticNet_EUR_v1", "weights_sqtl")
+prediction_en_models_extra_tbl_sqtl <- tableInfo("GTEx_V8_ElasticNet_EUR_v1", "extra_sqtl")
 
-predixcan_tbl_eqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_eqtl")
-predixcan_tbl_count_eqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_eqtl_count")
+predixcan_en_tbl_eqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_eqtl")
+predixcan_en_tbl_count_eqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_eqtl_count")
 
-predixcan_tbl_sqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_sqtl")
-predixcan_tbl_count_sqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_sqtl_count")
+predixcan_en_tbl_sqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_sqtl")
+predixcan_en_tbl_count_sqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_sqtl_count")
 
-multixcan_tbl_eqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_eqtl")
-multixcan_tbl_count_eqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_eqtl_count")
+multixcan_en_tbl_eqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_eqtl")
+multixcan_en_tbl_count_eqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_eqtl_count")
 
-multixcan_tbl_sqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_sqtl")
-multixcan_tbl_count_sqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_sqtl_count")
+multixcan_en_tbl_sqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_sqtl")
+multixcan_en_tbl_count_sqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_sqtl_count")
+
+#mashr predixcan
+prediction_mashr_models_tbl_eqtl <-       tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "weights_eqtl")
+prediction_mashr_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "extra_eqtl")
+
+prediction_mashr_models_tbl_sqtl <-       tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "weights_sqtl")
+prediction_mashr_models_extra_tbl_sqtl <- tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "extra_sqtl")
+
+predixcan_mashr_tbl_eqtl <-               tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_eqtl")
+predixcan_mashr_tbl_count_eqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_eqtl_count")
+
+predixcan_mashr_tbl_sqtl <-               tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_sqtl")
+predixcan_mashr_tbl_count_sqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_sqtl_count")
+
+multixcan_mashr_tbl_eqtl <-               tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "smultixcan_eqtl")
+multixcan_mashr_tbl_count_eqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "smultixcan_eqtl_count")
+
+multixcan_mashr_tbl_sqtl <-               tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "smultixcan_sqtl")
+multixcan_mashr_tbl_count_sqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "smultixcan_sqtl_count")
 
 # conditional analysis (LDACC)
 CA_eqtl_tbl <- tableInfo("GTEx_V8_ConditionalAnalysis_2018_10_05", "eqtl_analysis")
@@ -50,6 +70,7 @@ DAPG_gwas_tbl <- tableInfo("GTEx_V8_DAPG_2018_10_05", "gwas_results")
 DAPG_eqtl_and_gwas_tbl <- tableInfo("GTEx_V8_DAPG_2018_10_05", "gwas_and_eqtl")
 
 DAPG_eqtl_clusters <- tableInfo("GTEx_V8_DAPG_EUR_v1", "clusters_eqtl")
+DAPG_sqtl_clusters <- tableInfo("GTEx_V8_DAPG", "clusters_sqtl")
 
 # colocalization results
 coloc_tbl_eqtl <- tableInfo("GTEx_V8_COLOC", "coloc_with_enloc_priors")

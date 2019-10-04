@@ -13,6 +13,9 @@ suppressWarnings(source("code/helpers/_helpers.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 
+
+options(gargle_oauth_email = TRUE)
+
 ################################################################################
 # PRELIMINARIES
 RESULT<-"output/enloc"
@@ -158,8 +161,8 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
 smultixcan_genes <- (function() {
   query_ <- glue::glue("
 SELECT m.phenotype, m.gene, m.pvalue
-FROM {multixcan_tbl_eqtl$dataset_name}.{multixcan_tbl_eqtl$table_name} as m
-JOIN {multixcan_tbl_count_eqtl$dataset_name}.{multixcan_tbl_count_eqtl$table_name} as m_count
+FROM {multixcan_mashr_tbl_eqtl$dataset_name}.{multixcan_mashr_tbl_eqtl$table_name} as m
+JOIN {multixcan_mashr_tbl_count_eqtl$dataset_name}.{multixcan_mashr_tbl_count_eqtl$table_name} as m_count
 ON m_count.phenotype=m.phenotype
 WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
 ")
@@ -175,8 +178,8 @@ smultixcan_genes <- smultixcan_genes %>%
 smultixcan_introns <- (function() {
   query_ <- glue::glue("
 SELECT m.phenotype, m.gene as intron, m.pvalue
-FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name} as m
-JOIN {multixcan_tbl_count_sqtl$dataset_name}.{multixcan_tbl_count_sqtl$table_name} as m_count
+FROM {multixcan_mashr_tbl_sqtl$dataset_name}.{multixcan_mashr_tbl_sqtl$table_name} as m
+JOIN {multixcan_mashr_tbl_count_sqtl$dataset_name}.{multixcan_mashr_tbl_count_sqtl$table_name} as m_count
 ON m_count.phenotype=m.phenotype
 WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
 ")

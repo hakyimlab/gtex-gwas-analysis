@@ -20,7 +20,7 @@ suppressPackageStartupMessages(library(UpSetR))
 suppressPackageStartupMessages(library(viridis))
 suppressWarnings(source("code/helpers/_helpers.R"))
 
-SUMMARY <- "data/summaries/regions.txt"
+SUMMARY <- "data/summaries/mashr_regions.txt"
 
 gwas_metadata <- "data/gwas_metadata.txt" %>% read_tsv
 
@@ -66,7 +66,12 @@ print("n of significant gwas traits")
 ldblockinfo %>% filter(results=="gwas") %>% count(trait) %>% nrow() 
 ```
 
-out of 5385 GWAS significant associations (in 1167 loci across 82 traits)
+out of 5385 GWAS significant associations (in 1167 loci across 82 traits).
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+any_ <- tempo %>% mutate(any = smultixcan_sqtl_enloc | smultixcan_eqtl_enloc | spredixcan_eqtl_enloc | spredixcan_sqtl_enloc ) %>% .$any %>% sum
+```
+`r format(any_/summary["gwas"]*100, digits=0)`% (`r any_`/`r summary["gwas"]`) Loci had a significant, colocalized association via xQTL on S-MultiXcan/S-PrediXcan.
 
 ```{r plot number of expression significant loci, echo=FALSE, warning=FALSE, message=FALSE}
 upset(tempo %>% as.data.frame(),sets= c("gwas","smultixcan_eqtl","enloc_eqtl"),order.by="freq")
@@ -147,7 +152,7 @@ summary <- apply(tempo %>% select(-region,-trait),2,sum)
 })()
 ```
 
-```{r upset, echo=FALSE, cache=FALSE, warning=FALSE}
+```{r upset_2, echo=FALSE, cache=FALSE, warning=FALSE}
 (function(){
   color_pal <- viridis(3)
   eqtl_ <- (function(){

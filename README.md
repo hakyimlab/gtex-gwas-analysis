@@ -42,6 +42,8 @@ Companion paper material:
 * `code/figures/gwas_imputation_deflation.R` figure showing the deflation of GWAS' p-value distribution after imputation for 27 traits 
 (Supplementary Figure S3)
 * `code/figures/gwas_imputation_quality.R` scatter plot of original vs imputed GWAS zscores (Supplementary Figure S2)
+* `code/figures/FIG-DOSE-RESPONSE-CONCORDANCE-C.R` scatter plot of beta prim vs. sec for Whole Blood, Europeans, rcp>0.1
+* `code/figures/SuppFigS9.R` scatter plot, residual plot, and p-value (Supplementary Figure S9)
 * `code/figures/predixcan_enloc_eqtl_sqtl.R` plots summarising loci detection per emthod (Supplementary Figure S12, S13, S14, S15)
 
 Markdowns:

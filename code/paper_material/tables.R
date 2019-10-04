@@ -13,6 +13,12 @@ RESULT<-"output/tables"
 dir.create(RESULT, showWarnings = FALSE, recursive=TRUE)
 fp_ <- function(p) file.path(RESULT, p)
 
+count <- (function(){
+  query <- glue::glue("
+SELECT phenotype, tissue, count(*) as count FROM `{predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name}`
+group by phenotype, tissue order by phenotype, tissue")
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})()
 
 gwas_metadata <- (function(){
   query <- glue::glue("SELECT Tag as phenotype, new_abbreviation as abbreviation, Category as category, Sample_Size as sample_size

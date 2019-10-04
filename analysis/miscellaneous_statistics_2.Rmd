@@ -47,7 +47,7 @@ introns <- (function(){
 })()
 ```
 
-# ENLOC runs
+# ENLOC runs expression
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n_enloc_eqtl_eur_tuples <- (function(){
@@ -56,6 +56,17 @@ n_enloc_eqtl_eur_tuples <- (function(){
  FROM (SELECT DISTINCT molecular_qtl_trait as gene_id, phenotype, tissue
        FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
        WHERE phenotype in {pheno_whitelist})" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_eqtl_eur_tuples_colocalized <- (function(){
+  query <- 
+"SELECT COUNT(*) 
+ FROM (SELECT DISTINCT molecular_qtl_trait as gene_id, phenotype, tissue
+       FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
+       WHERE phenotype in {pheno_whitelist} AND locus_rcp >0.5)" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
 ```
@@ -90,6 +101,20 @@ FROM (
 })() %>% as.integer
 ```
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_eqtl_eur_genes_colocalized <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM (
+    SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name}
+    WHERE phenotype in {pheno_whitelist} and locus_rcp >0.5
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n_enloc_sqtl_eur_tuples <- (function(){
@@ -98,6 +123,17 @@ n_enloc_sqtl_eur_tuples <- (function(){
  FROM (SELECT DISTINCT molecular_qtl_trait as intron_id, phenotype, tissue
        FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name} as e
        WHERE phenotype in {pheno_whitelist})" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_sqtl_eur_tuples_colocalized <- (function(){
+  query <- 
+"SELECT COUNT(*) 
+ FROM (SELECT DISTINCT molecular_qtl_trait as intron_id, phenotype, tissue
+       FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name} as e
+       WHERE phenotype in {pheno_whitelist} AND locus_rcp > 0.5)" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
 ```
@@ -118,15 +154,48 @@ FROM (
 })() %>% as.integer
 ```
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_sqtl_eur_genes <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM (
+    SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name}
+    WHERE phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_enloc_sqtl_eur_genes_colocalized <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM (
+    SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name}
+    WHERE phenotype in {pheno_whitelist} and locus_rcp >0.5
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
 We obtained:
 
 - `r n_enloc_eqtl_eur_tuples` `(gene, tissue, phenotype)` distinct tuples from expression on Eur individuals
+- `r n_enloc_eqtl_eur_tuples_colocalized` colocalzied `(gene, tissue, phenotype)` tuples
 - `r n_enloc_eqtl_eur_gt_pairs` `(gene, tissue)` distinct pairs from expression on Eur individuals
+- (`r n_enloc_eqtl_eur_genes_colocalized` / `r n_enloc_eqtl_eur_genes`) colocalized genes
 - `r n_enloc_sqtl_eur_tuples` `(gene, tissue, phenotype)` distinct tuples from splicing on Eur individuals
+- `r n_enloc_sqtl_eur_tuples_colocalized` colocalized `(gene, tissue, phenotype)` distinct tuples from splicing on Eur individuals
 - `r n_enloc_sqtl_eur_gt_pairs` `(gene, tissue)` distinct pairs from splicing on Eur individuals
+- (`r n_enloc_sqtl_eur_genes_colocalized` / `r n_enloc_sqtl_eur_genes`) colocalized genes
 
-
-# PrediXcan
+# PrediXcan Expression
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n_models_gt_pairs_eur_eqtl <- (function(){
@@ -136,7 +205,7 @@ FROM (
   SELECT DISTINCT gene, tissue
   FROM (
     SELECT gene, tissue
-    FROM {prediction_models_extra_tbl_eqtl$dataset_name}.{prediction_models_extra_tbl_eqtl$table_name} as e
+    FROM {prediction_mashr_models_extra_tbl_eqtl$dataset_name}.{prediction_mashr_models_extra_tbl_eqtl$table_name} as e
     WHERE n_snps_in_model > 0
   )
 )" %>% glue::glue()
@@ -152,7 +221,7 @@ FROM (
   SELECT DISTINCT gene, tissue
   FROM (
     SELECT gene, tissue
-    FROM {prediction_models_extra_tbl_eqtl$dataset_name}.{prediction_models_extra_tbl_eqtl$table_name} as e
+    FROM {prediction_mashr_models_extra_tbl_eqtl$dataset_name}.{prediction_mashr_models_extra_tbl_eqtl$table_name} as e
     WHERE n_snps_in_model > 0
   )
 )" %>% glue::glue()
@@ -168,7 +237,7 @@ FROM (
   SELECT DISTINCT gene
   FROM (
     SELECT gene
-    FROM {prediction_models_extra_tbl_eqtl$dataset_name}.{prediction_models_extra_tbl_eqtl$table_name} as e
+    FROM {prediction_mashr_models_extra_tbl_eqtl$dataset_name}.{prediction_mashr_models_extra_tbl_eqtl$table_name} as e
     WHERE n_snps_in_model > 0
   )
 )" %>% glue::glue()
@@ -183,8 +252,8 @@ SELECT COUNT(*)
 FROM (
   SELECT DISTINCT gene
   FROM ( SELECT px.gene
-         FROM {predixcan_tbl_eqtl$dataset_name}.{predixcan_tbl_eqtl$table_name} as px
-         JOIN {predixcan_tbl_count_eqtl$dataset_name}.{predixcan_tbl_count_eqtl$table_name} as px_count
+         FROM {predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name} as px
+         JOIN {predixcan_mashr_tbl_count_eqtl$dataset_name}.{predixcan_mashr_tbl_count_eqtl$table_name} as px_count
          ON px_count.phenotype=px.phenotype
          WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
   )
@@ -211,7 +280,7 @@ FROM (
 n_spredixcan_tuples_eqtl <- (function(){
   query <- "
 SELECT COUNT(*)
-FROM {predixcan_tbl_eqtl$dataset_name}.{predixcan_tbl_eqtl$table_name} as px
+FROM {predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name} as px
 WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
 " %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
@@ -219,11 +288,25 @@ WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-n_spredixcan_tuples_sqtl <- (function(){
+n_spredixcan_tuples_eqtl <- (function(){
   query <- "
 SELECT COUNT(*)
-FROM {predixcan_tbl_sqtl$dataset_name}.{predixcan_tbl_sqtl$table_name} as px
+FROM {predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name} as px
 WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_smultixcan_genes_eqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM ( 
+  {multixcan_mashr_tbl_eqtl$dataset_name}.{multixcan_mashr_tbl_eqtl$table_name} as m
+  INNER JOIN {multixcan_mashr_tbl_count_eqtl$dataset_name}.{multixcan_mashr_tbl_count_eqtl$table_name} as mc
+  ON m.phenotype = mc.phenotype
+) WHERE m.pvalue is not NULL AND mc.phenotype in {pheno_whitelist} AND m.pvalue < mc.b
 " %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
@@ -233,19 +316,8 @@ WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
 n_smultixcan_tuples_eqtl <- (function(){
   query <- "
 SELECT COUNT(*)
-FROM {multixcan_tbl_eqtl$dataset_name}.{multixcan_tbl_eqtl$table_name} as px
-WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
-" %>% glue::glue()
- query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
-})() %>% as.integer
-```
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-n_smultixcan_tuples_sqtl <- (function(){
-  query <- "
-SELECT COUNT(*)
-FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name} as px
-WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+FROM {multixcan_mashr_tbl_eqtl$dataset_name}.{multixcan_mashr_tbl_eqtl$table_name} as px
+WHERE pvalue is not NULL and px.phenotype in {pheno_whitelist}
 " %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
@@ -257,6 +329,146 @@ We obtained:
 - `r n_models_genes_eqtl_eur` genes in Elastic Expression models
 - `r n_spredixcan_genes_eqtl` significant s-predixcan genes in Elastic Expression models
 - `r n_spredixcan_tuples_eqtl` S-PrediXcan tuples in expression models
+- `r n_smultixcan_genes_eqtl` significant s-multixcan genes in Elastic Expression models
+- `r n_smultixcan_tuples_eqtl` S-MultiXcan tuples in expression models
+
+
+# PrediXcan Splicing
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_models_gt_pairs_eur_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene, tissue
+  FROM (
+    SELECT gene, tissue
+    FROM {prediction_mashr_models_extra_tbl_sqtl$dataset_name}.{prediction_mashr_models_extra_tbl_sqtl$table_name} as e
+    WHERE n_snps_in_model > 0
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_models_gt_pairs_sqtl_eur <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene, tissue
+  FROM (
+    SELECT gene, tissue
+    FROM {prediction_mashr_models_extra_tbl_sqtl$dataset_name}.{prediction_mashr_models_extra_tbl_sqtl$table_name} as e
+    WHERE n_snps_in_model > 0
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_models_genes_sqtl_eur <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene
+  FROM (
+    SELECT gene
+    FROM {prediction_mashr_models_extra_tbl_sqtl$dataset_name}.{prediction_mashr_models_extra_tbl_sqtl$table_name} as e
+    WHERE n_snps_in_model > 0
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_genes_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene
+  FROM ( SELECT px.gene
+         FROM {predixcan_mashr_tbl_sqtl$dataset_name}.{predixcan_mashr_tbl_sqtl$table_name} as px
+         JOIN {predixcan_mashr_tbl_count_sqtl$dataset_name}.{predixcan_mashr_tbl_count_sqtl$table_name} as px_count
+         ON px_count.phenotype=px.phenotype
+         WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_dapg_genes_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM ( SELECT gene_id
+         FROM {DAPG_sqtl_clusters$dataset_name}.{DAPG_sqtl_clusters$table_name}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_tuples_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM {predixcan_mashr_tbl_sqtl$dataset_name}.{predixcan_mashr_tbl_sqtl$table_name} as px
+WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_tuples_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM {predixcan_mashr_tbl_sqtl$dataset_name}.{predixcan_mashr_tbl_sqtl$table_name} as px
+WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_smultixcan_tuples_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM {multixcan_mashr_tbl_sqtl$dataset_name}.{multixcan_mashr_tbl_sqtl$table_name} as px
+WHERE pvalue is not NULL and phenotype in {pheno_whitelist}
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_smultixcan_genes_sqtl <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM ( 
+  {multixcan_mashr_tbl_sqtl$dataset_name}.{multixcan_mashr_tbl_sqtl$table_name} as m
+  INNER JOIN {multixcan_mashr_tbl_count_sqtl$dataset_name}.{multixcan_mashr_tbl_count_sqtl$table_name} as mc
+  ON m.phenotype = mc.phenotype
+) WHERE m.pvalue is not NULL AND mc.phenotype in {pheno_whitelist} AND m.pvalue < mc.b
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+We obtained:
+
+- `r n_models_gt_pairs_eur_sqtl` `(gene, tissue)` pairs in Elastic Expression models
+- `r n_models_genes_sqtl_eur` genes in Elastic Expression models
+- `r n_spredixcan_genes_sqtl` significant s-predixcan genes in Elastic Expression models
+- `r n_spredixcan_tuples_sqtl` S-PrediXcan tuples in expression models
+- `r n_smultixcan_genes_sqtl` significant s-multixcan genes in Elastic Expression models
+- `r n_smultixcan_tuples_sqtl` S-MultiXcan tuples in expression models
 
 # Tables
 
@@ -274,8 +486,8 @@ ORDER BY p.phenotype, p.tissue, p.pvalue
   #print(query)
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-sp_eqtl_assoc_df <- sp_table_(predixcan_tbl_eqtl, predixcan_tbl_count_eqtl, "gene", "gene_name, ")
-sp_sqtl_assoc_df <- sp_table_(predixcan_tbl_sqtl, predixcan_tbl_count_sqtl, "gene", "gene_name, ")
+sp_eqtl_assoc_df <- sp_table_(predixcan_mashr_tbl_eqtl, predixcan_mashr_tbl_count_eqtl, "gene", "gene_name, ")
+sp_sqtl_assoc_df <- sp_table_(predixcan_mashr_tbl_sqtl, predixcan_mashr_tbl_count_sqtl, "gene", "gene_name, ")
 
 sm_table_ <- function(m_tbl, mc_tbl, field, field_plus){
   query <- "
@@ -289,8 +501,8 @@ ORDER BY m.phenotype, m.pvalue
   #print(query)
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-sm_eqtl_assoc_table <- sm_table_(multixcan_tbl_eqtl, multixcan_tbl_count_eqtl, "gene", "gene_name, ")
-sm_sqtl_assoc_table <- sm_table_(multixcan_tbl_sqtl, multixcan_tbl_count_sqtl, "gene", "gene_name, ")
+sm_eqtl_assoc_table <- sm_table_(multixcan_mashr_tbl_eqtl, multixcan_mashr_tbl_count_eqtl, "gene", "gene_name, ")
+sm_sqtl_assoc_table <- sm_table_(multixcan_mashr_tbl_sqtl, multixcan_mashr_tbl_count_sqtl, "gene", "gene_name, ")
 
 e_table_ <- function(e_tbl){
   query <- "
@@ -361,13 +573,13 @@ ORDER BY p.phenotype, p.tissue, p.pvalue
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
 
-sp_eqtl_discovery_table <- sp_table(predixcan_tbl_eqtl, predixcan_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
+sp_eqtl_discovery_table <- sp_table(predixcan_mashr_tbl_eqtl, predixcan_mashr_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
 save_delim(sp_eqtl_discovery_table, fp_("spredixcan_enloc_discovery_eqtl.txt"))
-#gsutil cp -a public-read output/spredixcan_enloc_discovery_eqtl.txt gs://gtex-gwas-share/data-for-paper/spredixcan_enloc_discovery_eqtl.txt
+#gsutil cp -a public-read output/spredixcan_enloc_discovery_eqtl.txt gs://gtex-gwas-share/data-for-paper/mashr/spredixcan_enloc_discovery_eqtl.txt
 
-sp_sqtl_discovery_table <- sp_table(predixcan_tbl_sqtl, predixcan_tbl_count_sqtl, enloc_tbl_sqtl_eur, "gene", "gene_name, ")
+sp_sqtl_discovery_table <- sp_table(predixcan_mashr_tbl_sqtl, predixcan_mashr_tbl_count_sqtl, enloc_tbl_sqtl_eur, "gene", "gene_name, ")
 sp_sqtl_discovery_table %>% rename(intron=gene) %>% select(-gene_name) %>% save_delim(fp_("spredixcan_enloc_discovery_sqtl.txt"))
-#gsutil cp -a public-read output/spredixcan_enloc_discovery_sqtl.txt gs://gtex-gwas-share/data-for-paper/spredixcan_enloc_discovery_sqtl.txt
+#gsutil cp -a public-read output/spredixcan_enloc_discovery_sqtl.txt gs://gtex-gwas-share/data-for-paper/mashr/spredixcan_enloc_discovery_sqtl.txt
 
 #S-MultiXcan
 sm_table <- function(m_tbl, mc_tbl, e_tbl, field, field_plus){
@@ -390,13 +602,13 @@ ORDER BY m.phenotype, m.pvalue
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
 
-sm_eqtl_discovery_table <- sm_table(multixcan_tbl_eqtl, multixcan_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
+sm_eqtl_discovery_table <- sm_table(multixcan_mashr_tbl_eqtl, multixcan_mashr_tbl_count_eqtl, enloc_tbl_eqtl_eur, "gene", "gene_name, ")
 sm_eqtl_discovery_table %>% save_delim( fp_("smultixcan_enloc_discovery_eqtl.txt"))
-#gsutil cp -a public-read output/smultixcan_enloc_discovery_eqtl.txt gs://gtex-gwas-share/data-for-paper/smultixcan_enloc_discovery_eqtl.txt
+#gsutil cp -a public-read output/smultixcan_enloc_discovery_eqtl.txt gs://gtex-gwas-share/data-for-paper/mashr/smultixcan_enloc_discovery_eqtl.txt
 
-sm_sqtl_discovery_table <- sm_table(multixcan_tbl_sqtl, multixcan_tbl_count_sqtl, enloc_tbl_sqtl_eur, "gene", "gene_name, ")
+sm_sqtl_discovery_table <- sm_table(multixcan_mashr_tbl_sqtl, multixcan_mashr_tbl_count_sqtl, enloc_tbl_sqtl_eur, "gene", "gene_name, ")
 sm_sqtl_discovery_table %>% rename(intron=gene) %>% select(-gene_name) %>% save_delim( fp_("smultixcan_enloc_discovery_sqtl.txt"))
-#gsutil cp -a public-read output/smultixcan_enloc_discovery_sqtl.txt gs://gtex-gwas-share/data-for-paper/smultixcan_enloc_discovery_sqtl.txt
+#gsutil cp -a public-read output/smultixcan_enloc_discovery_sqtl.txt gs://gtex-gwas-share/data-for-paper/mashr/smultixcan_enloc_discovery_sqtl.txt
 
 ```
 
@@ -460,7 +672,8 @@ Coloc versus enloc:
     data.frame( enloc= e_ %>% filter(gene %in% genes) %>% .$gene %>% unique %>%  length,
                 coloc= c_ %>% filter(gene %in% genes) %>% .$gene %>% unique %>% length,
                 intersection = c_ %>% inner_join(e_, by=c("phenotype", "tissue", "gene")) %>% filter(gene %in% genes) %>% .$gene %>% unique %>% length,
-                total_genes = length(genes))
+                total_genes = length(genes),
+                gene_type = gene_type_)
   }
   rbind(
     subtype_(eqtl_enloc_df, eqtl_coloc_df, "protein_coding"),
