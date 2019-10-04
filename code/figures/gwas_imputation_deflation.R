@@ -16,6 +16,7 @@ FOLDER <-"output"
 dir.create(FOLDER, showWarnings = FALSE, recursive=TRUE)
 fp_ <- function(p) file.path(FOLDER, p)
 
+options(gargle_oauth_email = TRUE)
 
 scale_ <- viridis(4)
 ###############################################################################
@@ -88,6 +89,16 @@ p_ <- ggplot(d_) + theme_bw() +
   scale_color_manual(values=c("intersection"=scale_[3], "intersection+\nimputed"=scale_[1])) +
   scale_fill_manual(values=c("undeflated"="white", "deflated"="lightgray"))
 save_plot(p_, fp_("GWAS_DEFLATION.png"), 1200, 500)
+
+
+p_ <- d_ %>% filter(abbreviation %in% c("RBC", "T2D", "DBP")) %>% ggplot() + theme_bw(base_size = 14) +
+  theme(legend.position="bottom") + #, axis.text.x = element_text(angle = 90)) +
+  coord_flip() +
+  geom_boxplot(aes(abbreviation, ymin=ymin, lower=y25, middle=y50, upper=y75, ymax=ymax, fill=deflation, color=type), stat="identity", lwd=2) +
+  scale_color_manual(values=c("intersection"=scale_[3], "intersection+\nimputed"=scale_[1])) +
+  scale_fill_manual(values=c("undeflated"="white", "deflated"="lightgray")) +
+  ggtitle("Imputed GWAS association deflation")
+save_plot(p_, fp_("GWAS_DEFLATION_2.png"), 500, 500)
 
 # phenos <- c("ADIPOGen_Adiponectin")
 # for (pheno in phenos) {
