@@ -524,10 +524,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree4561695952b640ff9cfdf9fd267703b3e7e1e9d3targetblank4561695a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/4561695952b640ff9cfdf9fd267703b3e7e1e9d3" target="_blank">4561695</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreea71bfe16ee302b78d07081045acbc1b61b8a9d7dtargetblanka71bfe1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/hakyimlab/gtex-gwas-analysis/tree/a71bfe16ee302b78d07081045acbc1b61b8a9d7d" target="_blank">a71bfe1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistree4561695952b640ff9cfdf9fd267703b3e7e1e9d3targetblank4561695a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomhakyimlabgtexgwasanalysistreea71bfe16ee302b78d07081045acbc1b61b8a9d7dtargetblanka71bfe1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -538,38 +538,8 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    .httr-oauth
 
-Untracked files:
-    Untracked:  code/preprocess/preprocess_gwas_regions_mashr.R
-    Untracked:  code/preprocess/preprocess_setup_auxiliary_tables_mashr.R
-    Untracked:  data/summaries/mashr_ld_region_count.txt
-    Untracked:  data/summaries/mashr_regions.txt
-    Untracked:  output/.~lock.smultixcan_enloc_discovery_eqtl.txt#
-    Untracked:  output/.~lock.smultixcan_enloc_discovery_sqtl.txt#
-    Untracked:  output/.~lock.spredixcan_enloc_discovery_eqtl.txt#
-    Untracked:  output/.~lock.spredixcan_enloc_discovery_sqtl.txt#
-    Untracked:  output/g/upset_sme_expression.svg
-    Untracked:  output/g/upset_sme_splicing.svg
-    Untracked:  results/
-
 Unstaged changes:
-    Modified:   analysis/gwas_enloc_predixcan_multixcan.Rmd
     Modified:   analysis/miscellaneous_statistics_2.Rmd
-    Modified:   code/figures/predixcan_enloc_eqtl_sqtl.R
-    Modified:   code/helpers/_helpers_big_query_tables.R
-    Modified:   code/paper_material/tables.R
-    Modified:   data/summaries/regions_enloc_eqtl.txt
-    Modified:   data/summaries/regions_enloc_sqtl.txt
-    Modified:   data/summaries/regions_gwas.txt
-    Modified:   data/summaries/regions_multixcan_eqtl.txt
-    Modified:   data/summaries/regions_multixcan_sqtl.txt
-    Modified:   data/summaries/regions_predixcan_eqtl.txt
-    Modified:   data/summaries/regions_predixcan_sqtl.txt
-    Modified:   output/g/upset_spe_expression.svg
-    Modified:   output/g/upset_spe_splicing.svg
-    Modified:   output/smultixcan_enloc_discovery_eqtl.txt
-    Modified:   output/smultixcan_enloc_discovery_sqtl.txt
-    Modified:   output/spredixcan_enloc_discovery_eqtl.txt
-    Modified:   output/spredixcan_enloc_discovery_sqtl.txt
 
 </code></pre>
 <p>
@@ -608,6 +578,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/hakyimlab/gtex-gwas-analysis/blob/222b6429a4cb62d3b66fedde20b937394a9e693a/analysis/miscellaneous_statistics_2.Rmd" target="_blank">222b642</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-10-04
+</td>
+<td>
+Updates for first revision of manuscript
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/hakyimlab/gtex-gwas-analysis/222b6429a4cb62d3b66fedde20b937394a9e693a/docs/miscellaneous_statistics_2.html" target="_blank">222b642</a>
+</td>
+<td>
+Alvaro
+</td>
+<td>
+2019-10-04
+</td>
+<td>
+Updates for first revision of manuscript
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -755,8 +759,8 @@ Added GWAS/ENLOC/PrediXcan/Multixcan ld region counts. Updated stats.
 <h2>Introduction</h2>
 <p>Here follow miscellaneous numbers to be plugged in the main GTEx paper, supplements, and GWAs companion (and its supplement)</p>
 </div>
-<div id="enloc-runs-expression" class="section level1">
-<h1>ENLOC runs expression</h1>
+<div id="enloc-runs" class="section level1">
+<h1>ENLOC runs</h1>
 <p>We obtained:</p>
 <ul>
 <li>12706414 <code>(gene, tissue, phenotype)</code> distinct tuples from expression on Eur individuals</li>
@@ -773,11 +777,12 @@ Added GWAS/ENLOC/PrediXcan/Multixcan ld region counts. Updated stats.
 <h1>PrediXcan Expression</h1>
 <p>We obtained:</p>
 <ul>
-<li>686241 <code>(gene, tissue)</code> pairs in Elastic Expression models</li>
-<li>22535 genes in Elastic Expression models</li>
-<li>6407 significant s-predixcan genes in Elastic Expression models</li>
+<li>686241 <code>(gene, tissue)</code> pairs in MASHR Expression models</li>
+<li>22535 genes in MASHR Expression models</li>
+<li>1816703 <code>(intron, tissue)</code> pairs in MASHR Expression models</li>
+<li>(6407/22518) significant s-predixcan genes in MASHR Expression models</li>
 <li>59485548 S-PrediXcan tuples in expression models</li>
-<li>23004 significant s-multixcan genes in Elastic Expression models</li>
+<li>23004 significant s-multixcan genes in MASHR Expression models</li>
 <li>1958220 S-MultiXcan tuples in expression models</li>
 </ul>
 </div>
@@ -785,12 +790,12 @@ Added GWAS/ENLOC/PrediXcan/Multixcan ld region counts. Updated stats.
 <h1>PrediXcan Splicing</h1>
 <p>We obtained:</p>
 <ul>
-<li>1816703 <code>(gene, tissue)</code> pairs in Elastic Expression models</li>
-<li>139035 genes in Elastic Expression models</li>
-<li>20364 significant s-predixcan genes in Elastic Expression models</li>
-<li>154891730 S-PrediXcan tuples in expression models</li>
-<li>69261 significant s-multixcan genes in Elastic Expression models</li>
-<li>11986329 S-MultiXcan tuples in expression models</li>
+<li>1816703 <code>(gene, tissue)</code> pairs in MASHR Splicing models</li>
+<li>139035 genes in MASHR Splicing models</li>
+<li>(20364/138890) significant s-predixcan genes in MASHR Splicingmodels</li>
+<li>154891730 S-PrediXcan tuples in splicing models</li>
+<li>69261 significant s-multixcan genes in MASHR Splicing models</li>
+<li>11986329 S-MultiXcan tuples in splicing models</li>
 </ul>
 </div>
 <div id="tables" class="section level1">
