@@ -30,6 +30,7 @@ Support scripts:
 * `code/preprocess` folder contains scripts that were ran once to setup auxiliary data.
     * `code/preprocess/preprocess_gwas_regions.R` counts detections per loci (independent LD regions) that will be used as inputs for other analyses.
     * `code/preprocess/preprocess_setup_auxiliary_tables.R` builds auxiliary tables in big query
+    * `code/preprocess/preprocess_mediation_analysis.R` builds data for primary vs secondary concordance analysis. Can download the data from `download_aux_data.sh`.
     
 Main Paper material:
 
