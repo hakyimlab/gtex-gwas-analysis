@@ -13,6 +13,8 @@ DATA<-"data/summaries"
 dir.create(DATA, showWarnings = FALSE, recursive=TRUE)
 dp_ <- function(p) file.path(DATA, p)
 
+options(gargle_oauth_email = TRUE)
+
 #########################################################################
 
 gwas_metadata <- (function(){
@@ -45,8 +47,8 @@ get_multixcan_regions_eqtl <- function() {
   ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY pvalue) as rk
     FROM ( SELECT r.region, m.*
       FROM ( SELECT m.*
-             FROM {multixcan_tbl_eqtl$dataset_name}.{multixcan_tbl_eqtl$table_name} as m
-             JOIN {multixcan_tbl_count_eqtl$dataset_name}.{multixcan_tbl_count_eqtl$table_name} as m_count
+             FROM {multixcan_en_tbl_eqtl$dataset_name}.{multixcan_en_tbl_eqtl$table_name} as m
+             JOIN {multixcan_en_tbl_count_eqtl$dataset_name}.{multixcan_en_tbl_count_eqtl$table_name} as m_count
              ON m_count.phenotype=m.phenotype
              WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
            ) as m
@@ -71,8 +73,8 @@ get_multixcan_regions_sqtl <- function() {
   ROW_NUMBER() OVER (PARTITION BY region, phenotype ORDER BY pvalue) as rk
     FROM ( SELECT r.region, m.*
       FROM ( SELECT m.*
-             FROM {multixcan_tbl_sqtl$dataset_name}.{multixcan_tbl_sqtl$table_name} as m
-             JOIN {multixcan_tbl_count_sqtl$dataset_name}.{multixcan_tbl_count_sqtl$table_name} as m_count
+             FROM {multixcan_en_tbl_sqtl$dataset_name}.{multixcan_en_tbl_sqtl$table_name} as m
+             JOIN {multixcan_en_tbl_count_sqtl$dataset_name}.{multixcan_en_tbl_count_sqtl$table_name} as m_count
              ON m_count.phenotype=m.phenotype
              WHERE m.pvalue < m_count.b and m.phenotype in {pheno_whitelist}
            ) as m
@@ -99,8 +101,8 @@ get_predixcan_regions_eqtl <- function() {
     FROM (
       SELECT r.region, px.*
       FROM ( SELECT px.*
-             FROM {predixcan_tbl_eqtl$dataset_name}.{predixcan_tbl_eqtl$table_name} as px
-             JOIN {predixcan_tbl_count_eqtl$dataset_name}.{predixcan_tbl_count_eqtl$table_name} as px_count
+             FROM {predixcan_en_tbl_eqtl$dataset_name}.{predixcan_en_tbl_eqtl$table_name} as px
+             JOIN {predixcan_en_tbl_count_eqtl$dataset_name}.{predixcan_en_tbl_count_eqtl$table_name} as px_count
              ON px_count.phenotype=px.phenotype
              WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
            ) as px
@@ -126,8 +128,8 @@ get_predixcan_regions_sqtl <- function() {
     FROM (
       SELECT r.region, px.*
       FROM ( SELECT px.*
-             FROM {predixcan_tbl_sqtl$dataset_name}.{predixcan_tbl_sqtl$table_name} as px
-             JOIN {predixcan_tbl_count_sqtl$dataset_name}.{predixcan_tbl_count_sqtl$table_name} as px_count
+             FROM {predixcan_en_tbl_sqtl$dataset_name}.{predixcan_en_tbl_sqtl$table_name} as px
+             JOIN {predixcan_en_tbl_count_sqtl$dataset_name}.{predixcan_en_tbl_count_sqtl$table_name} as px_count
              ON px_count.phenotype=px.phenotype
              WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
            ) as px
