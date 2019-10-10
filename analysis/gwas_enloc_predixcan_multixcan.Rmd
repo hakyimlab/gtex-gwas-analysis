@@ -70,7 +70,12 @@ out of 5385 GWAS significant associations (in 1167 loci across 82 traits).
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 any_ <- tempo %>% mutate(any = smultixcan_sqtl_enloc | smultixcan_eqtl_enloc | spredixcan_eqtl_enloc | spredixcan_sqtl_enloc ) %>% .$any %>% sum
+any_eqtl_ <- tempo %>% mutate(any = smultixcan_eqtl_enloc | spredixcan_eqtl_enloc ) %>% .$any %>% sum
+any_sqtl_ <- tempo %>% mutate(any = smultixcan_sqtl_enloc | spredixcan_sqtl_enloc ) %>% .$any %>% sum
 ```
+
+`r format(any_eqtl_/summary["gwas"]*100, digits=0)`% (`r any_eqtl_`/`r summary["gwas"]`) Loci had a significant, colocalized association via eQTL on S-MultiXcan/S-PrediXcan.
+`r format(any_sqtl_/summary["gwas"]*100, digits=0)`% (`r any_sqtl_`/`r summary["gwas"]`) Loci had a significant, colocalized association via sQTL on S-MultiXcan/S-PrediXcan.
 `r format(any_/summary["gwas"]*100, digits=0)`% (`r any_`/`r summary["gwas"]`) Loci had a significant, colocalized association via xQTL on S-MultiXcan/S-PrediXcan.
 
 ```{r plot number of expression significant loci, echo=FALSE, warning=FALSE, message=FALSE}

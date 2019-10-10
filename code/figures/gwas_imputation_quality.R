@@ -38,14 +38,14 @@ AND (f.chromosome = 'chr1' or i.chromosome =  'chr1')
 gwas_s <- gwas_s %>% mutate(phenotype=factor(phenotype, levels=c("GIANT_HEIGHT", "CARDIoGRAM_C4D_CAD_ADDITIVE", "UKB_20002_1111_self_reported_asthma")))
 
 
-p_ <- ggplot(gwas_s) + theme_bw(base_size=20) +
+p_ <- ggplot(gwas_s) + theme_bw(base_size=30) +
   geom_point(aes(formatted, imputed), alpha=0.5) +
   geom_density_2d(aes(formatted, imputed)) +
   geom_abline(slope=1, intercept = 0) +
   facet_wrap(~phenotype) +
   xlab("Original") + ylab("Imputed") +
   ggtitle("Imputation agrees with original values", subtitle="Variants on chromosome 1")
-save_plot(p_, fp_("GWAS_IMPUTATION_QUALITY.png"),500,1500)
+save_plot(p_, fp_("GWAS_IMPUTATION_QUALITY.png"),700,1500)
 
 p_ <- gwas_s %>% filter(phenotype %in% c("GIANT_HEIGHT", "CARDIoGRAM_C4D_CAD_ADDITIVE")) %>%
   ggplot() + theme_bw(base_size=20) +

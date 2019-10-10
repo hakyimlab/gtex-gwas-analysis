@@ -27,7 +27,7 @@ fp_ <- function(p) file.path(OUTPUT, p)
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 gwas_metadata <- (function(){
-  query <- glue::glue("SELECT Tag as phenotype, Deflation as deflation, new_abbreviation as abbreviation
+  query <- glue::glue("SELECT Tag as phenotype, Deflation as deflation, new_abbreviation as abbreviation, Category as category
                        FROM {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name}
                        WHERE Deflation=0")
   query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
@@ -47,7 +47,7 @@ introns <- (function(){
 })()
 ```
 
-# ENLOC runs expression
+# ENLOC runs
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n_enloc_eqtl_eur_tuples <- (function(){
@@ -86,6 +86,7 @@ FROM (
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
 ```
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n_enloc_eqtl_eur_genes <- (function(){
   query <- "
@@ -95,6 +96,21 @@ FROM (
   FROM (
     SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name}
     WHERE phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+
+n_enloc_eqtl_eur_genes_approved <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM (
+    SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
+    INNER JOIN {gencode_all_annotation_tbl$dataset_name}.{gencode_all_annotation_tbl$table_name} as a
+    ON e.molecular_qtl_trait = a.gene_id
+    WHERE phenotype in {pheno_whitelist} AND a.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene')
   )
 )" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
@@ -198,7 +214,7 @@ We obtained:
 # PrediXcan Expression
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-n_models_gt_pairs_eur_eqtl <- (function(){
+n_models_gt_pairs_eqtl_eur <- (function(){
   query <- "
 SELECT COUNT(*)
 FROM (
@@ -214,14 +230,14 @@ FROM (
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-n_models_gt_pairs_eqtl_eur <- (function(){
+n_models_gt_pairs_sqtl_eur <- (function(){
   query <- "
 SELECT COUNT(*)
 FROM (
   SELECT DISTINCT gene, tissue
   FROM (
     SELECT gene, tissue
-    FROM {prediction_mashr_models_extra_tbl_eqtl$dataset_name}.{prediction_mashr_models_extra_tbl_eqtl$table_name} as e
+    FROM {prediction_mashr_models_extra_tbl_sqtl$dataset_name}.{prediction_mashr_models_extra_tbl_sqtl$table_name} as e
     WHERE n_snps_in_model > 0
   )
 )" %>% glue::glue()
@@ -246,7 +262,7 @@ FROM (
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-n_spredixcan_genes_eqtl <- (function(){
+n_spredixcan_significant_genes_eqtl <- (function(){
   query <- "
 SELECT COUNT(*)
 FROM (
@@ -258,6 +274,17 @@ FROM (
          WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
   )
 )" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_genes_eqtl <- (function(){
+  query <- "
+SELECT COUNT(DISTINCT gene)
+FROM {predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name} 
+WHERE phenotype in {pheno_whitelist}
+" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
 ```
@@ -325,11 +352,12 @@ WHERE pvalue is not NULL and px.phenotype in {pheno_whitelist}
 
 We obtained:
 
-- `r n_models_gt_pairs_eur_eqtl` `(gene, tissue)` pairs in Elastic Expression models
-- `r n_models_genes_eqtl_eur` genes in Elastic Expression models
-- `r n_spredixcan_genes_eqtl` significant s-predixcan genes in Elastic Expression models
+- `r n_models_gt_pairs_eqtl_eur` `(gene, tissue)` pairs in MASHR Expression models
+- `r n_models_genes_eqtl_eur` genes in MASHR Expression models
+- `r n_models_gt_pairs_sqtl_eur` `(intron, tissue)` pairs in MASHR Expression models
+- (`r n_spredixcan_significant_genes_eqtl`/`r n_spredixcan_genes_eqtl`) significant s-predixcan genes in MASHR Expression models
 - `r n_spredixcan_tuples_eqtl` S-PrediXcan tuples in expression models
-- `r n_smultixcan_genes_eqtl` significant s-multixcan genes in Elastic Expression models
+- `r n_smultixcan_genes_eqtl` significant s-multixcan genes in MASHR Expression models
 - `r n_smultixcan_tuples_eqtl` S-MultiXcan tuples in expression models
 
 
@@ -384,7 +412,7 @@ FROM (
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-n_spredixcan_genes_sqtl <- (function(){
+n_spredixcan_significant_genes_sqtl <- (function(){
   query <- "
 SELECT COUNT(*)
 FROM (
@@ -396,6 +424,17 @@ FROM (
          WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
   )
 )" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+n_spredixcan_genes_sqtl <- (function(){
+  query <- "
+SELECT COUNT(DISTINCT gene)
+FROM {predixcan_mashr_tbl_sqtl$dataset_name}.{predixcan_mashr_tbl_sqtl$table_name} 
+WHERE phenotype in {pheno_whitelist}
+" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
 ```
@@ -463,12 +502,12 @@ FROM (
 
 We obtained:
 
-- `r n_models_gt_pairs_eur_sqtl` `(gene, tissue)` pairs in Elastic Expression models
-- `r n_models_genes_sqtl_eur` genes in Elastic Expression models
-- `r n_spredixcan_genes_sqtl` significant s-predixcan genes in Elastic Expression models
-- `r n_spredixcan_tuples_sqtl` S-PrediXcan tuples in expression models
-- `r n_smultixcan_genes_sqtl` significant s-multixcan genes in Elastic Expression models
-- `r n_smultixcan_tuples_sqtl` S-MultiXcan tuples in expression models
+- `r n_models_gt_pairs_eur_sqtl` `(gene, tissue)` pairs in MASHR Splicing models
+- `r n_models_genes_sqtl_eur` genes in MASHR Splicing models
+- (`r n_spredixcan_significant_genes_sqtl`/`r n_spredixcan_genes_sqtl`) significant s-predixcan genes in MASHR Splicingmodels
+- `r n_spredixcan_tuples_sqtl` S-PrediXcan tuples in splicing models
+- `r n_smultixcan_genes_sqtl` significant s-multixcan genes in MASHR Splicing models
+- `r n_smultixcan_tuples_sqtl` S-MultiXcan tuples in splicing models
 
 # Tables
 
@@ -511,23 +550,44 @@ FROM {e_tbl$dataset_name}.{e_tbl$table_name}
 WHERE locus_rcp > 0.5 AND phenotype in {pheno_whitelist}
 ORDER BY phenotype, tissue, locus_rcp DESC 
 " %>% glue::glue()
-  #print(query)
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-eqtl_enloc_df <- e_table_(enloc_tbl_eqtl_eur)
 sqtl_enloc_df <- e_table_(enloc_tbl_sqtl_eur)
 
-c_table_ <- function(c_tbl) {
+e_table_a_ <- function(e_tbl){
+  query <- "
+SELECT phenotype, tissue, molecular_qtl_trait as gene, locus_rcp as rcp
+FROM (
+    SELECT * FROM {enloc_tbl_eqtl_eur$dataset_name}.{enloc_tbl_eqtl_eur$table_name} as e
+    INNER JOIN {gencode_all_annotation_tbl$dataset_name}.{gencode_all_annotation_tbl$table_name} as a
+    ON e.molecular_qtl_trait = a.gene_id
+WHERE phenotype in {pheno_whitelist} AND 
+      a.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene') AND 
+      locus_rcp > 0.5
+)
+ ORDER BY phenotype, tissue, locus_rcp DESC 
+" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+eqtl_enloc_df <- e_table_a_(enloc_tbl_eqtl_eur)
+
+c_table_a_ <- function(c_tbl) {
     query <- "
 SELECT phenotype, tissue, gene_id as gene, pp_H4_abf as p4
-FROM {c_tbl$dataset_name}.{c_tbl$table_name} 
-WHERE pp_H4_abf > 0.5 AND phenotype in {pheno_whitelist}
+FROM (
+  SELECT c.phenotype, c.tissue, c.gene_id, c.pp_H4_abf FROM {c_tbl$dataset_name}.{c_tbl$table_name} as c
+  INNER JOIN {gencode_all_annotation_tbl$dataset_name}.{gencode_all_annotation_tbl$table_name} as a
+  ON c.gene_id = a.gene_id
+  WHERE c.pp_H4_abf > 0.5 AND 
+        c.phenotype in {pheno_whitelist} AND 
+        a.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene')
+)
 ORDER BY phenotype, tissue, pp_H4_abf DESC 
 " %>% glue::glue()
   #print(query)
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-eqtl_coloc_df <- c_table_(coloc_tbl_eqtl )
+eqtl_coloc_df <- c_table_a_(coloc_tbl_eqtl )
 
 build_sp_table <- function(sp, e) {
   sp %>%  full_join(e, by=c("phenotype", "tissue", "gene")) %>%

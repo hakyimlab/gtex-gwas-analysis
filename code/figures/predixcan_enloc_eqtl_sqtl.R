@@ -99,7 +99,11 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
   #############################################################################
   genes_n <- function(d) {
     d %>% ggplot() +
-      theme_bw() + theme(legend.title=element_blank(), legend.position = "bottom") +
+      theme_bw() +
+      theme(plot.title = element_text(face="bold", size=rel(1.2)),
+            legend.title=element_blank(), legend.position = "bottom",
+            axis.text.x=element_text(size=rel(1.7)), axis.title.x=element_blank(),
+            axis.title.y=element_text(size=rel(2)), axis.text.y = element_text(face="bold")) +
       geom_col(aes(abbreviation, n), show.legend = FALSE, fill=scale_enloc["enloc"]) +
       coord_flip()
   }
@@ -111,10 +115,14 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
   enloc_introns_n %>% save_plot(fp_("enloc_introns.png"), 1200, 800)
 
   #############################################################################
-  loci_n <- function(d) {
-    d %>% ggplot() + theme_bw(base_size = 10) + theme(legend.title=element_blank(), legend.position = "bottom") +
-      geom_col(aes(abbreviation, n, fill=method),d %>% select(abbreviation, n=gwas) %>% mutate(method="gwas")) +
-      geom_col(aes(abbreviation, n, fill=method), d %>% select(abbreviation, n=enloc) %>% mutate(method="enloc")) +
+  loci_n <- function(d, y.title = TRUE) {
+    d %>% ggplot() + theme_bw(base_size = 10) +
+      theme(plot.title = element_text(hjust = 0.5, face="bold", size=rel(1.2)),
+            legend.title=element_blank(), legend.position = "bottom",
+            axis.text.x=element_text(size=rel(1.7)), axis.title.x = element_blank(),
+            axis.text.y = element_blank(), axis.title.y = element_blank()) +
+      geom_col(aes(abbreviation, n, fill=method), d %>% select(abbreviation, n=gwas) %>% mutate(method="gwas"), show.legend = FALSE) +
+      geom_col(aes(abbreviation, n, fill=method), d %>% select(abbreviation, n=enloc) %>% mutate(method="enloc"), show.legend = FALSE) +
       scale_fill_manual(values=scale_enloc, breaks=c("gwas", "enloc")) + coord_flip() +
       ylab("loci")
   }
@@ -134,8 +142,13 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
       select(abbreviation, enloc, gwas) %>%
       gather("method", "loci", -abbreviation) %>%
       mutate(method=factor(method, levels=c("gwas", "enloc"))) %>% ggplot() +
-      theme_bw(base_size = 10) + theme(legend.title=element_blank(), legend.position = "bottom") +
-      geom_col(aes(abbreviation, loci, fill=method)) +
+      theme_bw(base_size = 10) +
+      theme(plot.title = element_text(hjust = 0.5, face="bold",size=rel(1.2)),
+            legend.title=element_blank(),
+            axis.text.y = element_blank(), axis.title.y = element_blank(),
+            axis.text.x=element_text(size=rel(1.7)), axis.title.x = element_blank(),
+            legend.position = "bottom") +
+      geom_col(aes(abbreviation, loci, fill=method), show.legend = FALSE) +
       scale_fill_manual(values=scale_enloc, breaks=c("gwas", "enloc")) + coord_flip() + ylab("loci proportion")
   }
   enloc_loci_prop_eqtl <- d %>% select(abbreviation, gwas=gwas_s_regions, enloc=gwas_s_regions_enlocalized_eqtl) %>% loci_prop() +
@@ -147,10 +160,10 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
   enloc_loci_prop_eqtl %>% save_plot(fp_("enloc_loci_sqtl_prop.png"), 1200, 800)
 
   #############################################################################
-  p_ <- cowplot::plot_grid(enloc_genes_n, enloc_loci_n_eqtl, enloc_loci_prop_eqtl, labels = c("A", "B", "C"), ncol=3)
+  p_ <- cowplot::plot_grid(enloc_genes_n, enloc_loci_n_eqtl, enloc_loci_prop_eqtl, labels = c("A", "B", "C"), ncol=3, rel_widths=c(0.4, 0.3, 0.3))
   cowplot::save_plot(fp_("ENLOC_EQTL.png"), p_, base_width =16, base_height=9)
 
-  p_ <- cowplot::plot_grid(enloc_introns_n, enloc_loci_n_sqtl, enloc_loci_prop_sqtl, labels = c("A", "B", "C"), ncol=3)
+  p_ <- cowplot::plot_grid(enloc_introns_n, enloc_loci_n_sqtl, enloc_loci_prop_sqtl, labels = c("A", "B", "C"), ncol=3, rel_widths=c(0.4, 0.3, 0.3))
   cowplot::save_plot(fp_("ENLOC_SQTL.png"), p_, base_width =16, base_height=9)
 })()
 
@@ -198,11 +211,15 @@ smultixcan_introns <- smultixcan_introns %>%
   #############################################################################
   loci_n <- function(d) {
     d %>%  gather("method", "loci", -abbreviation) %>% ggplot() +
-      theme_bw() + theme(legend.title=element_blank(), legend.position = "bottom") +
       geom_col(aes(abbreviation, gwas, fill=method), d %>% mutate(method="gwas")) +
       geom_col(aes(abbreviation, smultixcan, fill=method), d %>% mutate(method="smultixcan")) +
       geom_col(aes(abbreviation, smultixcan_enloc, fill=method), d %>% mutate(method="enlocalized smultixcan")) +
-      scale_fill_manual(values=scale_smultixcan, breaks=c("gwas", "smultixcan", "enlocalized smultixcan")) + coord_flip() + ylab("loci")
+      scale_fill_manual(values=scale_smultixcan, breaks=c("gwas", "smultixcan", "enlocalized smultixcan")) + coord_flip() + ylab("loci") +
+      theme_bw(base_size=10) +
+      theme(plot.title = element_text(hjust = 0.5, face="bold", size=rel(1.2)),
+            legend.title=element_blank(), legend.position = "bottom",
+            axis.text.x=element_text(size=rel(1.7)), axis.title.x = element_blank(),
+            axis.text.y = element_blank(), axis.title.y = element_blank())
   }
 
   smultixcan_loci_n <- d %>%
@@ -223,7 +240,13 @@ smultixcan_introns <- smultixcan_introns %>%
       select(abbreviation, smultixcan, gwas) %>%
       gather("method", "loci", -abbreviation) %>%
       mutate(method=factor(method, levels=c("gwas", "enlocalized smultixcan", "smultixcan"))) %>%
-      ggplot() + theme_bw() +  theme(legend.title=element_blank(), legend.position = "bottom") +
+      ggplot() +
+      theme_bw(base_size = 10) +
+      theme(plot.title = element_text(hjust = 0.5, face="bold",size=rel(1.2)),
+            legend.title=element_blank(),
+            axis.text.y = element_blank(), axis.title.y = element_blank(),
+            axis.text.x=element_text(size=rel(1.7)), axis.title.x = element_blank(),
+            legend.position = "bottom") +
       geom_col(aes(abbreviation, loci, fill=method)) + #, position="fill") +
       geom_col(aes(abbreviation, e, fill=method),
                d %>% mutate(e = ifelse(gwas>0,smultixcan_enloc/gwas, 0), method="enlocalized smultixcan")) +
@@ -244,25 +267,30 @@ smultixcan_introns <- smultixcan_introns %>%
   #############################################################################
   genes_n <- function(d) {
     d %>% mutate(gwas=0) %>% ggplot() +
-      theme_bw() + theme(legend.title=element_blank(), legend.position = "bottom") +
+      theme_bw() +
+      theme(plot.title = element_text(face="bold", size=rel(1.2), hjust=0.5),
+            legend.title=element_blank(), legend.position = "bottom",
+            axis.text.x=element_text(size=rel(1.7)), axis.title.x=element_blank(),
+            axis.title.y=element_text(size=rel(2)), axis.text.y = element_text(face="bold")) +
       geom_col(aes(abbreviation, smultixcan, fill=method), d %>% mutate(method="smultixcan")) +
       geom_col(aes(abbreviation, enloc, fill=method), d %>% mutate(method="enlocalized smultixcan")) +
-      scale_fill_manual(values=scale_smultixcan, breaks=c("gwas", "smultixcan", "enlocalized smultixcan")) + coord_flip()
+      scale_fill_manual(values=scale_smultixcan, breaks=c("gwas", "smultixcan", "enlocalized smultixcan")) + coord_flip() +
+      ylab("n")
   }
 
-  smultixcan_genes_n <- smultixcan_genes %>% genes_n() + xlab("genes") +
+  smultixcan_genes_n <- smultixcan_genes %>% genes_n()  +
     ggtitle("Number of\n S-MultiXcan significant genes")#, subtitle="comparison to colocalized genes")
   smultixcan_genes_n %>% save_plot(fp_("smultixcan_genes.png"), 1200, 800)
 
-  smultixcan_introns_n <- smultixcan_introns %>% genes_n() + xlab("introns") +
+  smultixcan_introns_n <- smultixcan_introns %>% genes_n() + scale_y_continuous(limit = c(0, 13000)) +
     ggtitle("Number of \nS-MultiXcan significant introns")#, subtitle="comparison to colocalized introns")
   smultixcan_introns_n %>% save_plot(fp_("smultixcan_introns.png"), 1200, 800)
 
 
-  p_ <- cowplot::plot_grid(smultixcan_genes_n, smultixcan_loci_n, smultixcan_loci_prop, labels = c("A", "B", "C"), ncol=3)#, rel_widths=c(1.4,1,1))
+  p_ <- cowplot::plot_grid(smultixcan_genes_n, smultixcan_loci_n, smultixcan_loci_prop, labels = c("A", "B", "C"), ncol=3, rel_widths=c(0.4, 0.3, 0.3))
   cowplot::save_plot(fp_("MULTIXCAN_EQTL.png"), p_, base_width =16, base_height=9)
 
-  p_ <- cowplot::plot_grid(smultixcan_introns_n, smultixcan_loci_sqtl_n, smultixcan_loci_sqtl_prop, labels = c("A", "B", "C"), ncol=3)#, rel_widths=c(1.4,1,1))
+  p_ <- cowplot::plot_grid(smultixcan_introns_n, smultixcan_loci_sqtl_n, smultixcan_loci_sqtl_prop, labels = c("A", "B", "C"), ncol=3, rel_widths=c(0.4, 0.3, 0.3))
   cowplot::save_plot(fp_("MULTIXCAN_SQTL.png"), p_, base_width =16, base_height=9)
 })()
 
