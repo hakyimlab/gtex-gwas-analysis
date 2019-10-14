@@ -232,6 +232,7 @@ d2_ <- tempo %>% group_by(region) %>%
 
 #    theme(legend.position="bottom") +
 p_ <- ggplot(d_) + theme_bw(base_size=18) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   geom_boxplot(aes(method, f, fill=data)) +
   ggtitle("Proportion of GWAS loci\nwith colocalized/associated genes or introns")  +
   ylab("Proportion of loci")
