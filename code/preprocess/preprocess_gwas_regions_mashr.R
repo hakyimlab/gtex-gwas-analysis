@@ -63,7 +63,7 @@ get_multixcan_regions_eqtl <- function() {
     )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-m_eqtl_ <- get_if_not_exists(dp_("regions_multixcan_eqtl.txt"), get_multixcan_regions_eqtl)
+m_eqtl_ <- get_if_not_exists(dp_("mashr_regions_multixcan_eqtl.txt"), get_multixcan_regions_eqtl)
 
 get_multixcan_regions_sqtl <- function() {
   query_ <- glue::glue(
@@ -89,7 +89,7 @@ get_multixcan_regions_sqtl <- function() {
     )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-m_sqtl_ <- get_if_not_exists(dp_("regions_multixcan_sqtl.txt"), get_multixcan_regions_sqtl)
+m_sqtl_ <- get_if_not_exists(dp_("mashr_regions_multixcan_sqtl.txt"), get_multixcan_regions_sqtl)
 
 #########################################################################
 get_predixcan_regions_eqtl <- function() {
@@ -117,7 +117,7 @@ get_predixcan_regions_eqtl <- function() {
     )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-p_eqtl_ <- get_if_not_exists(dp_("regions_predixcan_eqtl.txt"), get_predixcan_regions_eqtl)
+p_eqtl_ <- get_if_not_exists(dp_("mashr_regions_predixcan_eqtl.txt"), get_predixcan_regions_eqtl)
 
 get_predixcan_regions_sqtl <- function() {
   query_ <- glue::glue(
@@ -144,7 +144,7 @@ get_predixcan_regions_sqtl <- function() {
     )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-p_sqtl_ <- get_if_not_exists(dp_("regions_predixcan_sqtl.txt"), get_predixcan_regions_sqtl)
+p_sqtl_ <- get_if_not_exists(dp_("mashr_regions_predixcan_sqtl.txt"), get_predixcan_regions_sqtl)
 
 ###############################################################################
 get_enloc_regions_eqtl <- function() {
@@ -169,7 +169,7 @@ get_enloc_regions_eqtl <- function() {
     )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-e_eqtl_ <- get_if_not_exists(dp_("regions_enloc_eqtl.txt"), get_enloc_regions_eqtl)
+e_eqtl_ <- get_if_not_exists(dp_("mashr_regions_enloc_eqtl.txt"), get_enloc_regions_eqtl)
 
 get_enloc_regions_sqtl <- function() {
   query_ <- glue::glue(
@@ -193,7 +193,7 @@ get_enloc_regions_sqtl <- function() {
     )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-e_sqtl_ <- get_if_not_exists(dp_("regions_enloc_sqtl.txt"), get_enloc_regions_sqtl)
+e_sqtl_ <- get_if_not_exists(dp_("mashr_regions_enloc_sqtl.txt"), get_enloc_regions_sqtl)
 
 ###############################################################################
 
@@ -217,7 +217,7 @@ get_gwas_regions <- function() {
   )
   query_exec(query_, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
-g_ <- get_if_not_exists(dp_("regions_gwas.txt"), get_gwas_regions)
+g_ <- get_if_not_exists(dp_("mashr_regions_gwas.txt"), get_gwas_regions)
 message("##\nNumber of regions containing GWAS-Significant dectections: ", g_ %>% count(region) %>% nrow, "\n##")
 
 gwas_only_ <- g_ %>% filter(count > 0) %>% select(region, phenotype)

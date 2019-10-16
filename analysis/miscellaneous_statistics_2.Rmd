@@ -183,6 +183,18 @@ FROM (
 )" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
+
+n_enloc_sqtl_eur_genes_ <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM (
+    SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name}
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -198,6 +210,19 @@ FROM (
 )" %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
+
+n_enloc_sqtl_eur_genes_colocalized_ <- (function(){
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene_id
+  FROM (
+    SELECT molecular_qtl_trait as gene_id FROM {enloc_tbl_sqtl_eur$dataset_name}.{enloc_tbl_sqtl_eur$table_name}
+    WHERE locus_rcp >0.5
+  )
+)" %>% glue::glue()
+ query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+})() %>% as.integer
 ```
 
 We obtained:
@@ -207,9 +232,9 @@ We obtained:
 - `r n_enloc_eqtl_eur_gt_pairs` `(gene, tissue)` distinct pairs from expression on Eur individuals
 - (`r n_enloc_eqtl_eur_genes_colocalized` / `r n_enloc_eqtl_eur_genes`) colocalized genes
 - `r n_enloc_sqtl_eur_tuples` `(gene, tissue, phenotype)` distinct tuples from splicing on Eur individuals
-- `r n_enloc_sqtl_eur_tuples_colocalized` colocalized `(gene, tissue, phenotype)` distinct tuples from splicing on Eur individuals
-- `r n_enloc_sqtl_eur_gt_pairs` `(gene, tissue)` distinct pairs from splicing on Eur individuals
-- (`r n_enloc_sqtl_eur_genes_colocalized` / `r n_enloc_sqtl_eur_genes`) colocalized genes
+- `r n_enloc_sqtl_eur_tuples_colocalized` colocalized `intron, tissue, phenotype)` distinct tuples from splicing on Eur individuals
+- `r n_enloc_sqtl_eur_gt_pairs` `(intron, tissue)` distinct pairs from splicing on Eur individuals
+- (`r n_enloc_sqtl_eur_genes_colocalized` / `r n_enloc_sqtl_eur_genes`) colocalized introns
 
 # PrediXcan Expression
 
