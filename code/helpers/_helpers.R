@@ -32,7 +32,7 @@ d_results_logic_ <- function(folder, pattern, strip) {
              name_1 = gsub(pattern, "\\1", names),
              name_2 = gsub(pattern, "\\2", names),
              stringsAsFactors = FALSE)
-  
+
 }
 
 cpt_results_logic <- function(folder, pattern, strip) {
@@ -78,10 +78,10 @@ save_plot <- function(plot, path, height, width, res=NA) {
 save_delim <- function(x, path) {
   if (grepl(".gz$",path)) {
     gz1 <- gzfile(path, "w")
-    write.table(x, gz1, sep="\t", row.names = FALSE, quote=FALSE)    
+    write.table(x, gz1, sep="\t", row.names = FALSE, quote=FALSE)
     close(gz1)
   } else {
-    write.table(x, path, sep="\t", row.names = FALSE, quote=FALSE)    
+    write.table(x, path, sep="\t", row.names = FALSE, quote=FALSE)
   }
 }
 
@@ -91,7 +91,7 @@ d_theme_ <- function() {
         plot.subtitle = element_text(hjust=0.5, face="italic", size=25),
         axis.title = element_text(size=25),
         axis.text = element_text(size=20),
-        legend.text = element_text(size = 15)) + 
+        legend.text = element_text(size = 15)) +
   ggplot2::theme(legend.position="bottom",legend.direction="horizontal")
 }
 
@@ -110,4 +110,14 @@ load_folder <- function(path, filter_=NULL, tag_=NULL, col_types=NULL) {
     r[[i]] <- d
   }
   do.call(rbind, r)
+}
+
+read_or_get <- function(path, method) {
+  if (!file.exists(path)) {
+    d <- method()
+    d %>% save_delim(path)
+    d
+  } else {
+    path %>% r_tsv_
+  }
 }

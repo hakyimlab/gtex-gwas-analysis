@@ -1,5 +1,5 @@
 
-theme_ <- theme(panel.border = element_blank(),
+paper_base_theme_ <- theme(panel.border = element_blank(),
                 panel.grid.major = element_blank(),
                 panel.grid.minor = element_blank(),
                 axis.line = element_line(colour = "#170a45", size = .5),
