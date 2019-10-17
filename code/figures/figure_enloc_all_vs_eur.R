@@ -5,8 +5,11 @@ suppressPackageStartupMessages(library(viridis))
 suppressPackageStartupMessages(library(cowplot))
 
 suppressWarnings(source("code/helpers/_helpers.R"))
+suppressWarnings(source("code/helpers/_plot_style.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
+
+options(gargle_oauth_email = TRUE)
 
 FOLDER <-"output"
 dir.create(FOLDER, showWarnings = FALSE, recursive=TRUE)
@@ -107,7 +110,9 @@ f_ <- (function(){
 
   d_ <- d_ %>% mutate(type=ifelse(all & eur, "both\npopulations",
                      ifelse(all, "all\nindividuals", "Europeans\nonly")))
-  ggplot(d_) + theme_bw(base_size=14) + geom_bar(aes(type, fill=type), show.legend = FALSE) + scale_color_viridis_d() +
+  ggplot(d_) + theme_bw(base_size=14) +
+    paper_base_theme_ +
+    geom_bar(aes(type, fill=type), show.legend = FALSE) + scale_color_viridis_d() +
     xlab("population") +
     ggtitle("ENLOC detections", subtitle = "gene-phenotype pairs with rcp>0.5 across tissues")
 })()

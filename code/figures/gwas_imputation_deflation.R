@@ -9,6 +9,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(viridis))
 
 suppressWarnings(source("code/helpers/_helpers.R"))
+suppressWarnings(source("code/helpers/_plot_style.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 
@@ -82,7 +83,7 @@ d_ <- d %>% mutate(values=-log10(values)) %>%
     by="phenotype") %>%
   mutate(abbreviation=factor(abbreviation, levels=order_))
 
-p_ <- ggplot(d_) + theme_bw() +
+p_ <- ggplot(d_) + theme_bw() + paper_base_theme_ +
   theme(legend.position="bottom") + #, axis.text.x = element_text(angle = 90)) +
   coord_flip() +
   geom_boxplot(aes(abbreviation, ymin=ymin, lower=y25, middle=y50, upper=y75, ymax=ymax, fill=deflation, color=type), stat="identity") +
@@ -91,7 +92,8 @@ p_ <- ggplot(d_) + theme_bw() +
 save_plot(p_, fp_("GWAS_DEFLATION.png"), 1200, 500)
 
 
-p_ <- d_ %>% filter(abbreviation %in% c("RBC", "T2D", "DBP")) %>% ggplot() + theme_bw(base_size = 14) +
+p_ <- d_ %>% filter(abbreviation %in% c("RBC", "T2D", "DBP")) %>% ggplot() +
+  theme_bw(base_size = 14) + paper_base_theme_ +
   theme(legend.position="bottom") + #, axis.text.x = element_text(angle = 90)) +
   coord_flip() +
   geom_boxplot(aes(abbreviation, ymin=ymin, lower=y25, middle=y50, upper=y75, ymax=ymax, fill=deflation, color=type), stat="identity", lwd=2) +

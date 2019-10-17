@@ -10,9 +10,9 @@ suppressPackageStartupMessages(library(viridis))
 
 
 suppressWarnings(source("code/helpers/_helpers.R"))
+suppressWarnings(source("code/helpers/_plot_style.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
-
 
 options(gargle_oauth_email = TRUE)
 
@@ -24,8 +24,11 @@ fp_ <- function(p) file.path(RESULT, p)
 
 
 v_ <- viridis(3)
-scale_enloc <- c("gwas"="darkgray", "enloc"=v_[2])
-scale_smultixcan <- c("gwas"="darkgray", "smultixcan"=v_[3], "enlocalized smultixcan"=v_[2])
+# scale_enloc <- c("gwas"="darkgray", "enloc"=v_[2])
+# scale_smultixcan <- c("gwas"="darkgray", "smultixcan"=v_[3], "enlocalized smultixcan"=v_[2])
+scale_enloc <- c("gwas"="darkgray", "enloc"="#23B509")
+scale_smultixcan <- c("gwas"="darkgray", "smultixcan"="#6209B5", "enlocalized smultixcan"="#23B509")
+
 
 regions <- "data/summaries/regions.txt" %>% r_tsv_
 gwas_metadata <- (function(){
@@ -99,7 +102,7 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
   #############################################################################
   genes_n <- function(d) {
     d %>% ggplot() +
-      theme_bw() +
+      theme_bw() + paper_base_theme_ +
       theme(plot.title = element_text(face="bold", size=rel(1.2)),
             legend.title=element_blank(), legend.position = "bottom",
             axis.text.x=element_text(size=rel(1.7)), axis.title.x=element_blank(),
@@ -116,7 +119,8 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
 
   #############################################################################
   loci_n <- function(d, y.title = TRUE) {
-    d %>% ggplot() + theme_bw(base_size = 10) +
+    d %>% ggplot() +
+      theme_bw(base_size = 10) + paper_base_theme_ +
       theme(plot.title = element_text(hjust = 0.5, face="bold", size=rel(1.2)),
             legend.title=element_blank(), legend.position = "bottom",
             axis.text.x=element_text(size=rel(1.7)), axis.title.x = element_blank(),
@@ -142,7 +146,7 @@ enloc_introns <- enloc_introns_ %>% group_by(phenotype, intron_id) %>% arrange(-
       select(abbreviation, enloc, gwas) %>%
       gather("method", "loci", -abbreviation) %>%
       mutate(method=factor(method, levels=c("gwas", "enloc"))) %>% ggplot() +
-      theme_bw(base_size = 10) +
+      theme_bw(base_size = 10) + paper_base_theme_ +
       theme(plot.title = element_text(hjust = 0.5, face="bold",size=rel(1.2)),
             legend.title=element_blank(),
             axis.text.y = element_blank(), axis.title.y = element_blank(),
@@ -211,15 +215,15 @@ smultixcan_introns <- smultixcan_introns %>%
   #############################################################################
   loci_n <- function(d) {
     d %>%  gather("method", "loci", -abbreviation) %>% ggplot() +
-      geom_col(aes(abbreviation, gwas, fill=method), d %>% mutate(method="gwas")) +
-      geom_col(aes(abbreviation, smultixcan, fill=method), d %>% mutate(method="smultixcan")) +
-      geom_col(aes(abbreviation, smultixcan_enloc, fill=method), d %>% mutate(method="enlocalized smultixcan")) +
-      scale_fill_manual(values=scale_smultixcan, breaks=c("gwas", "smultixcan", "enlocalized smultixcan")) + coord_flip() + ylab("loci") +
-      theme_bw(base_size=10) +
+      theme_bw(base_size=10) + paper_base_theme_ +
       theme(plot.title = element_text(hjust = 0.5, face="bold", size=rel(1.2)),
             legend.title=element_blank(), legend.position = "bottom",
             axis.text.x=element_text(size=rel(1.7)), axis.title.x = element_blank(),
-            axis.text.y = element_blank(), axis.title.y = element_blank())
+            axis.text.y = element_blank(), axis.title.y = element_blank()) +
+      geom_col(aes(abbreviation, gwas, fill=method), d %>% mutate(method="gwas")) +
+      geom_col(aes(abbreviation, smultixcan, fill=method), d %>% mutate(method="smultixcan")) +
+      geom_col(aes(abbreviation, smultixcan_enloc, fill=method), d %>% mutate(method="enlocalized smultixcan")) +
+      scale_fill_manual(values=scale_smultixcan, breaks=c("gwas", "smultixcan", "enlocalized smultixcan")) + coord_flip() + ylab("loci")
   }
 
   smultixcan_loci_n <- d %>%
@@ -241,7 +245,7 @@ smultixcan_introns <- smultixcan_introns %>%
       gather("method", "loci", -abbreviation) %>%
       mutate(method=factor(method, levels=c("gwas", "enlocalized smultixcan", "smultixcan"))) %>%
       ggplot() +
-      theme_bw(base_size = 10) +
+      theme_bw(base_size = 10) + paper_base_theme_ +
       theme(plot.title = element_text(hjust = 0.5, face="bold",size=rel(1.2)),
             legend.title=element_blank(),
             axis.text.y = element_blank(), axis.title.y = element_blank(),
@@ -267,7 +271,7 @@ smultixcan_introns <- smultixcan_introns %>%
   #############################################################################
   genes_n <- function(d) {
     d %>% mutate(gwas=0) %>% ggplot() +
-      theme_bw() +
+      theme_bw() + paper_base_theme_ +
       theme(plot.title = element_text(face="bold", size=rel(1.2), hjust=0.5),
             legend.title=element_blank(), legend.position = "bottom",
             axis.text.x=element_text(size=rel(1.7)), axis.title.x=element_blank(),

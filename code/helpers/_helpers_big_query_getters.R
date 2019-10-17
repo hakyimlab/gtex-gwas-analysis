@@ -27,6 +27,40 @@ gwas_metadata <- get_gwas_metadata()
 pheno_whitelist_ <- gwas_metadata$phenotype
 pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
 
+
+###############################################################################
+
+get_gene_count_in_sp <- function(sp_tbl = predixcan_en_tbl_eqtl) {
+  query <- "
+SELECT COUNT(DISTINCT gene)
+FROM {sp_tbl$dataset_name}.{sp_tbl$table_name}
+" %>% glue::glue()
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+
+get_selected_gene_count <- function(g_tbl = gencode_all_annotation_tbl) {
+  query <- "
+SELECT COUNT(DISTINCT g.gene_id)
+FROM {g_tbl$dataset_name}.{g_tbl$table_name} as g
+WHERE g.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene')
+" %>% glue::glue()
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+
+get_selected_gene_count_in_sp <- function(g_tbl = gencode_all_annotation_tbl, sp_tbl = predixcan_en_tbl_eqtl) {
+  query <- "
+SELECT COUNT(DISTINCT g.gene_id)
+FROM {g_tbl$dataset_name}.{g_tbl$table_name} as g
+INNER JOIN (
+  SELECT gene
+  FROM {sp_tbl$dataset_name}.{sp_tbl$table_name}
+  GROUP BY gene
+) as sp ON sp.gene = g.gene_id
+WHERE g.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene')
+" %>% glue::glue()
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+
 ###############################################################################
 
 get_bonferroni <- function(c_tbl, pheno_whitelist=pheno_whitelist_){

@@ -5,6 +5,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(UpSetR))
 suppressPackageStartupMessages(library(viridis))
 suppressWarnings(source("code/helpers/_helpers.R"))
+suppressWarnings(source("code/helpers/_plot_style.R"))
 
 SUMMARY <- "data/summaries/mashr_regions.txt"
 
@@ -29,7 +30,9 @@ tempo <- tempo %>%
   mutate(smultixcan_eqtl_enloc = ifelse(smultixcan_eqtl & enloc_eqtl, 1, 0)) %>%
   mutate(smultixcan_sqtl_enloc = ifelse(smultixcan_sqtl & enloc_sqtl, 1, 0))
 
-color_pal <- viridis(3)
+#color_pal <- viridis(3)
+color_pal <-c('splicing' = rgb(200, 90, 40, maxColorValue = 255),
+              'expression' = rgb(42, 155, 204, maxColorValue = 255))
 eqtl_ <- (function(){
   d_ <- ldblockinfo %>% select(region,results,trait) %>% unique %>%
     filter(results %in% c("gwas", "spredixcan_eqtl", "enloc_eqtl")) %>% mutate(flag = 1) %>%
@@ -41,13 +44,13 @@ eqtl_ <- (function(){
 svg(fp_("upset_mashr_spe_expression.svg"))
 upset(eqtl_ %>% as.data.frame(),
       sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
-      main.bar.color = color_pal[1], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+      main.bar.color = color_pal['expression'], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
 dev.off()
 
 png(fp_("SFIG_UPSET_MASHR_SPE_EXPRESSION.png"), 800, 600)
 upset(eqtl_ %>% as.data.frame(),
       sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
-      main.bar.color = color_pal[1], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+      main.bar.color = color_pal['expression'], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
 dev.off()
 
 sqtl_ <- (function(){
@@ -60,11 +63,11 @@ sqtl_ <- (function(){
 svg(fp_("upset_mashr_spe_splicing.svg"))
 upset(sqtl_ %>% as.data.frame(),
       sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
-      main.bar.color = color_pal[2], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+      main.bar.color = color_pal['splicing'], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
 dev.off()
 
 png(fp_("SFIG_UPSET_MASHR_SPE_SPLICING.png"), 800, 600)
 upset(sqtl_ %>% as.data.frame(),
       sets= c("gwas", "spredixcan", "enloc"), keep.order = TRUE, text.scale = 3,
-      main.bar.color = color_pal[2], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
+      main.bar.color = color_pal['splicing'], sets.x.label = "Loci", mainbar.y.label = "Shared Loci", mainbar.y.max = 3000)
 dev.off()
