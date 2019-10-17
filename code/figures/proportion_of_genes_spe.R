@@ -69,10 +69,11 @@ proportion_plot_spe_ <- function(data, enloc_threshold, label, draw_0.05 = FALSE
   palette_[l2_] <- "#23B509"
 
   p_ <- d_ %>% mutate(t = ifelse(enloc == 0.0, l1_, l2_)) %>%
+    mutate(t = factor(t, levels=c(l1_,l2_))) %>%
     ggplot(aes(x=-log10(threshold), y=prop_a, color=t)) +
     theme_bw(base_size = 25) + paper_base_theme_ +
-    theme(legend.position = c(-log10(0.1), 0.6), legend.justification = c("right", "top"), legend.title = element_blank()) +
-    annotate('text',x=-log10(1e-12),y=0.9, label=paste0(n_, ' ', label),hjust=0,size=6)+
+    theme(legend.position = c(1, 0.6), legend.justification = c("right", "top"), legend.title = element_blank()) +
+    annotate('text',x=-log10(1e-20),y=1, label=paste0(n_, ' ', label),hjust=0,size=8)+
     geom_point() + geom_line() +
     xlab(expression(paste(-log[10],'[',italic(P),']',sep=""))) +
     scale_color_manual(values=palette_)

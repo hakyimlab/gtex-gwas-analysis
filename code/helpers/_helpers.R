@@ -112,12 +112,17 @@ load_folder <- function(path, filter_=NULL, tag_=NULL, col_types=NULL) {
   do.call(rbind, r)
 }
 
-read_or_get <- function(path, method) {
-  if (!file.exists(path)) {
+read_or_get_ <- function(path, method, get_anyways = FALSE) {
+  if (!file.exists(path) || get_anyways) {
     d <- method()
     d %>% save_delim(path)
     d
   } else {
     path %>% r_tsv_
   }
+}
+
+read_or_get <- function(path, method) {
+  # If you want o force re-download and re-query, set this to YES
+  read_or_get_(path, method, FALSE)
 }

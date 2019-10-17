@@ -24,6 +24,8 @@ fp_ <- function(p) file.path(FOLDER, p)
 
 thresholds <- c(0, 0.01, 0.05) %>% c(seq(0.1,0.9,0.1)) %>% sort(decreasing=FALSE)
 
+message("acquiring data")
+
 get_data_e_ <- function(e_tbl) {
   e_ <- get_e_count_for_thresholds(e_tbl, thresholds)
   data.frame(threshold = thresholds, n = e_, prop = e_/e_[1])
@@ -60,6 +62,8 @@ proportion_plot_e_sqtl <- function() {
     ylab('proportion of introns')
 }
 
+message("plotting")
+
 (function(){
   p_ <- proportion_plot_e_eqtl()
   save_plot(p_, fp_("proportion_e_genes.png"), 600, 600)
@@ -69,3 +73,4 @@ proportion_plot_e_sqtl <- function() {
 
 })()
 
+message("done")

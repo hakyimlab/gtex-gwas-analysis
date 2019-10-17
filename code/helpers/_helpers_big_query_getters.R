@@ -27,24 +27,52 @@ gwas_metadata <- get_gwas_metadata()
 pheno_whitelist_ <- gwas_metadata$phenotype
 pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
 
+###############################################################################
+
+get_bonferroni <- function(c_tbl, pheno_whitelist=pheno_whitelist_){
+  pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
+  query <- "
+SELECT *
+FROM {c_tbl$dataset_name}.{c_tbl$table_name} as b
+WHERE b.phenotype in {pheno_whitelist}
+" %>% glue::glue()
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
 
 ################################################################################################################################
 
-get_e_count <- function(e_tbl = enloc_tbl_eqtl_eur, threshold = NULL,  pheno_whitelist_=pheno_whitelist_){
-
+get_e_count <- function(e_tbl = enloc_tbl_eqtl_eur, threshold = NULL,  pheno_whitelist_=pheno_whitelist_, restrict_to_g_tbl=NULL){
   pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
 
   query <- "
-SELECT COUNT(DISTINCT molecular_qtl_trait)
+SELECT COUNT(DISTINCT e.molecular_qtl_trait)
 FROM {e_tbl$dataset_name}.{e_tbl$table_name} as e
-WHERE e.phenotype in {pheno_whitelist}
 " %>% glue::glue()
+
+  if (!is.null(restrict_to_g_tbl)) {
+    query <- glue::glue(query,"
+INNER JOIN
+  {restrict_to_g_tbl$dataset_name}.{restrict_to_g_tbl$table_name} as g
+ON
+  g.gene_id = e.molecular_qtl_trait
+")
+  }
+
+  query <- query %>% glue::glue("
+WHERE e.phenotype in {pheno_whitelist}")
+
+  if (!is.null(restrict_to_g_tbl)) {
+    query <- query %>% glue::glue(" AND
+g.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene')"
+    )
+  }
 
   if (!is.null(threshold)) {
     if (threshold < 0) stop("need non-negative rcp threshold")
     if (threshold > 1) stop("need rcp threshold below one")
     if (threshold > 0) {
-      query <- query %>% glue::glue(" AND e.locus_rcp > {threshold}")
+      query <- query %>% glue::glue(" AND
+e.locus_rcp > {threshold}")
     }
   }
 
@@ -52,12 +80,50 @@ WHERE e.phenotype in {pheno_whitelist}
 }
 
 
-get_e_count_for_thresholds <- function(e_tbl, thresholds, e_threshold=NULL, pheno_whitelist=pheno_whitelist_) {
-  spg <- list()
+get_e_count_for_thresholds <- function(e_tbl, thresholds, e_threshold=NULL, pheno_whitelist=pheno_whitelist_, restrict_to_g_tbl=NULL) {
+  d <- list()
   for (i in 1:length(thresholds)) {
-    spg[[i]] <- get_e_count(e_tbl=e_tbl, threshold=thresholds[i], pheno_whitelist=pheno_whitelist)
+    d[[i]] <- get_e_count(e_tbl=e_tbl, threshold=thresholds[i], pheno_whitelist=pheno_whitelist, restrict_to_g_tbl=restrict_to_g_tbl)
   }
-  unlist(spg)
+  unlist(d)
+}
+
+################################################################################################################################
+
+get_sp_count <- function(g_tbl, sp_tbl, threshold = NULL,  pheno_whitelist_=pheno_whitelist_){
+  pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
+
+  query <- "
+SELECT COUNT(DISTINCT g.gene_id)
+FROM
+  {g_tbl$dataset_name}.{g_tbl$table_name} as g
+INNER JOIN
+  {sp_tbl$dataset_name}.{sp_tbl$table_name} as sp
+ON
+  g.gene_id = sp.gene
+WHERE
+  g.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene') AND
+  sp.phenotype in {pheno_whitelist}
+" %>% glue::glue()
+
+  if (!is.null(threshold)) {
+    if (threshold < 0) stop("need non-negative significance threshold")
+    if (threshold > 1) stop("need significance threshold below one")
+    if (threshold < 1) {
+      query <- query %>% glue::glue(" AND sp.pvalue < {threshold}")
+    }
+  }
+
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf) %>% as.integer
+}
+
+
+get_sp_count_for_thresholds <- function(g_tbl, sp_tbl, thresholds, pheno_whitelist=pheno_whitelist_) {
+  d <- list()
+  for (i in 1:length(thresholds)) {
+    d[[i]] <- get_sp_count(g_tbl=g_tbl, sp_tbl=sp_tbl, threshold=thresholds[i], pheno_whitelist=pheno_whitelist)
+  }
+  unlist(d)
 }
 
 ###############################################################################
@@ -108,16 +174,77 @@ get_spe_count_for_thresholds <- function(sp_tbl, e_tbl, thresholds, e_threshold=
   unlist(spg)
 }
 
+
 ###############################################################################
 
-get_bonferroni <- function(c_tbl, pheno_whitelist=pheno_whitelist_){
-  pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
+get_count_genes_with_sp_intron <- function(g_tbl, igm_tbl, sp_tbl, threshold = NULL, pheno_whitelist=pheno_whitelist_) {
+  pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist)
   query <- "
-SELECT *
-FROM {c_tbl$dataset_name}.{c_tbl$table_name} as b
-WHERE b.phenotype in {pheno_whitelist}
+SELECT COUNT(DISTINCT g.gene_id)
+FROM {g_tbl$dataset_name}.{g_tbl$table_name} as g
+INNER JOIN {igm_tbl$dataset_name}.{igm_tbl$table_name} as igm
+  ON g.gene_id = igm.gene_id
+INNER JOIN {sp_tbl$dataset_name}.{sp_tbl$table_name} as sp
+  ON sp.gene = igm.intron_id
+WHERE
+  g.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene') AND
+  sp.phenotype in {pheno_whitelist}
 " %>% glue::glue()
- query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+
+  if (!is.null(threshold)) {
+    if (threshold < 0) stop("need non-negative significance threshold")
+    if (threshold > 1) stop("need significance threshold below one")
+    if (threshold < 1) {
+      query <- query %>% glue::glue(" AND
+sp.pvalue < {threshold}")
+    }
+  }
+
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+
 }
 
+get_count_genes_with_sp_intron_for_thresholds <- function(g_tbl, igm_tbl, sp_tbl, thresholds, pheno_whitelist=pheno_whitelist_) {
+  d <- list()
+  for (i in 1:length(thresholds)) {
+    d[[i]] <- get_count_genes_with_sp_intron(g_tbl, igm_tbl, sp_tbl, threshold=thresholds[i], pheno_whitelist=pheno_whitelist)
+  }
+  unlist(d)
+}
 
+###############################################################################
+
+get_count_genes_with_e_intron <- function(g_tbl, igm_tbl, e_tbl, threshold = NULL, pheno_whitelist=pheno_whitelist_) {
+  pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist)
+  query <- "
+SELECT COUNT(DISTINCT g.gene_id)
+FROM {g_tbl$dataset_name}.{g_tbl$table_name} as g
+INNER JOIN {igm_tbl$dataset_name}.{igm_tbl$table_name} as igm
+  ON g.gene_id = igm.gene_id
+INNER JOIN {e_tbl$dataset_name}.{e_tbl$table_name} as e
+  ON e.molecular_qtl_trait = igm.intron_id
+WHERE
+  g.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene') AND
+  e.phenotype in {pheno_whitelist}
+" %>% glue::glue()
+
+  if (!is.null(threshold)) {
+    if (threshold < 0) stop("need non-negative significance threshold")
+    if (threshold > 1) stop("need significance threshold below one")
+    if (threshold > 0) {
+      query <- query %>% glue::glue(" AND
+e.locus_rcp > {threshold}")
+    }
+  }
+
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+
+}
+
+get_count_genes_with_e_intron_for_thresholds <- function(g_tbl, igm_tbl, e_tbl, thresholds, pheno_whitelist=pheno_whitelist_) {
+  d <- list()
+  for (i in 1:length(thresholds)) {
+    d[[i]] <- get_count_genes_with_e_intron(g_tbl, igm_tbl, e_tbl, threshold=thresholds[i], pheno_whitelist=pheno_whitelist)
+  }
+  unlist(d)
+}
