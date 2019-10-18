@@ -1,4 +1,4 @@
-threshold	n	prop	type
+enloc_threshold	n	prop	type
 0	19117	0.797771564495264	from_intron
 0.01	9503	0.396569711638776	from_intron
 0.05	5929	0.247423110628886	from_intron

@@ -11,7 +11,7 @@ suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 options(gargle_oauth_email = TRUE)
 suppressWarnings(source("code/helpers/_helpers_big_query_getters.R"))
 
-DATA<-"data/summaries"
+DATA<-"data/summaries/proportions"
 dir.create(DATA, showWarnings = FALSE, recursive=TRUE)
 dp_ <- function(p) file.path(DATA, p)
 
@@ -26,7 +26,7 @@ thresholds <- c(0.05, 0.05/49) %>% c(10^(-1*(0:30))) %>% sort(decreasing=TRUE)
 
 message("acquiring data")
 
-data_gti_sp <- read_or_get(dp_("genes_with_sp_introns_proportions.txt"), function(){
+data_gti_sp <- read_or_get(dp_("genes_with_sp_introns.txt"), function(){
   gt_ <- get_count_genes_with_sp_intron_for_thresholds(gencode_all_annotation_tbl,  intron_gene_mapping_tbl, predixcan_mashr_tbl_sqtl, thresholds)
   g_ <- get_sp_count_for_thresholds(gencode_all_annotation_tbl, predixcan_mashr_tbl_eqtl,  thresholds)
   data.frame(threshold = thresholds, n = gt_, prop = gt_/g_[1], type="from_intron") %>%

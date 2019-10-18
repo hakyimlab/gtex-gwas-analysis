@@ -11,7 +11,7 @@ suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 options(gargle_oauth_email = TRUE)
 suppressWarnings(source("code/helpers/_helpers_big_query_getters.R"))
 
-DATA<-"data/summaries"
+DATA<-"data/summaries/proportions"
 dir.create(DATA, showWarnings = FALSE, recursive=TRUE)
 dp_ <- function(p) file.path(DATA, p)
 
@@ -31,11 +31,11 @@ get_data_e_ <- function(e_tbl) {
   data.frame(threshold = thresholds, n = e_, prop = e_/e_[1])
 }
 
-data_e_eqtl <- read_or_get(dp_("enloc_proportions_eqtl.txt"), function(){
+data_e_eqtl <- read_or_get(dp_("enloc_eqtl.txt"), function(){
   get_data_e_(enloc_tbl_eqtl_eur)
 })
 
-data_e_sqtl <- read_or_get(dp_("enloc_proportions_sqtl.txt"), function(){
+data_e_sqtl <- read_or_get(dp_("enloc_sqtl.txt"), function(){
   get_data_e_(enloc_tbl_sqtl_eur)
 })
 

@@ -11,7 +11,7 @@ suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 options(gargle_oauth_email = TRUE)
 suppressWarnings(source("code/helpers/_helpers_big_query_getters.R"))
 
-DATA<-"data/summaries"
+DATA<-"data/summaries/proportions"
 dir.create(DATA, showWarnings = FALSE, recursive=TRUE)
 dp_ <- function(p) file.path(DATA, p)
 
@@ -25,7 +25,7 @@ fp_ <- function(p) file.path(FOLDER, p)
 thresholds <- c(0, 0.01, 0.05) %>% c(seq(0.1,0.9,0.1)) %>% sort(decreasing=FALSE)
 
 message("acquiring data")
-data_gti_e <- read_or_get(dp_("genes_with_enlocalized_introns_proportions.txt"), function(){
+data_gti_e <- read_or_get(dp_("genes_with_enlocalized_introns.txt"), function(){
   gt_ <- get_count_genes_with_e_intron_for_thresholds(gencode_all_annotation_tbl,  intron_gene_mapping_tbl, enloc_tbl_sqtl_eur, thresholds)
   g_ <- get_e_count_for_thresholds(enloc_tbl_eqtl_eur,  thresholds, restrict_to_g_tbl=gencode_all_annotation_tbl)
   data.frame(threshold = thresholds, n = gt_, prop = gt_/g_[1], type="from_intron") %>%

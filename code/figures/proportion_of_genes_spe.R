@@ -11,7 +11,7 @@ suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
 options(gargle_oauth_email = TRUE)
 suppressWarnings(source("code/helpers/_helpers_big_query_getters.R"))
 
-DATA<-"data/summaries"
+DATA<-"data/summaries/proportions"
 dir.create(DATA, showWarnings = FALSE, recursive=TRUE)
 dp_ <- function(p) file.path(DATA, p)
 

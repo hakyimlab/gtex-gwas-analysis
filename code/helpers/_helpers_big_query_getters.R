@@ -21,12 +21,31 @@ get_introns <- function(){
   query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 }
 
+get_gtex_metadata <- function(){
+  query <- glue::glue("SELECT tissue,
+v6_all, v6_eur, v7_all, v7_eur, v8_all, v8_eur,
+tissue_name  as name, tissue_abbrv as abbreviation, tissue_color_hex as color
+FROM {gtex_tissue_metadata_tbl$dataset_name}.{gtex_tissue_metadata_tbl$table_name}")
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
+
 ###############################################################################
 
 gwas_metadata <- get_gwas_metadata()
 pheno_whitelist_ <- gwas_metadata$phenotype
 pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
 
+
+###############################################################################
+
+get_models_count <- function(e_tbl) {
+  query <- "
+SELECT COUNT(DISTINCT gene) as models, tissue
+FROM {e_tbl$dataset_name}.{e_tbl$table_name}
+GROUP BY tissue
+" %>% glue::glue()
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}
 
 ###############################################################################
 
@@ -279,6 +298,54 @@ get_count_genes_with_e_intron_for_thresholds <- function(g_tbl, igm_tbl, e_tbl, 
   d <- list()
   for (i in 1:length(thresholds)) {
     d[[i]] <- get_count_genes_with_e_intron(g_tbl, igm_tbl, e_tbl, threshold=thresholds[i], pheno_whitelist=pheno_whitelist)
+  }
+  unlist(d)
+}
+
+###############################################################################
+
+get_count_genes_with_spe_intron <- function(g_tbl, igm_tbl, sp_tbl, e_tbl, s_threshold = NULL, c_threshold, pheno_whitelist=pheno_whitelist_) {
+  pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist)
+  query <- "
+SELECT COUNT(DISTINCT g.gene_id)
+FROM {g_tbl$dataset_name}.{g_tbl$table_name} as g
+INNER JOIN {igm_tbl$dataset_name}.{igm_tbl$table_name} as igm
+  ON g.gene_id = igm.gene_id
+INNER JOIN {sp_tbl$dataset_name}.{sp_tbl$table_name} as sp
+  ON sp.gene = igm.intron_id
+INNER JOIN {e_tbl$dataset_name}.{e_tbl$table_name} as e
+  ON sp.gene = e.molecular_qtl_trait AND sp.phenotype = e.phenotype AND sp.tissue = e.tissue
+WHERE
+  g.gene_type  in ('lincRNA', 'protein_coding', 'pseudogene') AND
+  sp.phenotype in {pheno_whitelist}
+" %>% glue::glue()
+
+  if (!is.null(s_threshold)) {
+    if (s_threshold < 0) stop("need non-negative significance threshold")
+    if (s_threshold > 1) stop("need significance threshold below one")
+    if (s_threshold < 1) {
+      query <- query %>% glue::glue(" AND
+sp.pvalue < {s_threshold}")
+    }
+  }
+
+  if (!is.null(c_threshold)) {
+    if (c_threshold < 0) stop("need non-negative colocalization threshold")
+    if (c_threshold > 1) stop("need colocalization threshold below one")
+    if (c_threshold < 1) {
+      query <- query %>% glue::glue(" AND
+e.locus_rcp > {c_threshold}")
+    }
+  }
+
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+
+}
+
+get_count_genes_with_spe_intron_for_thresholds <- function(g_tbl, igm_tbl, sp_tbl, e_tbl, s_thresholds, c_threshold, pheno_whitelist=pheno_whitelist_) {
+  d <- list()
+  for (i in 1:length(s_thresholds)) {
+    d[[i]] <- get_count_genes_with_spe_intron(g_tbl, igm_tbl, sp_tbl, e_tbl, s_threshold=s_thresholds[i], c_threshold= c_threshold, pheno_whitelist=pheno_whitelist)
   }
   unlist(d)
 }

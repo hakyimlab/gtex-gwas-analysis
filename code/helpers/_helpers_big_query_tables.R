@@ -20,6 +20,10 @@ gwas_tbl_count <-                   tableInfo("GWAS_all", "gwas_results_count")
 gwas_formatted_tbl <-               tableInfo("GWAS_all", "formatted_gwas")
 gwas_imputation_verification_tbl <- tableInfo("GWAS_all", "gwas_imputation_verification")
 
+#elastic net predixcan GTEX v7
+v7_prediction_en_models_tbl_eqtl <-       tableInfo("GTEx_V7_HapMap_2017_11_29", "weights")
+v7_prediction_en_models_extra_tbl_eqtl <- tableInfo("GTEx_V7_HapMap_2017_11_29", "extra")
+
 #elastic net predixcan
 prediction_en_models_tbl_eqtl <-       tableInfo("GTEx_V8_ElasticNet_EUR_v1", "weights_eqtl")
 prediction_en_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_ElasticNet_EUR_v1", "extra_eqtl")
