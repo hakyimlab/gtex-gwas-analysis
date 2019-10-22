@@ -144,7 +144,7 @@ proportion_plot_spe_(data_spe, "from_gene", b_eqtl)
 })()
 
 message("colocalized prop eqtl: ", data_gti_e %>% filter(type == "from_gene", enloc_threshold == 0.5) %>% .$prop)
-message("colocalized prop sqtl: ", data_gti_e %>% filter(type == "from_intron", enloc_threshold == 0.5) %>% .$
+message("colocalized prop sqtl: ", data_gti_e %>% filter(type == "from_intron", enloc_threshold == 0.5) %>% .$prop)
 
 d_ <- data_spe %>% filter(type == "from_gene", enloc_threshold == 0)
 message("gene e0 ", approx(d_$threshold, d_$prop_a, b_eqtl)$y)

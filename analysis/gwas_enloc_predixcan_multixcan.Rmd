@@ -24,6 +24,8 @@ SUMMARY <- "data/summaries/mashr_regions.txt"
 
 gwas_metadata <- "data/gwas_metadata.txt" %>% read_tsv
 
+gwas_metadata <- "data/gwas_metadata.txt" %>% read_tsv
+
 RESULT<-"output/g"
 dir.create(RESULT, showWarnings = FALSE, recursive=TRUE)
 fp_ <- function(p) file.path(RESULT, p)
@@ -157,6 +159,7 @@ summary <- apply(tempo %>% select(-region,-trait),2,sum)
 })()
 ```
 
+<<<<<<< Updated upstream
 ```{r upset_2, echo=FALSE, cache=FALSE, warning=FALSE}
 (function(){
   color_pal <- viridis(3)
@@ -207,6 +210,12 @@ Proportion of loci with associated/colocalized genes/introns
 
 ```{r proportion_of_loci, echo=FALSE, cache=FALSE, warning=FALSE}
 (function(){
+=======
+
+## Proportion of GWAS loci
+
+```{r proportion_of_loci, echo=FALSE, cache=FALSE, warning=FALSE}
+>>>>>>> Stashed changes
 d_ <- tempo%>% group_by(trait) %>%
   summarise(n=n(), 
             spredixcan_eqtl=sum(spredixcan_eqtl), spredixcan_sqtl=sum(spredixcan_sqtl),
@@ -218,6 +227,7 @@ d_ <- tempo%>% group_by(trait) %>%
   mutate(method = ifelse(grepl("^spredixcan_(\\w)qtl$", method_), "S-PrediXcan",
                          ifelse(grepl("^enloc_(\\w)qtl$", method_),"ENLOC", "S-PrediXcan\n&\nENLOC")))
 
+<<<<<<< Updated upstream
 d2_ <- tempo %>% group_by(region) %>%
   summarise(spredixcan_eqtl=sum(spredixcan_eqtl), spredixcan_sqtl=sum(spredixcan_sqtl),
             enloc_eqtl=sum(enloc_eqtl), enloc_sqtl=sum(enloc_sqtl),
@@ -233,11 +243,16 @@ d2_ <- tempo %>% group_by(region) %>%
 #    theme(legend.position="bottom") +
 p_ <- ggplot(d_) + theme_bw(base_size=18) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+=======
+#    theme(legend.position="bottom") +
+p_ <- ggplot(d_) + theme_bw(base_size=18) +
+>>>>>>> Stashed changes
   geom_boxplot(aes(method, f, fill=data)) +
   ggtitle("Proportion of GWAS loci\nwith colocalized/associated genes or introns")  +
   ylab("Proportion of loci")
 save_plot(p_,fp_("SUMMARY_PREDIXCAN_ENLOC.png"), 500, 600)
 
+<<<<<<< Updated upstream
 t_ <- d_ %>% group_by(method, data) %>% summarise(f=median(f))
 t2_ <- d2_ %>% group_by(method, data) %>% summarise(n=sum(count)) %>%
   mutate(p = n/1167)
@@ -257,3 +272,7 @@ d_ %>% filter(!grepl("smultixcan",method_)) %>%
                          ifelse(grepl("^enloc_(\\w)qtl$", method_),"ENLOC", "S-PrediXcan\n&\nENLOC")))) %>%
   select(method, data, count)
 ```
+=======
+```
+
+>>>>>>> Stashed changes
