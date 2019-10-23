@@ -1,3 +1,20 @@
+# Resources shared by manuscript 
+["Widespread dose-dependent effects of RNA expression and splicing on complex diseases and traits"](https://doi.org/10.1101/814350)
+
+
+currently being uploaded to Zenodo
+
+- colocalization results
+- predicted gene association results
+- fine-mapping 
+
+
+check soon...
+
+
+
+
+
 # gtex-gwas-analysis
 
 In order to run these scripts, the following R packages are required:
