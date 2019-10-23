@@ -1,5 +1,5 @@
 # Resources shared by manuscript 
-["Widespread dose-dependent effects of RNA expression and splicing on complex diseases and traits"](https://doi.org/10.1101/814350)
+["Widespread dose-dependent effects of RNA expression and splicing on complex diseases and traits"](https://doi.org/10.1101/814350) data and resources
 
 
 currently being uploaded to Zenodo
