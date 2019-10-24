@@ -29,10 +29,19 @@ Save command-line scripts and shared R code here.
 `code/figures/mediation_analysis.R` yields two figures of mediation analysis: 1) correlation of |GWAS effect size| and |QTL effect size| (Fig2B); 2) gene-level effects estimated from mixed effect model (Fig2C). 
 
 `code/figures/scatter_plot_script_whole_blood_rcp_0.1.R` yields two figures on plotting beta_gene's between primary and secondary QTL (Fig2E, SFig11)
-  
+
+`code/figures/PR-ROC-CURVES.R` yields figures, tables on silver standard analysis (ROC and PR curves, etc)
+
+`code/figures/upset_top_gene_per_locus.R` yields upset figures for top gene per locus in silver standard analysis   
+
 * Fig2B: `output/SFIG-COR-DELTA-GAMMA.png`
 * Fig2C: `output/FIG-DOSE-RESPONSE-CONCORDANCE-B.png`
 * Fig2E: `output/scatter_plot_script_whole_blood_rcp_0.1.png` 
 * SFig11: `output/scatter_plot_script_whole_blood_rcp_0.1_by_effect_size.png`
+* Fig3C/D: `output/ROC-*-OMIM.png`
+* SFig25: `output/PR-*-OMIM.png`
+* SFig26: `output/PR-*-EWAS.png`
+* SFig24: `output/top_per_locus_upset_*.png`
+* STab8: `output/AUC-and-ENRICH.tsv`
 
  
