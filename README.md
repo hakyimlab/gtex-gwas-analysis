@@ -60,9 +60,8 @@ Companion paper material:
 * `code/figures/gwas_imputation_deflation.R` figure showing the deflation of GWAS' p-value distribution after imputation for 27 traits 
 (Supplementary Figure S3)
 * `code/figures/gwas_imputation_quality.R` scatter plot of original vs imputed GWAS zscores (Supplementary Figure S2)
-* `code/figures/FIG-DOSE-RESPONSE-CONCORDANCE-C.R` scatter plot of beta prim vs. sec for Whole Blood, Europeans, rcp>0.1 (Figure 3-C)
-* `code/figures/SFIG-CONCORDANCE-MEDIATING-EFFECTS-RANK-BY-EFFECT-SIZE.R` scatter plot, residual plot, and p-value (Supplementary Figure S13)
 * `code/figures/predixcan_enloc_eqtl_sqtl.R` plots summarising loci detection per emthod (Supplementary Figure S12, S13, S14, S15)
+* For more details about figure please go to `code/`
 
 Markdowns:
 
@@ -76,3 +75,9 @@ This overlaps a bity with the previous markdown. Also Figure 5-e
 A [workflowr][] project.
 
 [workflowr]: https://github.com/jdblischak/workflowr
+
+
+# Deprecated
+
+* `code/figures/FIG-DOSE-RESPONSE-CONCORDANCE-C.R` scatter plot of beta prim vs. sec for Whole Blood, Europeans, rcp>0.1 (Figure 3-C)
+* `code/figures/SFIG-CONCORDANCE-MEDIATING-EFFECTS-RANK-BY-EFFECT-SIZE.R` scatter plot, residual plot, and p-value (Supplementary Figure S13)

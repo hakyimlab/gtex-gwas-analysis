@@ -34,6 +34,12 @@ Save command-line scripts and shared R code here.
 
 `code/figures/upset_top_gene_per_locus.R` yields upset figures for top gene per locus in silver standard analysis   
 
+`code/figures/Prop-Signal-in-GWAS-PrediXcan-AND-ENLOC.R` yields figure Fig3E
+
+`code/figures/causal_tissue.R` yields enrichment of tissue-sharing pattern among PrediXcan z-scores 
+
+`code/figures/eQTL_sQTL_fraction.R` yields fraction of e/sQTL among all test variants 
+
 * Fig2B: `output/SFIG-COR-DELTA-GAMMA.png`
 * Fig2C: `output/FIG-DOSE-RESPONSE-CONCORDANCE-B.png`
 * Fig2E: `output/scatter_plot_script_whole_blood_rcp_0.1.png` 
@@ -43,5 +49,8 @@ Save command-line scripts and shared R code here.
 * SFig26: `output/PR-*-EWAS.png`
 * SFig24: `output/top_per_locus_upset_*.png`
 * STab8: `output/AUC-and-ENRICH.tsv`
+* Fig3E: `output/prop_gwas_loci_coloc_assoc.png`
+* Fig4: `output/causal_tissue_complete-mashr-EUR.png`
+* SFig6: `output/*QTL_fraction.png`
 
  
