@@ -1,28 +1,36 @@
-# Resources shared by manuscript 
-["Widespread dose-dependent effects of RNA expression and splicing on complex diseases and traits"](https://doi.org/10.1101/814350) data and resources
+# GTEx v8 GWAs analysis
+
+Resources and analysis shared by ["Widespread dose-dependent effects of RNA expression and splicing on complex diseases and traits"](https://doi.org/10.1101/814350).
+
+# Data
+
+The results underlying these analyses can be found in **zenodo.org**:
+
+* [Finemapping on eQTL and sQTL](https://zenodo.org/record/3517189#.XbMe6NF7m90)
+* [GWAS and sQTL/sQTL integration](https://zenodo.org/record/3517189#.XbMgNdF7m90). This zenodo package contains the following:
+    * [coloc](https://github.com/chr1swallace/coloc) results on eQTL, using priors computed from [enloc](https://github.com/xqwen/integrative) enrichment
+    * [enloc](https://github.com/xqwen/integrative) results on eQTL/sQTL, using only individuals of European Ancestry and variants with MAF>0.01.
+GWAS regions from [ldetect](https://bitbucket.org/nygcresearch/ldetect/src/master/), lifted over to hg38
+    * expression and splicing prediction models using [MASHR](https://github.com/stephenslab/mashr) effect sizes
+    * predicted expression and splicing associations (S-MultiXcan and S-Predixcan, [here](https://github.com/hakyimlab/MetaXcan))
+    * [SMR](https://cnsgenomics.com/software/smr/#Overview) analysis
 
 
-currently being uploaded to Zenodo
+Currently being uploaded to Zenodo:
 
-- colocalization results
-- predicted gene association results
-- fine-mapping 
+- Elastic Net splicing/expression prediction models
 
+check again soon for updates!
 
-check soon...
+# Reproducible analysis for manuscript
 
+The code for the manuscript's analyses is available here as R scripts with the following dependencies:
 
-
-
-
-# gtex-gwas-analysis
-
-In order to run these scripts, the following R packages are required:
 - bigrquery
 - tidyverse
 - upsetR
 
-To use BigQuery, you need to install [Google Cloud SDK](https://cloud.google.com/sdk/) and have read access to the required Google Cloud tables.
+To use BigQuery, it is helpful to install [Google Cloud SDK](https://cloud.google.com/sdk/) and have read access to the required Google Cloud tables.
 
 # GTEx GWAS subgroup paper
 
@@ -55,21 +63,25 @@ Main Paper material:
   
 Companion paper material:
 
-* `code/paper_material/tables.R` Generates latex tables to be included in the paper 
-(at the moment, only one table: Supplementary Table 1: the list of 87 selected traits)
+* `code/paper_material/tables.R` Generates latex tables to be included in the paper. At the moment: 
+    * Supplementary Table S1: the list of 87 selected traits
+    * Supplementary Table S2: expression and splicing models tally
 * `code/figures/gwas_imputation_deflation.R` figure showing the deflation of GWAS' p-value distribution after imputation for 27 traits 
-(Supplementary Figure S3)
-* `code/figures/gwas_imputation_quality.R` scatter plot of original vs imputed GWAS zscores (Supplementary Figure S2)
-* `code/figures/predixcan_enloc_eqtl_sqtl.R` plots summarising loci detection per emthod (Supplementary Figure S12, S13, S14, S15)
+(Supplementary Figure S4)
+* `code/figures/gwas_imputation_quality.R` scatter plot of original vs imputed GWAS zscores (Supplementary Figure S3)
+* `code/figures/predixcan_enloc_eqtl_sqtl.R` plots summarising loci detection per emthod (Supplementary Figure S17, S18, S19, S20)
+* `code/figures/models_gain.R` plots a comparison of numbers of models between Elastic Net models and MASHR-based models
+* `code/figures/proportions_bundle.R` plots the proportion of enloc and s-predixcan detections (Supplementary Figure S14-A,B,C,D)
+* `code/figures/upset_mashr_gwas_enloc_spredixcan.R` generates upset plots underlying Supplementary Figure S15 (S-PrediXcan/enloc loci with MASHR models)
+* `code/figures/upset_mashr_gwas_enloc_spredixcan.R` generates upset plots underlying Supplementary Figure S16 (S-PrediXcan/enloc loci with Elastic Net models)
 * For more details about figure please go to `code/`
 
 Markdowns:
 
 * `analysis/miscellaneous_statistics_2.Rmd`: This R markdown generates miscellaneous statistics and summaries from other methods results. 
-i.e. This computes summaries from S-PrediXcan results, enloc results; numbers of genomic loci with detections, etc.
+i.e. This tallies summaries from S-PrediXcan results, enloc results; numbers of genomic loci with detections, etc.
 * `analysis/gwas_enloc_predixcan_multixcan.Rmd`: analyzes GWAS, S-PrediXcan, S-MultiXcan, enloc results and builds upset plots.
 This overlaps a bity with the previous markdown. Also Figure 5-e
-
 
 
 A [workflowr][] project.
