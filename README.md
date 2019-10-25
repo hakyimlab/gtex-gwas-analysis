@@ -1,4 +1,4 @@
-# GTEx v8 GWAs analysis
+# GTEx v8 GWAS analysis
 
 Resources and analysis shared by ["Widespread dose-dependent effects of RNA expression and splicing on complex diseases and traits"](https://doi.org/10.1101/814350).
 
