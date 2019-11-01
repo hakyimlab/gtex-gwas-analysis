@@ -85,6 +85,9 @@ A [workflowr][] project.
 
 [workflowr]: https://github.com/jdblischak/workflowr
 
+# Internal spreadsheet with GWAS-methods
+[gtex-gwas-paper-methods-spreadsheet](https://docs.google.com/spreadsheets/d/1l7cFTZdl213jMkIjhsFjHGOWBb_1oPHH51cUkAuMZvQ/edit?usp=sharing)
+
 
 # Deprecated
 
