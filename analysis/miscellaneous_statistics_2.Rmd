@@ -17,6 +17,7 @@ suppressPackageStartupMessages(library(bigrquery))
 suppressWarnings(source("code/helpers/_helpers.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query.R"))
 suppressWarnings(source("code/helpers/_helpers_big_query_tables.R"))
+suppressWarnings(source("code/helpers/_helpers_big_query_getters.R"))
 
 options(gargle_oauth_email = TRUE)
 
@@ -26,13 +27,9 @@ fp_ <- function(p) file.path(OUTPUT, p)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-gwas_metadata <- (function(){
-  query <- glue::glue("SELECT Tag as phenotype, Deflation as deflation, new_abbreviation as abbreviation, Category as category
-                       FROM {gwas_metadata_tbl$dataset_name}.{gwas_metadata_tbl$table_name}
-                       WHERE Deflation=0")
-  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
-})()
-pheno_whitelist <- sprintf("(%s)", toString(sprintf("'%s'", gwas_metadata$phenotype)))
+gwas_metadata <- get_gwas_metadata()
+pheno_whitelist_ <- gwas_metadata$phenotype
+pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist_)
 
 gencode <- (function(){
   query <- glue::glue("SELECT *
@@ -287,20 +284,7 @@ FROM (
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-n_spredixcan_significant_genes_eqtl <- (function(){
-  query <- "
-SELECT COUNT(*)
-FROM (
-  SELECT DISTINCT gene
-  FROM ( SELECT px.gene
-         FROM {predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name} as px
-         JOIN {predixcan_mashr_tbl_count_eqtl$dataset_name}.{predixcan_mashr_tbl_count_eqtl$table_name} as px_count
-         ON px_count.phenotype=px.phenotype
-         WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
-  )
-)" %>% glue::glue()
- query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
-})() %>% as.integer
+n_spredixcan_significant_genes_eqtl <- get_spredixcan_significant_genes(predixcan_mashr_tbl_eqtl, predixcan_mashr_tbl_count_eqtl)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -373,6 +357,10 @@ WHERE pvalue is not NULL and px.phenotype in {pheno_whitelist}
 " %>% glue::glue()
  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
 })() %>% as.integer
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+spredixcan_genes_by_trait <- get_spredixcan_significant_genes_by_trait(predixcan_mashr_tbl_eqtl, predixcan_mashr_tbl_count_eqtl)
 ```
 
 We obtained:

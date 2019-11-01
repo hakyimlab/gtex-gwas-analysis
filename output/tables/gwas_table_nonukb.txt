@@ -1,0 +1,43 @@
+Category	Phenotype	Abbreviation	Sample Size
+Psychiatric-neurologic	CNCR Insomnia all	INSOMN	113006
+Psychiatric-neurologic	IGAP Alzheimer	AD	54162
+Psychiatric-neurologic	Jones et al 2016 Chronotype	CHRONO	128266
+Psychiatric-neurologic	Jones et al 2016 SleepDuration	SLEEP	128266
+Psychiatric-neurologic	PGC ADHD EUR 2017	ADHD	53293
+Psychiatric-neurologic	pgc.scz2	SCZ	150064
+Psychiatric-neurologic	SSGAC Depressive Symptoms	DEPR	180866
+Psychiatric-neurologic	SSGAC Education Years Pooled	EDU	293723
+Anthropometric	EGG BW3 EUR	BW	143677
+Anthropometric	ENIGMA Intracraneal Volume	ICV	30717
+Anthropometric	GEFOS Forearm	BMD	49988
+Anthropometric	GIANT HEIGHT	HEIGHT	253288
+Cardiometabolic	CARDIoGRAM C4D CAD ADDITIVE	CAD	184305
+Cardiometabolic	MAGIC FastingGlucose	FG	46186
+Cardiometabolic	MAGIC ln FastingInsulin	INSUL	38238
+Cardiometabolic	MAGNETIC CH2.DB.ratio	CH2	24154
+Cardiometabolic	MAGNETIC HDL.C	HDLC	19270
+Cardiometabolic	MAGNETIC IDL.TG	IDL	21559
+Cardiometabolic	MAGNETIC LDL.C	LDLC	13527
+Blood	Astle et al 2016 Eosinophil counts	EC	173480
+Blood	Astle et al 2016 Granulocyte count	GC	173480
+Blood	Astle et al 2016 High light scatter reticulocyte count	HRET	173480
+Blood	Astle et al 2016 Lymphocyte counts	LC	173480
+Blood	Astle et al 2016 Monocyte count	MC	173480
+Blood	Astle et al 2016 Myeloid white cell count	MWBC	173480
+Blood	Astle et al 2016 Neutrophil count	NC	173480
+Blood	Astle et al 2016 Platelet count	PLT	173480
+Blood	Astle et al 2016 Red blood cell count	RBC	173480
+Blood	Astle et al 2016 Reticulocyte count	RET	173480
+Blood	Astle et al 2016 Sum basophil neutrophil counts	BNC	173480
+Blood	Astle et al 2016 Sum eosinophil basophil counts	EBC	173480
+Blood	Astle et al 2016 Sum neutrophil eosinophil counts	NEC	173480
+Blood	Astle et al 2016 White blood cell count	WBC	173480
+Cancer	BCAC ER negative BreastCancer EUR	ERNBC	120000
+Cancer	BCAC ER positive BreastCancer EUR	ERPBC	120000
+Cancer	BCAC Overall BreastCancer EUR	BC	120000
+Allergy	EAGLE Eczema	ECZ	116863
+Immune	IBD.EUR.Crohns Disease	CD	20833
+Immune	IBD.EUR.Inflammatory Bowel Disease	IBD	34652
+Immune	IBD.EUR.Ulcerative Colitis	UC	27432
+Immune	IMMUNOBASE Systemic lupus erythematosus hg19	SLE	23210
+Immune	RA OKADA TRANS ETHNIC	RA	80799

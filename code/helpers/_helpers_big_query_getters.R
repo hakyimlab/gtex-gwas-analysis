@@ -349,3 +349,33 @@ get_count_genes_with_spe_intron_for_thresholds <- function(g_tbl, igm_tbl, sp_tb
   }
   unlist(d)
 }
+
+#######################################################################################
+
+get_spredixcan_significant_genes <- function(sp_tbl, sp_count_tbl, pheno_whitelist=pheno_whitelist_) {
+    pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist)
+  query <- "
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT gene
+  FROM ( SELECT px.gene
+         FROM {sp_tbl$dataset_name}.{sp_tbl$table_name} as px
+         JOIN {sp_count_tbl$dataset_name}.{sp_count_tbl$table_name} as px_count
+         ON px_count.phenotype=px.phenotype
+         WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
+  )
+)" %>% glue::glue()
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf) %>% as.integer
+}
+
+get_spredixcan_significant_genes_by_trait <- function(sp_tbl, sp_count_tbl, pheno_whitelist=pheno_whitelist_) {
+  pheno_whitelist <- sql_pheno_whitelist(pheno_whitelist)
+  query <- "
+SELECT px.phenotype,  COUNT(*) as count
+FROM {sp_tbl$dataset_name}.{sp_tbl$table_name} as px
+JOIN {sp_count_tbl$dataset_name}.{sp_count_tbl$table_name} as px_count
+ON px_count.phenotype=px.phenotype
+WHERE px.pvalue < px_count.b and px.phenotype in {pheno_whitelist}
+GROUP BY px.phenotype" %>% glue::glue()
+  query_exec(query, project = "gtex-awg-im", use_legacy_sql = FALSE, max_pages = Inf)
+}

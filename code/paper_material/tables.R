@@ -39,6 +39,10 @@ t <- gwas_metadata %>% mutate(category=factor(category, levels=order_)) %>% arra
   mutate(category=gsub("_", "-", category), phenotype=gsub("_", " ", phenotype), abbreviation=gsub("_", "\\_", abbreviation), sample_size=as.integer(sample_size))
 t %>% select(Category=category, Phenotype=phenotype, Abbreviation=abbreviation, `Sample Size`=sample_size) %>% xtable %>% print.xtable(file = fp_("gwas_table.tex"), include.rownames=FALSE)
 
+t %>% filter(!grepl("UKB", phenotype)) %>%
+  select(Category=category, Phenotype=phenotype, Abbreviation=abbreviation, `Sample Size`=sample_size) %>%
+  save_delim(fp_("gwas_table_nonukb.txt"))
+
 ###############################################################################
 
 tc_ <- function(tbl) {
