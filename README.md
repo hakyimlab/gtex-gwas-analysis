@@ -12,15 +12,12 @@ The results underlying these analyses can be found in **zenodo.org**:
     * [enloc](https://github.com/xqwen/integrative) results on eQTL/sQTL, using only individuals of European Ancestry and variants with MAF>0.01.
 GWAS regions from [ldetect](https://bitbucket.org/nygcresearch/ldetect/src/master/), lifted over to hg38
     * expression and splicing prediction models using [MASHR](https://github.com/stephenslab/mashr) effect sizes
-    * predicted expression and splicing associations (S-MultiXcan and S-Predixcan, [here](https://github.com/hakyimlab/MetaXcan))
-    * [SMR](https://cnsgenomics.com/software/smr/#Overview) analysis
-
-
-Currently being uploaded to Zenodo:
-
-- Elastic Net splicing/expression prediction models
-
-check again soon for updates!
+    * predicted expression and splicing associations (S-MultiXcan and S-Predixcan, [here](https://github.com/hakyimlab/MetaXcan)). 
+    Model training, GWAS harmonization and imputation available [here](https://github.com/hakyimlab/summary-gwas-imputation)
+    * [SMR](https://cnsgenomics.com/software/smr/#Overview) analysis on eQTL
+* Addendum: SMR sQTL [results](https://zenodo.org/record/3525070#.XbxH79F7m90)
+* [Elastic Net Prediction models](https://zenodo.org/record/3519321#.XbxAANF7m90): This provides robust, if less powerful, models than the new MASHR-based models.
+Provided for compatibility.
 
 # Reproducible analysis for manuscript
 
