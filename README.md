@@ -6,7 +6,7 @@ Resources and analysis shared by ["Widespread dose-dependent effects of RNA expr
 
 The results underlying these analyses can be found in **zenodo.org**:
 
-* [Finemapping on eQTL and sQTL](https://zenodo.org/record/3517189#.XbMe6NF7m90)
+* [Finemapping on eQTL and sQTL](https://zenodo.org/record/3517189#.XbMe6NF7m90): computed using [DAP-G](https://github.com/xqwen/dap)
 * [GWAS and sQTL/sQTL integration](https://zenodo.org/record/3518299#.XbMgFNF7m90). This zenodo package contains the following:
     * [coloc](https://github.com/chr1swallace/coloc) results on eQTL, using priors computed from [enloc](https://github.com/xqwen/integrative) enrichment
     * [enloc](https://github.com/xqwen/integrative) results on eQTL/sQTL, using only individuals of European Ancestry and variants with MAF>0.01.
