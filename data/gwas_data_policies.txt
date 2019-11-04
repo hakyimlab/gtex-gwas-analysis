@@ -1,0 +1,115 @@
+Phenotypes	Pubmed_paper_id	Policy	
+UKB_1160_Sleep_duration			
+UKB_1180_Morning_or_evening_person_chronotype			
+UKB_1200_Sleeplessness_or_insomnia			
+UKB_1807_Fathers_age_at_death			
+UKB_20016_Fluid_intelligence_score			
+UKB_20022_Birth_weight			
+UKB_20127_Neuroticism_score			
+UKB_21001_Body_mass_index_BMI			
+UKB_23099_Body_fat_percentage			
+UKB_3526_Mothers_age_at_death			
+UKB_50_Standing_height			
+UKB_20002_1094_self_reported_deep_venous_thrombosis_dvt			
+UKB_20002_1111_self_reported_asthma			
+UKB_20002_1154_self_reported_irritable_bowel_syndrome			
+UKB_20002_1222_self_reported_type_1_diabetes			
+UKB_20002_1223_self_reported_type_2_diabetes			
+UKB_20002_1225_self_reported_hyperthyroidism_or_thyrotoxicosis			
+UKB_20002_1226_self_reported_hypothyroidism_or_myxoedema			
+UKB_20002_1243_self_reported_psychological_or_psychiatric_problem			
+UKB_20002_1261_self_reported_multiple_sclerosis			
+UKB_20002_1262_self_reported_parkinsons_disease			
+UKB_20002_1265_self_reported_migraine			
+UKB_20002_1289_self_reported_schizophrenia			
+UKB_20002_1309_self_reported_osteoporosis			
+UKB_20002_1313_self_reported_ankylosing_spondylitis			
+UKB_20002_1452_self_reported_eczema_or_dermatitis			
+UKB_20002_1453_self_reported_psoriasis			
+UKB_20002_1461_self_reported_inflammatory_bowel_disease			
+UKB_20002_1462_self_reported_crohns_disease			
+UKB_20002_1463_self_reported_ulcerative_colitis			
+UKB_20002_1464_self_reported_rheumatoid_arthritis			
+UKB_20002_1466_self_reported_gout			
+UKB_20002_1473_self_reported_high_cholesterol			
+UKB_20002_1616_self_reported_insomnia			
+UKB_2395_2_Hair_or_balding_pattern_Pattern_2			
+UKB_2395_3_Hair_or_balding_pattern_Pattern_3			
+UKB_2395_4_Hair_or_balding_pattern_Pattern_4			
+UKB_6150_1_Vascular_or_heart_problems_diagnosed_by_doctor_Heart_attack			
+UKB_6152_5_diagnosed_by_doctor_Blood_clot_in_the_leg_DVT			
+UKB_6152_7_diagnosed_by_doctor_Blood_clot_in_the_lung			
+UKB_6152_8_diagnosed_by_doctor_Asthma			
+UKB_6152_9_diagnosed_by_doctor_Hayfever_allergic_rhinitis_or_eczema			
+UKB_G40_Diagnoses_main_ICD10_G40_Epilepsy			
+UKB_G43_Diagnoses_main_ICD10_G43_Migraine			
+UKB_20002_1065_self_reported_hypertension			
+MAGIC_FastingGlucose	20081858	http://www.magicinvestigators.org/downloads/ When using data from the downloadable meta-analyses results please acknowledge the source  of the data as follows: "Data on glycaemic traits have been contributed by MAGIC investigators  and have been downloaded from www.magicinvestigators.org".	
+MAGIC_ln_FastingInsulin	20081858		
+SSGAC_Depressive_Symptoms	27089181	https://www.thessgac.org/data When you report results of research that utilizes SSGAC data in any way, it is our policy that you  mention the SSGAC in your paper and cite the relevant publication of the original results.  Please inform us about your intended use of SSGAC data by sending an email to  (contact@ssgac.org).	
+MAGNETIC_CH2.DB.ratio	27005778	http://www.computationalmedicine.fi/data#NMR_GWAS	
+MAGNETIC_HDL.C	27005778		
+MAGNETIC_IDL.TG	27005778		
+MAGNETIC_LDL.C	27005778		
+CARDIoGRAM_C4D_CAD_ADDITIVE	26343387	http://www.cardiogramplusc4d.org/data-downloads/ When using data from the downloadable meta-analyses results please acknowledge the source of the  data as follows: 'Data on coronary artery disease / myocardial infarction have been contributed by  CARDIoGRAMplusC4D investigators and have been downloaded from  www.CARDIOGRAMPLUSC4D.ORG'. For the Exome chip study please acknowledge the source of  the data as follows: 'Data on coronary artery disease / myocardial infarction have been contributed  by the Myocardial Infarction Genetics and CARDIoGRAM Exome investigators and have been  downloaded from www.CARDIOGRAMPLUSC4D.ORG'. For the Chromosome X-CAD please  acknowledge the source of the data as follows: ‘Data on the X chromosomal analysis of coronary  artery disease / myocardial infarction have been contributed by the referenced authors.’ For the UK  Biobank meta-analysis please acknowledge the source of the data as follows: 'Data on coronary artery  disease / myocardial infarction have been contributed by the CARDIoGRAMplusC4D and UK Biobank  CardioMetabolic Consortium CHD working group who used the UK Biobank Resource  (application number 9922). Data have been downloaded from www.CARDIOGRAMPLUSC4D.ORG'.	
+SSGAC_Education_Years_Pooled	27225129	https://www.thessgac.org/data When you report results of research that utilizes SSGAC data in any way, it is our policy that you  mention the SSGAC in your paper and cite the relevant publication of the original results.  Please inform us about your intended use of SSGAC data by sending an email to  (contact@ssgac.org).	
+Astle_et_al_2016_Eosinophil_counts	27863252	Further information may be directed to the Lead Contact, Nicole Soranzo (ns6@sanger.ac.uk).	
+Astle_et_al_2016_Granulocyte_count	27863252		
+Astle_et_al_2016_High_light_scatter_reticulocyte_count	27863252		
+Astle_et_al_2016_Lymphocyte_counts	27863252		
+Astle_et_al_2016_Monocyte_count	27863252		
+Astle_et_al_2016_Myeloid_white_cell_count	27863252		
+Astle_et_al_2016_Neutrophil_count	27863252		
+Astle_et_al_2016_Platelet_count	27863252		
+Astle_et_al_2016_Red_blood_cell_count	27863252		
+Astle_et_al_2016_Reticulocyte_count	27863252		
+Astle_et_al_2016_Sum_basophil_neutrophil_counts	27863252		
+Astle_et_al_2016_Sum_eosinophil_basophil_counts	27863252		
+Astle_et_al_2016_Sum_neutrophil_eosinophil_counts	27863252		
+Astle_et_al_2016_White_blood_cell_count	27863252		
+ENIGMA_Intracraneal_Volume	25607358	http://enigma.ini.usc.edu/research/download-enigma-gwas-results/	
+GIANT_HEIGHT	25282103	http://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files  If you use these Height data, please cite: Wood AR, Esko T, Yang J, Vedantam S, Pers TH,  Gustafsson S et al. (2014). Defining the role of common variation in the genomic and biological  architecture of adult human height. Nature Genetics 11:1173-86.	
+Jones_et_al_2016_Chronotype	27494321	Just say if you use data, to cite the paper	
+Jones_et_al_2016_SleepDuration	27494321		
+pgc.scz2	25056061	https://www.med.unc.edu/pgc/results-and-downloads/ Downloaded PGC results can be shared among collaborators but the reposting or public distribution of PGC results files is prohibited;	
+RA_OKADA_TRANS_ETHNIC	24390342	http://plaza.umin.ac.jp/~yokada/datasource/software.htm	
+CNCR_Insomnia_all	28604731	https://ctg.cncr.nl/software/summary_statistics License says we are free to share and adapt the data for non commercial use	
+EAGLE_Eczema	26482879	https://data.bris.ac.uk/datasets/28uchsdpmub118uex26ylacqm/AD_GWAS_README.txt License says we are free to share and adapt the data for non commercial use	
+IBD.EUR.Crohns_Disease	26192919	https://www.ibdgenetics.org/downloads.html	
+IBD.EUR.Inflammatory_Bowel_Disease	26192919		
+IBD.EUR.Ulcerative_Colitis	26192919		
+IGAP_Alzheimer	24162737	http://web.pasteur-lille.fr/en/recherche/u744/igap/igap_download.php If IGAP data are used in publications, IGAP should be cited in acknowledgments, Materials and  Methods, and References sections of the manuscript as follows:  Acknowledgments We thank the International Genomics of Alzheimer's Project (IGAP) for providing summary results  data for these analyses. The investigators within IGAP contributed to the design and implementation  of IGAP and/or provided data but did not participate in analysis or writing of this report. IGAP was  made possible by the generous participation of the control subjects, the patients, and their families.  The i–Select chips was funded by the French National Foundation on Alzheimer's disease and  related disorders. EADI was supported by the LABEX (laboratory of excellence program investment  for the future) DISTALZ grant, Inserm, Institut Pasteur de Lille, Université de Lille 2 and the Lille  University Hospital. GERAD was supported by the Medical Research Council (Grant n° 503480),  Alzheimer's Research UK (Grant n° 503176), the Wellcome Trust (Grant n° 082604/2/07/Z) and  German Federal Ministry of Education and Research (BMBF): Competence Network Dementia  (CND) grant n° 01GI0102, 01GI0711, 01GI0420. CHARGE was partly supported by the NIH/NIA  grant R01 AG033193 and the NIA AG081220 and AGES contract N01–AG–12100, the NHLBI  grant R01 HL105756, the Icelandic Heart Association, and the Erasmus Medical Center and  Erasmus University. ADGC was supported by the NIH/NIA grants: U01 AG032984, U24 AG021886,  U01 AG016976, and the Alzheimer's Association grant ADGC–10–196728.  Material and methods International Genomics of Alzheimer's Project (IGAP) is a large two-stage study based upon  genome-wide association studies (GWAS) on individuals of European ancestry. In stage 1, IGAP used  genotyped and imputed data on 7,055,881 single nucleotide polymorphisms (SNPs) to meta-analyse  four previously-published GWAS datasets consisting of 17,008 Alzheimer's disease cases and  37,154 controls (The European Alzheimer's disease Initiative – EADI the Alzheimer Disease Genetics  Consortium – ADGC The Cohorts for Heart and Aging Research in Genomic Epidemiology consortium  – CHARGE The Genetic and Environmental Risk in AD consortium – GERAD). In stage 2, 11,632 SNPs  were genotyped and tested for association in an independent set of 8,572 Alzheimer's disease cases  and 11,312 controls. Finally, a meta-analysis was performed combining results from stages 1 & 2.	
+IMMUNOBASE_Systemic_lupus_erythematosus_hg19	26502338	https://genetics.opentargets.org/immunobase	
+PGC_ADHD_EUR_2017	30478444	https://www.med.unc.edu/pgc/results-and-downloads/ Downloaded PGC results can be shared among collaborators but the reposting or public distribution of PGC results files is prohibited;	
+BCAC_ER_negative_BreastCancer_EUR	25890600	http://bcac.ccge.medschl.cam.ac.uk/bcacdata/	
+BCAC_ER_positive_BreastCancer_EUR	25890600		
+BCAC_Overall_BreastCancer_EUR	25890600		
+EGG_BW3_EUR	27680694	http://egg-consortium.org/birth-weight-2016.html When using data from the downloadable meta-analyses results please acknowledge the source of the  data as follows: Data on birth weight trait has been contributed by the EGG Consortium using the UK Biobank  Resource and has been downloaded from www.egg-consortium.org.  In addition to the above acknowledgement, please cite the paper below: Genome-wide associations for birth weight and correlations with adult disease. Horikoshi M, Beaumont RN, Day FR, Warrington NM, Kooijman MN, Fernandez-Tajes J, et al. Nature 2016 doi:10.1038/nature19806	
+GEFOS_Forearm	26367794	http://www.gefos.org/?q=content/data-release-2015 The UK10K, AOGC and GEFOS-seq Consortia require appropriate attribution for use of data in a  product, service, or publication by citing the article generating this set of results  (Zheng et al, Nature 2015) and acknowledging its use.	
+EGG_BMI_HapMapImputed	26604143	Data on the childhood BMI trait has been contributed by the EGG Consortium  and has been downloaded from www.egg-consortium.org.  In addition to the above acknowledgement, please cite the paper below:  Genome-wide association analysis identifies three new susceptibility loci for childhood body mass index. (Felix, 2015)	http://www.ncbi.nlm.nih.gov/pubmed/26604143
+ADIPOGen_Adiponectin	22479202	Cite "Novel Loci for Adiponectin Levels and Their Influence on Type 2 Diabetes  and Metabolic Traits: A Multi-Ethnic Meta-Analysis of 45,891 Individuals"(Dastani, 2012)	http://www.ncbi.nlm.nih.gov/pubmed/22479202
+CKDGen_Chronic_Kidney_Disease	26831199		https://www.ncbi.nlm.nih.gov/pubmed/26831199
+EGG_BL	25281659		http://www.ncbi.nlm.nih.gov/pubmed/25281659
+EGG_Pubertal_growth_10F	23449627		http://www.ncbi.nlm.nih.gov/pubmed/23449627
+EGG_Pubertal_growth_12M	23449627		http://www.ncbi.nlm.nih.gov/pubmed/23449627
+GPC-NEO-NEUROTICISM	21173776		http://www.ncbi.nlm.nih.gov/pubmed/21173776
+HRGene_HeartRate	23583979		https://www.ncbi.nlm.nih.gov/pubmed/23583979
+DIAGRAM_T2D_TRANS_ETHNIC	22885922		http://www.ncbi.nlm.nih.gov/pubmed/22885922
+ISGC_Malik_2016_METASTROKE_all_strokes	26935894		https://www.ncbi.nlm.nih.gov/pubmed/26935894
+GABRIEL_Asthma	17611496		http://www.ncbi.nlm.nih.gov/pubmed/17611496
+tag.evrsmk.tbl	20418890		http://www.ncbi.nlm.nih.gov/pubmed/20418890
+GIANT_2017_BMI_Active_EUR	 		
+GIANT_2015_BMI_EUR	25673413		http://www.ncbi.nlm.nih.gov/pubmed/25673413
+GIANT_HIP_Combined_EUR	25673412		http://www.ncbi.nlm.nih.gov/pubmed/25673412
+GIANT_WC_Combined_EUR	25673412		http://www.ncbi.nlm.nih.gov/pubmed/25673412
+GIANT_WHR_Combined_EUR	25673412		http://www.ncbi.nlm.nih.gov/pubmed/25673412
+GLGC_Mc_HDL	24097068		http://www.ncbi.nlm.nih.gov/pubmed/24097068
+GLGC_Mc_LDL	24097068		http://www.ncbi.nlm.nih.gov/pubmed/24097068
+GLGC_Mc_TG	24097068		http://www.ncbi.nlm.nih.gov/pubmed/24097068
+ICBP_SystolicPressure	21909115		https://www.ncbi.nlm.nih.gov/pubmed/21909115
+ICBP_DiastolicPressure	21909115		https://www.ncbi.nlm.nih.gov/pubmed/21909115
+IMMUNOBASE_Celiac_disease_hg19	20190752		http://www.ncbi.nlm.nih.gov/pubmed/20190752
+IMMUNOBASE_Multiple_sclerosis_hg19	21833088		http://www.ncbi.nlm.nih.gov/pubmed/21833088
+PGC_ASD_2017_CEU	28540026		https://www.ncbi.nlm.nih.gov/pubmed/28540026
+TAGC_Asthma_EUR	29273806		https://www.ncbi.nlm.nih.gov/pubmed/29273806
+ILAE_Genetic_generalised_epilepsy	25087078		http://thelancet.com/journals/laneur/article/PIIS1474-4422(14)70171-1/fulltext
