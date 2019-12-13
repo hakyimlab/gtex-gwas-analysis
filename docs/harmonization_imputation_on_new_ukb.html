@@ -433,13 +433,16 @@ Great! You are using Git for version control. Tracking code development and conn
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
+    Ignored:    data/new_ukb_gwas/
 
 Untracked files:
     Untracked:  analysis/harmonization_imputation_on_new_ukb.Rmd
     Untracked:  code/new_ukb_scripts/
-    Untracked:  data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
-    Untracked:  data/new_ukb_gwas/
     Untracked:  output/new_ukbn/
+
+Unstaged changes:
+    Modified:   .gitignore
 
 </code></pre>
 <p>
@@ -462,6 +465,13 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>We want to assess sign mismatches in ambiguous snps between thwe GTEx v8 reference and the 2018 release of the rapid GWAS project. See <code>code/new_ukb_scripts/</code> for details of how the harmonized+imputed GWAS was built. In the following, we compare direction of effect sizes in a rapid GWAS trait, between original and imputed effects, for ambiguous palindromic variants.</p>
+</div>
+<div id="prerequisites" class="section level1">
+<h1>Prerequisites</h1>
+<p>The data processed here is simple but too large to store on github. Make sure to download it from Google Cloud (or copy from CRI) into the expected paths:</p>
+<pre><code>mkdir data/new_ukb_gwas
+gsutil cp gs://gtex-gwas-share/aux-data data/new_ukb_gwas/imputed_50_standing_height.txt.gz  
+gsutil cp gs://gtex-gwas-share/aux-data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz data/</code></pre>
 </div>
 <div id="analysis" class="section level1">
 <h1>Analysis</h1>

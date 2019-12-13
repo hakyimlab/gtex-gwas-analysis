@@ -19,7 +19,7 @@ Make sure to download it from Google Cloud (or copy from CRI) into the expected 
 
 ```
 mkdir data/new_ukb_gwas
-gsutil cp gs://gtex-gwas-share/aux-data data/new_ukb_gwas/imputed_50_standing_height.txt.gz  
+gsutil cp gs://gtex-gwas-share/aux-data/imputed_50_standing_height.txt.gz data/new_ukb_gwas/  
 gsutil cp gs://gtex-gwas-share/aux-data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz data/
 ```
 
