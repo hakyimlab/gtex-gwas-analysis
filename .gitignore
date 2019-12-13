@@ -13,6 +13,7 @@ data/*rds
 
 .idea
 
+
 # History files
 .Rhistory
 .Rapp.history
@@ -50,3 +51,7 @@ vignettes/*.pdf
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
 9ac62559dde4e840351031c046df9795b86bd7f6
+
+# Data files that are too large for GitHub
+data/new_ukb_gwas/imputed_50_standing_height.txt.gz
+data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz

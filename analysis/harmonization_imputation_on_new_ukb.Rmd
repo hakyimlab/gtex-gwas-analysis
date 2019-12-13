@@ -1,0 +1,108 @@
+---
+title: "harmonization_imputation_on_new-ukb"
+author: "Alvaro"
+date: "2019-12-13"
+output: workflowr::wflow_html
+---
+
+## Introduction
+
+We want to assess sign mismatches in ambiguous snps between thwe GTEx v8 reference and  the 2018 release of the rapid GWAS project.
+See `code/new_ukb_scripts/` for details of how the harmonized+imputed GWAS was built.
+In the following, we compare direction of effect sizes in a rapid GWAS trait, between original and imputed effects,
+for ambiguous palindromic variants.
+
+# Prerequisites
+
+The data processed here is simple but too large to store on github. 
+Make sure to download it from Google Cloud (or copy from CRI) into the expected paths:
+
+```
+mkdir data/new_ukb_gwas
+gsutil cp gs://gtex-gwas-share/aux-data data/new_ukb_gwas/imputed_50_standing_height.txt.gz  
+gsutil cp gs://gtex-gwas-share/aux-data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz data/
+```
+
+# Analysis
+
+The underlying question is how much we are affected by ambiguity in definition of
+palindromic SNPs, when using the rapid GWAS project or UKB in general.
+So we harmonize+impute a trait, and check how many variants experienced a sign swap.
+
+```{r preliminaries, echo=FALSE, warning=FALSE, message=FALSE}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(UpSetR))
+suppressPackageStartupMessages(library(viridis))
+suppressPackageStartupMessages(library(kableExtra))
+suppressWarnings(source("code/helpers/_helpers.R"))
+
+RESULT<-"output/new_ukbn"
+dir.create(RESULT, showWarnings = FALSE, recursive=TRUE)
+fp_ <- function(p) file.path(RESULT, p)
+```
+
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+snps <- "data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz" %>%
+  r_tsv_(col_types=cols_only(variant_id="c", rs_id_dbSNP150_GRCh38p7="c")) %>%
+  rename(rsid=rs_id_dbSNP150_GRCh38p7) %>% mutate(rsid = ifelse(rsid == ".", NA, rsid))
+
+d <- "data/new_ukb_gwas/imputed_50_standing_height.txt.gz" %>%
+  r_tsv_(col_types=cols_only(panel_variant_id="c", effect_allele="c", non_effect_allele="c",imputation_status="c", zscore="d"))
+
+d_ <- d %>% filter((effect_allele == "A" & non_effect_allele=="T") |
+                   (effect_allele == "T" & non_effect_allele=="A") |
+                   (effect_allele == "C" & non_effect_allele=="G") |
+                   (effect_allele == "G" & non_effect_allele=="C"))
+
+r_ <- d_ %>% filter(imputation_status == "original") %>%
+  select(panel_variant_id, zscore) %>%
+  left_join(d_ %>%filter(imputation_status == "imputed") %>% select(panel_variant_id, zscore), by = "panel_variant_id") %>%
+  mutate(sign_conserved = sign(zscore.x) == sign(zscore.y)) %>% 
+  inner_join(snps, by=c("panel_variant_id"="variant_id")) %>% 
+  mutate(p = 2*pnorm(-abs(zscore.x)))
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+r_ %>% select(panel_variant_id, rsid,  sign_conserved) %>% save_delim(fp_("new_ukb_ambiguous_snp_sign_swap.txt.gz"))
+```
+
+By and large, mostambiguous variants have original effect size direction matching the imputed sign.
+There are `r r_ %>% nrow` ambiguously defined variants in this GWAS,
+of which `r r_ %>% filter(is.na(zscore.y)) %>% nrow` could not be imputed:
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+r_ %>% count(sign_conserved) %>% kable %>% kable_styling()
+```
+
+We count how many ambiguous variants are significant, and the proportion experiencing sign swap at imputation,
+for different significance thresholds.
+We observe that as significance increases, the proportion of sign swaps decreases:
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+thresholds <- c(10**(-seq(1,10)))
+
+p_ <- list()
+for (i in 1:length(thresholds)) {
+  threshold <- thresholds[i]
+  p_[[i]] <- data.frame(threshold=threshold, 
+                        swapped_significant=r_ %>% filter(p < threshold, sign_conserved == FALSE) %>% nrow,
+                        significant=r_ %>% filter(p < threshold) %>% nrow) %>%
+    mutate(proportion = swapped_significant/significant)
+}
+p_ <- do.call(rbind, p_)
+
+p_ %>% save_delim(fp_("significant_ambiguous_swapped_proportion.txt.gz"))
+
+p_  %>% kable %>% kable_styling()
+```
+
+
+We interpret this to mean that ambiguous variants that experience sign swaps 
+do so because of noise. 
+We consider that properly measured variants (in GWAS and QTL) don't experience sign swaps,
+and they account for the majority of significant variants.
