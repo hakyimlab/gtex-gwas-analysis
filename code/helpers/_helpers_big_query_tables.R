@@ -43,6 +43,10 @@ multixcan_en_tbl_count_eqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "s
 multixcan_en_tbl_sqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_sqtl")
 multixcan_en_tbl_count_sqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "smultixcan_sqtl_count")
 
+#elastic net predixcan without palindromic
+predixcan_en_np_tbl_eqtl <-               tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_eqtl_np")
+predixcan_en_np_tbl_count_eqtl <-         tableInfo("GTEx_V8_ElasticNet_EUR_v1", "spredixcan_eqtl_np_count")
+
 #mashr predixcan
 prediction_mashr_models_tbl_eqtl <-       tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "weights_eqtl")
 prediction_mashr_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "extra_eqtl")
@@ -61,6 +65,43 @@ multixcan_mashr_tbl_count_eqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "
 
 multixcan_mashr_tbl_sqtl <-               tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "smultixcan_sqtl")
 multixcan_mashr_tbl_count_sqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "smultixcan_sqtl_count")
+
+#mashr with harmonized(unimputed) gwas
+predixcan_mashr_hq_tbl_eqtl <-               tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_eqtl_hq")
+predixcan_mashr_hq_tbl_count_eqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_eqtl_hq_count")
+
+predixcan_mashr_hn_tbl_eqtl <-               tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_eqtl_hn")
+predixcan_mashr_hn_tbl_count_eqtl <-         tableInfo("GTEx_V8_PF_MASHR_EUR_v1", "spredixcan_eqtl_hn_count")
+
+#EN-DAPGW predixcan
+prediction_en_dapgw_models_tbl_eqtl <-       tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "weights_eqtl")
+prediction_en_dapgw_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "extra_eqtl")
+
+prediction_en_dapgw_models_tbl_sqtl <-       tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "weights_sqtl")
+prediction_en_dapgw_models_extra_tbl_sqtl <- tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "extra_sqtl")
+
+predixcan_en_dapgw_tbl_eqtl <-               tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "spredixcan_eqtl")
+predixcan_en_dapgw_tbl_count_eqtl <-         tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "spredixcan_eqtl_count")
+
+predixcan_en_dapgw_tbl_sqtl <-               tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "spredixcan_sqtl")
+predixcan_en_dapgw_tbl_count_sqtl <-         tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "spredixcan_sqtl_count")
+
+multixcan_en_dapgw_tbl_eqtl <-               tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "smultixcan_eqtl")
+multixcan_en_dapgw_tbl_count_eqtl <-         tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "smultixcan_eqtl_count")
+
+multixcan_en_dapgw_tbl_sqtl <-               tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "smultixcan_sqtl")
+multixcan_en_dapgw_tbl_count_sqtl <-         tableInfo("GTEx_V8_ENDAPGW_EUR_v1", "smultixcan_sqtl_count")
+
+#CTIMP
+prediction_ctimp_models_tbl_eqtl <-       tableInfo("GTEx_V8_PF_CTIMP_EUR_v1", "weights_eqtl")
+prediction_ctimp_models_extra_tbl_eqtl <- tableInfo("GTEx_V8_PF_CTIMP_EUR_v1", "extra_eqtl")
+
+predixcan_ctimp_tbl_eqtl <-               tableInfo("GTEx_V8_PF_CTIMP_EUR_v1", "spredixcan_eqtl")
+predixcan_ctimp_tbl_count_eqtl <-         tableInfo("GTEx_V8_PF_CTIMP_EUR_v1", "spredixcan_eqtl_count")
+
+#CTIMP without palindromic
+predixcan_ctimp_np_tbl_eqtl <-               tableInfo("GTEx_V8_PF_CTIMP_EUR_v1", "spredixcan_eqtl_np")
+predixcan_ctimp_np_tbl_count_eqtl <-         tableInfo("GTEx_V8_PF_CTIMP_EUR_v1", "spredixcan_eqtl_np_count")
 
 # conditional analysis (LDACC)
 CA_eqtl_tbl <- tableInfo("GTEx_V8_ConditionalAnalysis_2018_10_05", "eqtl_analysis")

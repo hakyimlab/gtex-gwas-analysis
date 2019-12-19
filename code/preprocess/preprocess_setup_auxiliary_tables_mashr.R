@@ -42,29 +42,29 @@ options(gargle_oauth_email = TRUE)
   ds <- bq_dataset(predixcan_mashr_tbl_eqtl$project, predixcan_mashr_tbl_eqtl$dataset_name)
 
   (function(){
-  query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name}
+    query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {predixcan_mashr_tbl_eqtl$dataset_name}.{predixcan_mashr_tbl_eqtl$table_name}
                       WHERE pvalue IS NOT NULL
                       GROUP BY phenotype")
-  df <- query_exec(query, project = predixcan_mashr_tbl_eqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
-    mutate(b=0.05/n) %>% select(phenotype, n, b)
-  df %>% save_delim(fp_("expression_b_mashr.txt"))
+    df <- query_exec(query, project = predixcan_mashr_tbl_eqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
+      mutate(b=0.05/n) %>% select(phenotype, n, b)
+    df %>% save_delim(fp_("expression_b_mashr.txt"))
 
-  bq_ <- bq_table(predixcan_mashr_tbl_count_eqtl$project,predixcan_mashr_tbl_count_eqtl$dataset_name, predixcan_mashr_tbl_count_eqtl$table_name)
-  bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
-  bq_table_upload(bq_, df)
+    bq_ <- bq_table(predixcan_mashr_tbl_count_eqtl$project,predixcan_mashr_tbl_count_eqtl$dataset_name, predixcan_mashr_tbl_count_eqtl$table_name)
+    bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
+    bq_table_upload(bq_, df)
   })()
 
   (function(){
-  query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {predixcan_mashr_tbl_sqtl$dataset_name}.{predixcan_mashr_tbl_sqtl$table_name}
+    query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {predixcan_mashr_tbl_sqtl$dataset_name}.{predixcan_mashr_tbl_sqtl$table_name}
                       WHERE pvalue IS NOT NULL
                       GROUP BY phenotype")
-  df <- query_exec(query, project = predixcan_mashr_tbl_sqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
-    mutate(b=0.05/n) %>% select(phenotype, n, b)
-  df %>% save_delim(fp_("splicing_b_mashr.txt"))
+    df <- query_exec(query, project = predixcan_mashr_tbl_sqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
+      mutate(b=0.05/n) %>% select(phenotype, n, b)
+    df %>% save_delim(fp_("splicing_b_mashr.txt"))
 
-  bq_ <- bq_table(predixcan_mashr_tbl_count_sqtl$project, predixcan_mashr_tbl_count_sqtl$dataset_name, predixcan_mashr_tbl_count_sqtl$table_name)
-  bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
-  bq_table_upload(bq_, df)
+    bq_ <- bq_table(predixcan_mashr_tbl_count_sqtl$project, predixcan_mashr_tbl_count_sqtl$dataset_name, predixcan_mashr_tbl_count_sqtl$table_name)
+    bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
+    bq_table_upload(bq_, df)
   })()
 })()
 
@@ -72,28 +72,28 @@ options(gargle_oauth_email = TRUE)
   ds <- bq_dataset(multixcan_mashr_tbl_eqtl$project, multixcan_mashr_tbl_eqtl$dataset_name)
 
   (function(){
-  query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {multixcan_mashr_tbl_eqtl$dataset_name}.{multixcan_mashr_tbl_eqtl$table_name}
+    query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {multixcan_mashr_tbl_eqtl$dataset_name}.{multixcan_mashr_tbl_eqtl$table_name}
                       WHERE pvalue IS NOT NULL
                       GROUP BY phenotype")
-  df <- query_exec(query, project = multixcan_mashr_tbl_eqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
-    mutate(b=0.05/n) %>% select(phenotype, n, b)
-  df %>% save_delim(fp_("expression_m_b.txt"))
+    df <- query_exec(query, project = multixcan_mashr_tbl_eqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
+      mutate(b=0.05/n) %>% select(phenotype, n, b)
+    df %>% save_delim(fp_("expression_m_b.txt"))
 
-  bq_ <- bq_table(multixcan_mashr_tbl_count_eqtl$project, multixcan_mashr_tbl_count_eqtl$dataset_name, multixcan_mashr_tbl_count_eqtl$table_name)
-  bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
-  bq_table_upload(bq_, df)
+    bq_ <- bq_table(multixcan_mashr_tbl_count_eqtl$project, multixcan_mashr_tbl_count_eqtl$dataset_name, multixcan_mashr_tbl_count_eqtl$table_name)
+    bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
+    bq_table_upload(bq_, df)
   })()
 
   (function(){
-  query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {multixcan_mashr_tbl_sqtl$dataset_name}.{multixcan_mashr_tbl_sqtl$table_name}
+    query <- glue::glue("SELECT count(pvalue) as n, phenotype FROM {multixcan_mashr_tbl_sqtl$dataset_name}.{multixcan_mashr_tbl_sqtl$table_name}
                        WHERE pvalue IS NOT NULL
                        GROUP BY phenotype")
-  df <- query_exec(query, project = multixcan_mashr_tbl_sqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
-    mutate(b=0.05/n) %>% select(phenotype, n, b)
-  df %>% save_delim(fp_("splicing_m_b.txt"))
+    df <- query_exec(query, project = multixcan_mashr_tbl_sqtl$project, max_pages = Inf) %>% suppressWarnings() %>%
+      mutate(b=0.05/n) %>% select(phenotype, n, b)
+    df %>% save_delim(fp_("splicing_m_b.txt"))
 
-  bq_ <- bq_table(multixcan_mashr_tbl_count_sqtl$project, multixcan_mashr_tbl_count_sqtl$dataset_name, multixcan_mashr_tbl_count_sqtl$table_name)
-  bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
-  bq_table_upload(bq_, df)
+    bq_ <- bq_table(multixcan_mashr_tbl_count_sqtl$project, multixcan_mashr_tbl_count_sqtl$dataset_name, multixcan_mashr_tbl_count_sqtl$table_name)
+    bq_ <- bq_table_create(bq_, fields=as_bq_fields(df), friendly_name = "Number of results per trait")
+    bq_table_upload(bq_, df)
   })()
 })()
