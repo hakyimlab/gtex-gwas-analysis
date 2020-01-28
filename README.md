@@ -18,7 +18,7 @@ GWAS regions from [ldetect](https://bitbucket.org/nygcresearch/ldetect/src/maste
 * Addendum: SMR sQTL [results](https://zenodo.org/record/3525070#.XbxH79F7m90)
 * [Elastic Net Prediction models](https://zenodo.org/record/3519321#.XbxAANF7m90): This provides robust, if less powerful, models than the new MASHR-based models.
 Provided for compatibility.
-* Harmonized/imputed GWAS: The underlying GWAS summary statistics harmonized and imputed to GTEx v8 (*you need to provide a google cloud account with billing information*) is available  [here](https://storage.googleapis.com/gtex-gwas-public/gwas/harmonized_imputed_gwas.tar).
+* Harmonized/imputed GWAS: The underlying GWAS summary statistics harmonized and imputed to GTEx v8 is available in this [Zenodo repository](https://zenodo.org/record/3629742#.XjCh9OF7m90).
 
 # Reproducible analysis for manuscript
 
