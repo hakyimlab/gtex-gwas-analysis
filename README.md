@@ -64,6 +64,7 @@ Companion paper material:
 * `code/paper_material/tables.R` Generates latex tables to be included in the paper. At the moment: 
     * Supplementary Table S1: the list of 87 selected traits
     * Supplementary Table S2: expression and splicing models tally
+* `code/paper_material/summaries_short.R`: Numbers summarising numbers of genes, gene-tissue pairs, etc.
 * `code/figures/gwas_imputation_deflation.R` figure showing the deflation of GWAS' p-value distribution after imputation for 27 traits 
 (Supplementary Figure S4)
 * `code/figures/gwas_imputation_quality.R` scatter plot of original vs imputed GWAS zscores (Supplementary Figure S3)

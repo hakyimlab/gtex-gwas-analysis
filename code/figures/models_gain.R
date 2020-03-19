@@ -27,12 +27,15 @@ gtex_metadata <- get_gtex_metadata()
 order_ <- gtex_metadata %>% arrange(-v8_eur) %>% .$name
 
 
-d_ <- read_or_get(dp_("models_en_vs_mashr.txt"), function(){
+d_ <- read_or_get_(dp_("models_en_vs_mashr.txt"), function(){
   v7 <- get_models_count(v7_prediction_en_models_extra_tbl_eqtl) %>%
     mutate(tissue = ifelse(tissue == "Cells_Transformed_fibroblasts", "Cells_Cultured_fibroblasts", tissue))
-  v8 <- get_models_count(prediction_en_models_extra_tbl_eqtl)
+  v8 <- get_models_count(prediction_mashr_models_extra_tbl_eqtl)
   v8 %>% rename(v8 = models) %>% full_join(v7 %>% rename(v7 = models), by="tissue") %>% fill_with_zeros
-})
+}, get_anyways = TRUE)
+
+#(d_$v8 %>% median(na.rm = TRUE)) / (d_$v7 %>% median(na.rm = TRUE))
+
 
 
 
