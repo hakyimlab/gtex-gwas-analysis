@@ -15,8 +15,10 @@ GWAS regions from [ldetect](https://bitbucket.org/nygcresearch/ldetect/src/maste
     * predicted expression and splicing associations (S-MultiXcan and S-Predixcan, [here](https://github.com/hakyimlab/MetaXcan)). 
     Model training, GWAS harmonization and imputation available [here](https://github.com/hakyimlab/summary-gwas-imputation)
 
-* Addendum: SMR sQTL [results](https://zenodo.org/record/3525070#.XbxH79F7m90)
-    * [SMR eQTL and sQTL](https://doi.org/10.5281/zenodo.3942704)
+* Addendum
+    * [SMR eQTL and sQTL results](https://doi.org/10.5281/zenodo.3942704)
+    * [SMR sQTL results](https://zenodo.org/record/3525070#.XbxH79F7m90)
+    * Abhiram Rao also made [sqlite db formatted verision of the SMR results](https://github.com/abhiramrao/gtex_v8_GPMs)
 * [Elastic Net Prediction models](https://zenodo.org/record/3519321#.XbxAANF7m90): This provides robust, if less powerful, models than the new MASHR-based models.
 Provided for compatibility.
 * Harmonized/imputed GWAS: The underlying GWAS summary statistics harmonized and imputed to GTEx v8 is available in this [Zenodo repository](https://zenodo.org/record/3629742#.XjCh9OF7m90).
