@@ -11,7 +11,7 @@ The results underlying these analyses can be found in **zenodo.org**:
     * [coloc](https://github.com/chr1swallace/coloc) results on eQTL, using priors computed from [enloc](https://github.com/xqwen/integrative) enrichment
     * [enloc](https://github.com/xqwen/integrative) results on eQTL/sQTL, using only individuals of European Ancestry and variants with MAF>0.01.
 GWAS regions from [ldetect](https://bitbucket.org/nygcresearch/ldetect/src/master/), lifted over to hg38
-    * expression and splicing prediction models using [MASHR](https://github.com/stephenslab/mashr) effect sizes
+    * expression and splicing prediction models using fine-mapping and smoothed across tissues using MASHR effect sizes. [Download from here](https://predictdb.org/post/2021/07/21/gtex-v8-models-on-eqtl-and-sqtl/)
     * predicted expression and splicing associations (S-MultiXcan and S-Predixcan, [here](https://github.com/hakyimlab/MetaXcan)). 
     Model training, GWAS harmonization and imputation available [here](https://github.com/hakyimlab/summary-gwas-imputation)
 
